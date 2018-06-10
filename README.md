@@ -1,4 +1,4 @@
-# Media Library Rest Full API
+# DjangoRecipes
 
 ## Description
 
