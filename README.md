@@ -4,7 +4,7 @@
 
 Web site which contains recipes. Authenticated user can create, update, delete is owned recipes. He can also comment and rate others recipes. Anonymous user can only search and see recipes.
 
-Object structure is defined like that :
+Recipe objects structure is available [here](https://github.com/jbuisine/django-recipes/blob/master/recipes/models.py) and defined like that:
 
 - User
     - username
@@ -16,15 +16,22 @@ Object structure is defined like that :
 
 - Recipe
     - title
-    - recipe_type
-    - difficulty
     - realization_cost
     - preparation_time
     - cooking_time
     - relaxation_time (if necessary)
     - mean_of_marks (stock mean of marks to avoid computation each time)
     - number_of_marks (to easily compute new mean with new mark)
+    - *recipe_type
+    - *difficulty
     - *user
+
+- Recipe_difficulty
+    - label
+    - level
+
+- Recipe_type
+    - label
 
 - Recipe_step
     - description
@@ -132,7 +139,6 @@ Helpful django commands are also available [here](https://github.com/jbuisine/dj
 * [tcaron](https://github.com/tcaron)
 * [AlexandreGambart](https://github.com/AlexandreGambart)
 * [jbuisine](https://github.com/jbuisine)
-
 
 ## Licence
 
