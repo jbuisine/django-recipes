@@ -57,6 +57,8 @@ The default server address is [http://localhost:8000](http://localhost:8000)
 * [AlexandreGambart](https://github.com/AlexandreGambart)
 * [jbuisine](https://github.com/jbuisine)
 
+Note that project uses [git-flow](https://danielkummer.github.io/git-flow-cheatsheet/).
+
 ## Licence
 
 [MIT](https://github.com/jbuisine/django-recipes/blob/master/LICENSE)
