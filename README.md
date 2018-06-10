@@ -6,7 +6,72 @@ Web site which contains recipes. Authenticated use can create, update, delete is
 
 Object structure is defined like that :
 
-// TODO add objects relationships
+- User
+    - username
+    - mail
+    - firstname
+    - lastname
+    - password
+    - role
+
+- Recipe
+    - title
+    - recipe_type
+    - difficulty
+    - realization_cost
+    - preparation_time
+    - cooking_time
+    - relaxation_time (if necessary)
+    - avg_mark (stock avg of marks to avoid computation)
+    - *user
+
+- Recipe_step
+    - description
+    - level (step 1, 2, 3...)
+    - *recipe
+
+- RecipePhoto :
+    - path
+    - *recipe
+
+- Ingredient_family [families](http://www.cuisine-libre.fr/familles-alimentaires)
+    - name
+
+- Ingredient_unit_measure (liter, gram, unit...)
+    - label
+
+- Ingredient
+    - name
+    - *ingredient_family
+    - *ingredient_unit_measure
+
+- Recipe_ingredient
+    - quantity
+    - *recipe
+    - *ingredient
+
+- Comment
+    - text
+    - date
+    - *user
+    - *recipe
+    - *comment (if answer)
+
+- Notification
+    - date
+    - available
+    - text (generate from comment or mark)
+    - link (necessary to redirect ?)
+    - *user
+    - *comment (null if mark)
+    - *mark (null if comment)
+
+
+- Mark
+    - score
+    - *user
+    - *recipe
+
 
 ## Installation
 
@@ -15,7 +80,7 @@ Object structure is defined like that :
 You need to have python, pip
 
 ```
-pip install django django-bootstrap3 django-jquery
+pip install django django-bootstrap4 django-jquery
 ```
 
 ## Configuration
