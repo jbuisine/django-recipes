@@ -1,0 +1,20 @@
+{% extends 'recipes/base.html' %}
+
+{% load bootstrap4 %}
+
+{% block title %}
+    Subscription Django recipes
+{% endblock %}
+
+{% block content %}
+    <h2>Sign up</h2>
+    <form method="post">
+        {% csrf_token %}
+
+        {% bootstrap_form form %}
+
+        {% buttons %}
+            <button type="submit" class="btn btn-primary">Submit</button>
+        {% endbuttons %}
+    </form>
+{% endblock %}

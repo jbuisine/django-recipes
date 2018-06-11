@@ -38,10 +38,14 @@ Recipe objects structure is available [here](https://github.com/jbuisine/django-
     - level (step 1, 2, 3...)
     - *recipe
 
-- Recipe_photo :
+- Recipe_media
     - path
     - date
     - *recipe
+    - *media_type
+
+- Media_type
+    - label
 
 - Ingredient_family [families](http://www.cuisine-libre.fr/familles-alimentaires)
     - name
@@ -100,12 +104,6 @@ python project/manage.py makemigrations core
 
 ```
 python project/manage.py migrate core && python project/manage.py migrate
-```
-
-Create your new user :
-
-```
-python project/manage.py createsuperuser
 ```
 
 And then, run the server :
