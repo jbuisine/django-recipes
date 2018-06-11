@@ -137,13 +137,24 @@ class RecipeStep(models.Model):
         return "Step %s  : %s" % (self.level, self.description)
 
 
-class RecipePhoto(models.Model):
+class MediaType(models.Model):
     """
-        Photo of recipe
+        Kind of media
+    """
+    label = models.CharField(max_length=255)
+
+    def __str__(self):
+        return "%s" % self.label
+
+
+class RecipeMedia(models.Model):
+    """
+        Media of recipe
     """
     path = models.TextField
     created_at = models.DateTimeField(auto_now_add=True)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    media_type = models.ForeignKey(MediaType, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.path
