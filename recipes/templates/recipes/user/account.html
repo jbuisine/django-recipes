@@ -1,0 +1,21 @@
+{% extends 'recipes/base.html' %}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+
+        <div class="card" style="width: 18rem;">
+          <img class="card-img-top" src="{{ user.profile.avatar }}" alt="{{ user.username }}_avatar">
+          <div class="card-body">
+            <h5>Profile of {{ user.username }}</h5>
+            <hr />
+            <p><strong>Firstname : </strong> {{ user.first_name }}</p>
+            <p><strong>Lastname : </strong> {{ user.last_name }}</p>
+            <p><strong>Country : </strong> {{ user.profile.country }} </p>
+            <p><strong>Age : </strong> {{ user.profile.get_age }} </p>
+          </div>
+        </div>
+        <!-- <img src="{{ user.profile.avatar }}" style="width: 100px; height: 100px; border-radius: 5px;" alt="{{ user.username }}_avatar"/>-->
+    {% endif %}
+
+{% endblock %}

@@ -2,13 +2,26 @@ from django.db import models
 
 # import of User auth django model
 from django.contrib.auth.models import User
+from datetime import date
 
 
-# TODO : create our User model class ?
+class Profile(models.Model):
+    """
+        Custom attributes for user model
+    """
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    avatar = models.TextField()
+    date_of_birth = models.DateField()
+    country = models.TextField(max_length=255)
 
-###################
-# Ingredient part #
-###################
+    def __str__(self):
+        return "Profile of %s " % self.user.username
+
+    def get_age(self):
+        today = date.today()
+        return today.year - self.date_of_birth.year - \
+               ((today.month, today.day) < (self.date_of_birth.month, self.date_of_birth.day))
+
 class IngredientFamily(models.Model):
     """
        Specify a family name of Ingredient

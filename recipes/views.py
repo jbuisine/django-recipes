@@ -1,7 +1,8 @@
-from django.contrib.auth import login, authenticate
-from django.contrib.auth.forms import UserCreationForm
-from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+
+from recipes.forms import CustomUserCreationForm
 
 
 @login_required
@@ -9,16 +10,21 @@ def home(request):
     return render(request, 'recipes/index.html')
 
 
+@login_required()
+def account(request):
+    return render(request, 'recipes/user/account.html')
+
+
 def signup(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
+
         if form.is_valid():
             form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            return redirect('home')
+
+            # TODO : use of specific redirect
+            return HttpResponseRedirect('/')
     else:
-        form = UserCreationForm()
+        form = CustomUserCreationForm()
+
     return render(request, 'registration/signup.html', {'form': form})
