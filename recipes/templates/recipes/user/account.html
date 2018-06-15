@@ -4,16 +4,21 @@
 
     {% if user.is_authenticated %}
 
-        <div class="card" style="width: 18rem;">
-          <img class="card-img-top" src="{{ user.profile.avatar }}" alt="{{ user.username }}_avatar">
-          <div class="card-body">
-            <h5>Profile of {{ user.username }}</h5>
-            <hr />
-            <p><strong>Firstname : </strong> {{ user.first_name }}</p>
-            <p><strong>Lastname : </strong> {{ user.last_name }}</p>
-            <p><strong>Country : </strong> {{ user.profile.country }} </p>
-            <p><strong>Age : </strong> {{ user.profile.get_age }} </p>
-          </div>
+        <div class="row">
+            <div class="col-4">
+                 <img src="{{ user.profile.avatar }}" style="height: 150px; width: 150px; border-radius: 5px;" alt="{{ user.username }}_avatar">
+            </div>
+            <div class="col-8">
+                <h5>Profile of {{ user.username }}</h5>
+                <hr />
+                <p><strong>Firstname : </strong> {{ user.first_name }}</p>
+                <p><strong>Lastname : </strong> {{ user.last_name }}</p>
+                <p>
+                    <strong>Country : </strong> {{ user.profile.country }}
+                    <img src="{{ user.profile.country_flag }}" style="height: 15px; width: 22px; border-radius: 3px" alt="{{ user.profile.country }}_flag">
+                </p>
+                <p><strong>Age : </strong> {{ user.profile.get_age }} </p>
+            </div>
         </div>
         <!-- <img src="{{ user.profile.avatar }}" style="width: 100px; height: 100px; border-radius: 5px;" alt="{{ user.username }}_avatar"/>-->
     {% endif %}

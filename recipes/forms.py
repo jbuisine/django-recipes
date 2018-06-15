@@ -2,6 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 import datetime
+import requests
 
 from recipes.models import Profile
 
@@ -43,18 +44,17 @@ class CustomUserCreationForm(forms.Form):
                                 min_length=8,
                                 required=True)
 
-    # TODO : improve way of manage date
     date_of_birth = forms.DateField(label='Date of birth',
                                     required=True,
-                                    widget=forms.SelectDateWidget(#empty_label=("Choose Year", "Choose Month", "Choose Day"),
-                                                                  years=range(1900, datetime.date.today().year + 1),
-                                                                  ),
-                                    #input_formats=['%m/%d/%y']
-                                    )
+                                    widget=forms.SelectDateWidget(years=range(1900, datetime.date.today().year + 1)))
 
-    country = forms.CharField(label='Your country',
-                              widget=forms.TextInput(attrs={'placeholder': ''}),
-                              required=True)
+    # getting country from resp api
+    country_api_url = 'https://restcountries.eu/rest/v2/all'
+    country_data = requests.get(url=country_api_url).json()
+
+    country = forms.ChoiceField(label='Your country',
+                                choices=[(idx, val['name']) for idx, val in enumerate(country_data)],
+                                required=True)
 
     avatar_link = forms.CharField(label='Enter your avatar link',
                                   widget=forms.TextInput(attrs={'placeholder': 'https://myavatar.com/233'}))
@@ -99,12 +99,16 @@ class CustomUserCreationForm(forms.Form):
                                         email=self.cleaned_data['email'],
                                         password=self.cleaned_data['password1'])
 
+        # retrieve country index from form
+        country_index = int(self.cleaned_data['country'])
+
         # create specific Profile for this user
         user_profile = Profile()
         user_profile.user = user
         user_profile.avatar = self.cleaned_data['avatar_link']
         user_profile.date_of_birth = self.cleaned_data['date_of_birth']
-        user_profile.country = self.cleaned_data['country']
+        user_profile.country = self.country_data[country_index]['name']
+        user_profile.country_flag = self.country_data[country_index]['flag']
         user_profile.save()
 
         return user

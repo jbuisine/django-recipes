@@ -12,7 +12,8 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     avatar = models.TextField()
     date_of_birth = models.DateField()
-    country = models.TextField(max_length=255)
+    country = models.CharField(max_length=255)
+    country_flag = models.TextField(default='')
 
     def __str__(self):
         return "Profile of %s " % self.user.username
@@ -21,6 +22,7 @@ class Profile(models.Model):
         today = date.today()
         return today.year - self.date_of_birth.year - \
                ((today.month, today.day) < (self.date_of_birth.month, self.date_of_birth.day))
+
 
 class IngredientFamily(models.Model):
     """
