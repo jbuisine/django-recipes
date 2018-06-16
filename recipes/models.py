@@ -38,10 +38,11 @@ class IngredientUnitMeasure(models.Model):
     """
        Specify a unit measure
     """
-    label = models.CharField(max_length=50)
+    name = models.CharField(max_length=200)
+    label = models.CharField(max_length=50, blank=True)
 
     def __str__(self):
-        return self.label
+        return "%s (%s)" % (self.name, self.label)
 
 
 class Ingredient(models.Model):
@@ -92,11 +93,11 @@ class Recipe(models.Model):
     # description fields
     title = models.CharField(max_length=255)
     description = models.TextField()
-    realization_cost = models.FloatField
+    realization_cost = models.FloatField()
 
     # time fields
-    preparation_time = models.DurationField
-    cooking_time = models.DurationField
+    preparation_time = models.DurationField()
+    cooking_time = models.DurationField()
     relaxation_time = models.DurationField(default=0)
 
     # mark fields

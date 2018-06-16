@@ -4,7 +4,16 @@ from django.contrib.auth.models import User
 import datetime
 import requests
 
-from recipes.models import Profile
+from recipes.models import Profile, Recipe
+
+
+class RecipeForm(forms.ModelForm):
+    """
+        Recipe form utilization
+    """
+    class Meta:
+        model = Recipe
+        fields = ['title', 'description', 'realization_cost']
 
 
 class CustomUserCreationForm(forms.Form):
