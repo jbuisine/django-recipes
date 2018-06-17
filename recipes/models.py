@@ -51,10 +51,22 @@ class Ingredient(models.Model):
     """
     name = models.CharField(max_length=255)
     family = models.ForeignKey(IngredientFamily, on_delete=models.CASCADE)
-    unit_measure = models.ForeignKey(IngredientUnitMeasure, on_delete=models.CASCADE)
+    unit_measure = models.ManyToManyField(IngredientUnitMeasure)
 
     def __str__(self):
         return self.name
+
+
+class IngredientPhoto(models.Model):
+    """
+        Photo of an ingredient
+    """
+    path = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    ingredient = models.OneToOneField(Ingredient, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "Photo of %s : %s" % (self.ingredient, self.path)
 
 
 ###############
@@ -68,9 +80,10 @@ class RecipeDifficulty(models.Model):
             - or a score ?
     """
     label = models.CharField(max_length=255)
+    level = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.label
+        return "Level %s : %s" % (self.level, self.label)
 
 
 class RecipeType(models.Model):
@@ -136,16 +149,19 @@ class RecipeIngredient(models.Model):
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     quantity = models.FloatField(default=0)
 
+    # In form get specific unit from ingredient units
+    unit_measure = models.ForeignKey(IngredientUnitMeasure, on_delete=models.CASCADE)
+
     def __str__(self):
         return "Recipe %s includes %s %s of %s " % (self.recipe, self.quantity,
-                                                    self.ingredient.unit_measure,  self.ingredient)
+                                                    self.unit_measure,  self.ingredient)
 
 
 class RecipeStep(models.Model):
     """
         Specify a step of how to do recipe
     """
-    level = models.IntegerField
+    level = models.IntegerField()
     description = models.TextField()
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
 
@@ -153,9 +169,9 @@ class RecipeStep(models.Model):
         return "Step %s  : %s" % (self.level, self.description)
 
 
-class MediaType(models.Model):
+class RecipeMediaType(models.Model):
     """
-        Kind of media
+        Kind of media for recipe
     """
     label = models.CharField(max_length=255)
 
@@ -170,7 +186,7 @@ class RecipeMedia(models.Model):
     path = models.TextField
     created_at = models.DateTimeField(auto_now_add=True)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-    media_type = models.ForeignKey(MediaType, on_delete=models.CASCADE)
+    media_type = models.ForeignKey(RecipeMediaType, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.path

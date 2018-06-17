@@ -10,11 +10,9 @@
 
 
         <ul class="navbar-nav mr-auto">
-
-            <li class="nav-item">
-                <!--<a class="nav-link" href="{% url 'recipes:home' %}">Home</a>-->
-            </li>
-
+            {% if user.is_authenticated %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'recipes:add_recipe' %}">Add Recipe</a></li>
+            {% endif %}
         </ul>
 
         <form class="form-inline my-2 my-lg-0 px-5">

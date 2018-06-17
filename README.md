@@ -38,14 +38,14 @@ Recipe objects structure is available [here](https://github.com/jbuisine/django-
     - level (step 1, 2, 3...)
     - *recipe
 
+- Media_media_type
+    - label
+
 - Recipe_media
     - path
     - date
     - *recipe
     - *media_type
-
-- Media_type
-    - label
 
 - Ingredient_family [families](http://www.cuisine-libre.fr/familles-alimentaires)
     - name
@@ -58,17 +58,23 @@ Recipe objects structure is available [here](https://github.com/jbuisine/django-
     - *ingredient_family
     - *ingredient_unit_measure
 
+- Ingredient_photo
+    - path
+    - created_at
+    - *ingredient
+
 - Recipe_ingredient
     - quantity
     - *recipe
     - *ingredient
+    - *unit_measure (based on unit measure of Ingredient)
 
 - Comment
     - text
     - date
     - *user
     - *recipe
-    - *comment (if answer)
+    - *comment (if answer, not working for the moment)
 
 - Notification
     - date
@@ -99,11 +105,11 @@ pip install django django-bootstrap4 django-jquery
 ## Configuration
 
 ```
-python project/manage.py makemigrations core
+python project/manage.py makemigrations
 ```
 
 ```
-python project/manage.py migrate core && python project/manage.py migrate
+python project/manage.py migrate
 ```
 
 And then, run the server :

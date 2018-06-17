@@ -13,7 +13,7 @@ class RecipeForm(forms.ModelForm):
     """
     class Meta:
         model = Recipe
-        fields = ['title', 'description', 'realization_cost']
+        exclude = ['user', 'members', 'number_of_marks', 'mean_of_marks']
 
 
 class CustomUserCreationForm(forms.Form):
