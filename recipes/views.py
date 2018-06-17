@@ -42,7 +42,9 @@ def add_recipe(request):
         form = RecipeForm(request.POST)
 
         if form.is_valid():
-            form.save()
+            obj = form.save(commit=False)
+            obj.user = request.user
+            obj.save()
 
             # TODO : use of specific redirect
             return HttpResponseRedirect('/')
