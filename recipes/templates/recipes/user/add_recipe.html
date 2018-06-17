@@ -1,0 +1,22 @@
+{% extends 'recipes/base.html' %}
+
+{% load bootstrap4 %}
+
+{% block title %}
+    Add a new recipe
+{% endblock %}
+
+{% block content %}
+
+    <h2>Sign up</h2>
+    <form method="post">
+        {% csrf_token %}
+
+        {% bootstrap_form form %}
+
+        {% buttons %}
+            <button type="submit" class="btn btn-primary">Submit</button>
+        {% endbuttons %}
+    </form>
+
+{% endblock %}

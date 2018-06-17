@@ -1,0 +1,32 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+    <a class="navbar-brand" href="{% url 'recipes:home' %}">Home</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+
+        <ul class="navbar-nav mr-auto">
+            {% if user.is_authenticated %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'recipes:add_recipe' %}">Add Recipe</a></li>
+            {% endif %}
+        </ul>
+
+        <form class="form-inline my-2 my-lg-0 px-5">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search your recipes" aria-label="Search">
+          <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+        </form>
+        <ul class="navbar-nav mr-right">
+            {% if user.is_authenticated %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'recipes:account' %}">My account</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'recipes:logout' %}">Logout</a></li>
+            {% else %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'recipes:login' %}">Login</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'recipes:signup' %}">Sign up</a></li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>

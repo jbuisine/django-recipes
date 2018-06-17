@@ -2,13 +2,28 @@ from django.db import models
 
 # import of User auth django model
 from django.contrib.auth.models import User
+from datetime import date
 
 
-# TODO : create our User model class ?
+class Profile(models.Model):
+    """
+        Custom attributes for user model
+    """
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    avatar = models.TextField()
+    date_of_birth = models.DateField()
+    country = models.CharField(max_length=255)
+    country_flag = models.TextField(default='')
 
-###################
-# Ingredient part #
-###################
+    def __str__(self):
+        return "Profile of %s " % self.user.username
+
+    def get_age(self):
+        today = date.today()
+        return today.year - self.date_of_birth.year - \
+               ((today.month, today.day) < (self.date_of_birth.month, self.date_of_birth.day))
+
+
 class IngredientFamily(models.Model):
     """
        Specify a family name of Ingredient
@@ -23,10 +38,11 @@ class IngredientUnitMeasure(models.Model):
     """
        Specify a unit measure
     """
-    label = models.CharField(max_length=50)
+    name = models.CharField(max_length=200)
+    label = models.CharField(max_length=50, blank=True)
 
     def __str__(self):
-        return self.label
+        return "%s (%s)" % (self.name, self.label)
 
 
 class Ingredient(models.Model):
@@ -35,10 +51,22 @@ class Ingredient(models.Model):
     """
     name = models.CharField(max_length=255)
     family = models.ForeignKey(IngredientFamily, on_delete=models.CASCADE)
-    unit_measure = models.ForeignKey(IngredientUnitMeasure, on_delete=models.CASCADE)
+    unit_measure = models.ManyToManyField(IngredientUnitMeasure)
 
     def __str__(self):
         return self.name
+
+
+class IngredientPhoto(models.Model):
+    """
+        Photo of an ingredient
+    """
+    path = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    ingredient = models.OneToOneField(Ingredient, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "Photo of %s : %s" % (self.ingredient, self.path)
 
 
 ###############
@@ -52,9 +80,10 @@ class RecipeDifficulty(models.Model):
             - or a score ?
     """
     label = models.CharField(max_length=255)
+    level = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.label
+        return "Level %s : %s" % (self.level, self.label)
 
 
 class RecipeType(models.Model):
@@ -77,11 +106,11 @@ class Recipe(models.Model):
     # description fields
     title = models.CharField(max_length=255)
     description = models.TextField()
-    realization_cost = models.FloatField
+    realization_cost = models.FloatField()
 
     # time fields
-    preparation_time = models.DurationField
-    cooking_time = models.DurationField
+    preparation_time = models.DurationField()
+    cooking_time = models.DurationField()
     relaxation_time = models.DurationField(default=0)
 
     # mark fields
@@ -120,16 +149,19 @@ class RecipeIngredient(models.Model):
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     quantity = models.FloatField(default=0)
 
+    # In form get specific unit from ingredient units
+    unit_measure = models.ForeignKey(IngredientUnitMeasure, on_delete=models.CASCADE)
+
     def __str__(self):
         return "Recipe %s includes %s %s of %s " % (self.recipe, self.quantity,
-                                                    self.ingredient.unit_measure,  self.ingredient)
+                                                    self.unit_measure,  self.ingredient)
 
 
 class RecipeStep(models.Model):
     """
         Specify a step of how to do recipe
     """
-    level = models.IntegerField
+    level = models.IntegerField()
     description = models.TextField()
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
 
@@ -137,9 +169,9 @@ class RecipeStep(models.Model):
         return "Step %s  : %s" % (self.level, self.description)
 
 
-class MediaType(models.Model):
+class RecipeMediaType(models.Model):
     """
-        Kind of media
+        Kind of media for recipe
     """
     label = models.CharField(max_length=255)
 
@@ -154,7 +186,7 @@ class RecipeMedia(models.Model):
     path = models.TextField
     created_at = models.DateTimeField(auto_now_add=True)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-    media_type = models.ForeignKey(MediaType, on_delete=models.CASCADE)
+    media_type = models.ForeignKey(RecipeMediaType, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.path
