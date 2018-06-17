@@ -9,7 +9,7 @@
     <h3>Recipes list</h3>
     {% for recipe in recipes %}
 
-        <h5>recipe.name</h5>
-        <p>recipe.description</p>
+        <h5>{{ recipe.title}}</h5>
+        <p>{{ recipe.description }}</p>
     {% endfor %}
 {% endblock %}
