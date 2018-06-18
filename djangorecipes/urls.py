@@ -20,5 +20,5 @@ from django.urls import path, include, re_path
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('recipes.urls', namespace='recipes')),
-    re_path(r'^recipe/(?P<id>\d+)/$', views.recipe_detail, name='recipe-detail'),
+    re_path(r'^recipe/(?P<recipe_id>\d+)/$', views.recipe_detail, name='recipe-detail'),
 ]

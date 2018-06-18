@@ -15,19 +15,29 @@ class RecipeForm(forms.ModelForm):
         model = Recipe
         exclude = ['user', 'members', 'number_of_marks', 'mean_of_marks']
 
+        # define widgets of time field
+        widgets = {
+            'preparation_time': forms.TimeInput(format='%H:%M'),
+            'cooking_time': forms.TimeInput(format='%H:%M'),
+            'relaxation_time': forms.TimeInput(format='%H:%M'),
+        }
+
 
 class CommentForm(forms.ModelForm):
 
-    content = forms.CharField(label='Enter your comment',widget=forms.Textarea(attrs={'placeholder': 'Comment'}))
+    content = forms.CharField(label='Enter your comment',
+                              widget=forms.Textarea(attrs={'placeholder': 'Comment', 'rows': 2}))
 
     class Meta:
         model = Comment
         fields = ['content']
 
+
 class MediaForm(forms.ModelForm):
     class Meta:
         model = RecipeMedia
-        exclude=['recipe']
+        exclude = ['recipe']
+
 
 class MarkForm(forms.ModelForm):
     class Meta:

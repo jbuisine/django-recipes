@@ -12,8 +12,8 @@
     <form method="post">
         {% csrf_token %}
 
-        {% bootstrap_form form %}
-        {% bootstrap_form mediaForm %}
+        {% bootstrap_form recipe_form %}
+        {% bootstrap_form media_form %}
         {% buttons %}
             <button type="submit" class="btn btn-primary">Submit</button>
         {% endbuttons %}

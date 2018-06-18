@@ -5,20 +5,71 @@
 {% endblock %}
 
 {% block content %}
-  {{ recipe.title }}
-      <div>
-         {% if user.is_authenticated %}
-            <form method="post">
-            {% csrf_token %}
 
-            {% bootstrap_form form %}
-            {% buttons %}
-                <button type="submit" class="btn btn-primary">Submit</button>
-            {% endbuttons %}
+    <div class="row">
+        <div class="col-4">
+            <img src="{{ recipe.medias.all.first.path }}" style="height: 150px; width: 150px; border-radius: 5px;"
+                 alt="{{ recipe.title }}_picture">
+            <p>
+                <strong>Kind : </strong>{{ recipe.recipe_type }}
+            </p>
+            <p>
+                <strong>Difficulty : </strong>{{ recipe.recipe_difficulty }}
+            </p>
+            <p>
+                <strong>Published by : </strong>{{ recipe.user.username }}
+            </p>
+        </div>
+        <div class="col-8">
+            <h5> {{ recipe.title }}</h5>
+            <hr/>
+            <p><strong>Description : </strong> {{ recipe.description }}</p>
+            <p><strong>Marks mean : </strong> {{ recipe.mean_of_marks }} (number of votes : {{ recipe.number_of_marks }})
+            </p>
+            <p><strong>Preparation time : </strong> {{ recipe.preparation_time }} </p>
+            <p><strong>Preparation time : </strong> {{ recipe.preparation_time }} </p>
+        </div>
+    </div>
+
+    <hr/>
+    <div class="ml-5">
+        {% if user.is_authenticated %}
+            <form method="post">
+                {% csrf_token %}
+
+                {% bootstrap_form comment_form %}
+                {% buttons %}
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                {% endbuttons %}
             </form>
         {% endif %}
-        {% for feed in feedback %}
-             <pre>{{ feed.content }}</pre>
-        {% endfor %}
+
+
+        <ul class="list-unstyled">
+            {% for feed in feedback %}
+
+                <hr/>
+                <li class="media">
+                    <img class="mr-3" src="{{ feed.user.profile.avatar }}" alt="avatar_{{ feed.user.username }}"
+                         style="width: 75px; height: 75px;">
+
+
+                    <div class="media-body">
+                        <h5 class="mt-0 mb-1">
+                            <strong>
+                                {{ feed.user.username }}
+                                 <img src="{{ feed.user.profile.country_flag }}"
+                         style="height: 18px; width: 22px; border-radius: 3px" alt="{{ user.profile.country }}_flag">
+
+                            </strong>
+                        </h5>
+                        <div>
+                            <i>published at {{ feed.created_at }}</i>
+                        </div>
+                        {{ feed.content }}
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
     </div>
 {% endblock %}

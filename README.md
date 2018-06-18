@@ -17,11 +17,15 @@ Recipe objects structure is available [here](https://github.com/jbuisine/django-
 - Recipe
     - title
     - realization_cost
+    - published
     - preparation_time
     - cooking_time
     - relaxation_time (if necessary)
     - mean_of_marks (stock mean of marks to avoid computation each time)
     - number_of_marks (to easily compute new mean with new mark)
+    - created_at
+    - updated_at
+    - published_at
     - *recipe_type
     - *difficulty
     - *user

@@ -107,6 +107,7 @@ class Recipe(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     realization_cost = models.FloatField()
+    published = models.BooleanField(default=False)
 
     # time fields
     preparation_time = models.DurationField()
@@ -120,10 +121,12 @@ class Recipe(models.Model):
     # date information fields
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)  # check to update when step or description are added
+    published_at = models.DateTimeField(auto_now=True)
 
     # foreign key fields
     recipe_difficulty = models.ForeignKey(RecipeDifficulty, on_delete=models.CASCADE)
     recipe_type = models.ForeignKey(RecipeType, on_delete=models.CASCADE)
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     # many to many fields
@@ -183,9 +186,9 @@ class RecipeMedia(models.Model):
     """
         Media of recipe
     """
-    path = models.TextField
+    path = models.TextField(default="")
     created_at = models.DateTimeField(auto_now_add=True)
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='medias')
     media_type = models.ForeignKey(RecipeMediaType, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -196,7 +199,7 @@ class Comment(models.Model):
     """
         Comment of recipe
     """
-    content = models.TextField
+    content = models.TextField(default="")
     created_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
@@ -221,9 +224,9 @@ class Notification(models.Model):
         Notification class for comment or mark of recipe
         User will be notify each time anyone else comment or mark his recipe
     """
-    available = models.BooleanField
+    available = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    link = models.TextField
+    link = models.TextField(default="")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE, default=None)
     mark = models.ForeignKey(Mark, on_delete=models.CASCADE, default=None)
