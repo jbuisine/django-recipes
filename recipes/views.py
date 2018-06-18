@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from recipes.forms import CustomUserCreationForm, RecipeForm, CommentForm
 from recipes.models import Recipe, Comment
 
@@ -32,7 +32,12 @@ def account(request):
 
 
 def show_recipes(request):
-    recipes = Recipe.objects.all()
+
+    recipes_list = Recipe.objects.all()
+    paginator = Paginator(recipes_list, 10)
+    page = request.GET.get('page')
+    recipes = paginator.get_page(page)
+
     return render(request, 'recipes/show_recipes.html', {'recipes': recipes})
 
 def recipe_detail(request,id):
