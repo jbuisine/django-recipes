@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 import datetime
 import requests
 
-from recipes.models import Profile, Recipe, Comment, Mark
+from recipes.models import Profile, Recipe, Comment, Mark, RecipeMedia
 
 
 class RecipeForm(forms.ModelForm):
@@ -24,6 +24,10 @@ class CommentForm(forms.ModelForm):
         model = Comment
         fields = ['content']
 
+class MediaForm(forms.ModelForm):
+    class Meta:
+        model = RecipeMedia
+        exclude=['recipe']
 
 class MarkForm(forms.ModelForm):
     class Meta:

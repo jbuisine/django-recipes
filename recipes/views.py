@@ -2,7 +2,7 @@ from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from recipes.forms import CustomUserCreationForm, RecipeForm, CommentForm
+from recipes.forms import CustomUserCreationForm, RecipeForm, CommentForm, MediaForm
 from recipes.models import Recipe, Comment
 
 
@@ -65,6 +65,7 @@ def recipe_detail(request,id):
 @login_required()
 def add_recipe(request):
     if request.method == 'POST':
+        mediaForm = MediaForm(request.POST)
         form = RecipeForm(request.POST)
 
         if form.is_valid():
@@ -76,5 +77,6 @@ def add_recipe(request):
             return HttpResponseRedirect('/')
     else:
         form = RecipeForm()
+        mediaForm = MediaForm()
 
-    return render(request, 'recipes/user/add_recipe.html', {'form': form})
+    return render(request, 'recipes/user/add_recipe.html', {'form': form, 'mediaForm': mediaForm})
