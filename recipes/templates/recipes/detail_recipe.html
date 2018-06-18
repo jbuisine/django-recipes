@@ -1,0 +1,25 @@
+{% extends 'recipes/base.html' %}
+{% load bootstrap4 %}
+{% block title %}
+    Recipes
+{% endblock %}
+
+{% block content %}
+  {{ recipe.title }}
+      <div>
+         {% if user.is_authenticated %}
+            <form method="post">
+            {% csrf_token %}
+
+            {% bootstrap_form form %}
+
+            {% buttons %}
+                <button type="submit" class="btn btn-primary">Submit</button>
+            {% endbuttons %}
+            </form>
+        {% endif %}
+        {% for feed in feedback %}
+             <pre>{{ feed.content }}</pre>
+        {% endfor %}
+    </div>
+{% endblock %}

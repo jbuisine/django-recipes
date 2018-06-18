@@ -201,9 +201,6 @@ class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return "%s, published by %s at %s" % (self.content, self.user.username, self.created_at)
-
 
 class Mark(models.Model):
     """

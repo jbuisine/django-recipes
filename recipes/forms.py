@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 import datetime
 import requests
 
-from recipes.models import Profile, Recipe
+from recipes.models import Profile, Recipe, Comment, Mark
 
 
 class RecipeForm(forms.ModelForm):
@@ -14,6 +14,21 @@ class RecipeForm(forms.ModelForm):
     class Meta:
         model = Recipe
         exclude = ['user', 'members', 'number_of_marks', 'mean_of_marks']
+
+
+class CommentForm(forms.ModelForm):
+
+    content = forms.CharField(label='Enter your comment',widget=forms.Textarea(attrs={'placeholder': 'Comment'}))
+
+    class Meta:
+        model = Comment
+        fields = ['content']
+
+
+class MarkForm(forms.ModelForm):
+    class Meta:
+        model = Mark
+        exclude = ['user', 'recipe']
 
 
 class CustomUserCreationForm(forms.Form):
