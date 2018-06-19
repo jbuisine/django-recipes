@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 import datetime
 import requests
 
-from recipes.models import Profile, Recipe, Comment, Mark, RecipeMedia, ImageRecipe, VideoRecipe
+from recipes.models import Profile, Recipe, RecipeComment, RecipeMark, RecipeImage, RecipeVideo
 
 
 class RecipeForm(forms.ModelForm):
@@ -29,7 +29,7 @@ class CommentForm(forms.ModelForm):
                               widget=forms.Textarea(attrs={'placeholder': 'Comment', 'rows': 2}))
 
     class Meta:
-        model = Comment
+        model = RecipeComment
         fields = ['content']
 
 
@@ -37,26 +37,30 @@ class MediaForm(forms.ModelForm):
     image = forms.ImageField()
 
     class Meta:
-        model = RecipeMedia
-        exclude = ['recipe','path']
+        model = RecipeImage()
+        exclude = ['recipe', 'path']
 
     def __init__(self, *args, **kwargs):
         self.image = kwargs.pop('image', None)
         super(MediaForm, self).__init__(*args, **kwargs)
 
+
 class ImageForm(forms.Form):
     image = forms.ImageField()
+
     class Meta:
-        model = ImageRecipe
+        model = RecipeImage
         fields=('image',)
+
 
 class VideoForm(forms.Form):
     class Meta:
-        model = VideoRecipe
+        model = RecipeVideo
+
 
 class MarkForm(forms.ModelForm):
     class Meta:
-        model = Mark
+        model = RecipeMark
         exclude = ['user', 'recipe']
 
 

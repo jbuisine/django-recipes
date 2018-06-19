@@ -73,7 +73,7 @@ Recipe objects structure is available [here](https://github.com/jbuisine/django-
     - *ingredient
     - *unit_measure (based on unit measure of Ingredient)
 
-- Comment
+- RecipeComment
     - text
     - date
     - *user
@@ -90,7 +90,7 @@ Recipe objects structure is available [here](https://github.com/jbuisine/django-
     - *mark (null if comment)
 
 
-- Mark
+- RecipeMark
     - mark_score
     - *user
     - *recipe

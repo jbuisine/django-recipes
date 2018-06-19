@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from recipes.models import Ingredient, IngredientUnitMeasure, \
                            IngredientFamily, IngredientPhoto, \
-                           RecipeType, RecipeDifficulty, RecipeMediaType
+                           RecipeType, RecipeDifficulty
 
 
 @admin.register(IngredientUnitMeasure)
@@ -14,12 +14,6 @@ class IngredientUnitMeasureAdmin(admin.ModelAdmin):
 @admin.register(IngredientFamily)
 class IngredientFamilyAdmin(admin.ModelAdmin):
     list_display = ['name']
-    actions_on_bottom = True
-
-
-@admin.register(RecipeMediaType)
-class MediaTypeAdmin(admin.ModelAdmin):
-    list_display = ['label']
     actions_on_bottom = True
 
 

@@ -46,30 +46,34 @@
 
 
         <ul class="list-unstyled">
-            {% for feed in feedback %}
-
+            {% for comment in comments %}
                 <hr/>
                 <li class="media">
-                    <img class="mr-3" src="{{ feed.user.profile.avatar }}" alt="avatar_{{ feed.user.username }}"
+                    <img class="mr-3" src="{{ comment.user.profile.avatar }}" alt="avatar_{{ comment.user.username }}"
                          style="width: 75px; height: 75px;">
 
 
                     <div class="media-body">
                         <h5 class="mt-0 mb-1">
                             <strong>
-                                {{ feed.user.username }}
-                                 <img src="{{ feed.user.profile.country_flag }}"
-                         style="height: 18px; width: 22px; border-radius: 3px" alt="{{ user.profile.country }}_flag">
+                                <a href="{% url 'recipes:user-detail' user_username=comment.user.username %}"> {{ comment.user.username }}</a>
+                                <img src="{{ comment.user.profile.country_flag }}"
+                                     style="height: 18px; width: 22px; border-radius: 3px"
+                                     alt="{{ user.profile.country }}_flag">
 
                             </strong>
                         </h5>
                         <div>
-                            <i>published at {{ feed.created_at }}</i>
+                            <i>published at {{ comment.created_at }}</i>
                         </div>
-                        {{ feed.content }}
+                        {{ comment.content }}
                     </div>
                 </li>
             {% endfor %}
         </ul>
+
+        <!-- Include of pagination for comments -->
+        {% include 'recipes/partials/recipes/_pagination_objects.html' with objects=comments %}
+
     </div>
 {% endblock %}

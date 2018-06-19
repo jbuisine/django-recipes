@@ -1,0 +1,67 @@
+{% extends 'recipes/base.html' %}
+
+{% load staticfiles %}
+{% load bootstrap4 %}
+
+{% block stylesheets %}
+    {% bootstrap_css %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/dropzone.min.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/basic.min.css" %}">
+{% endblock %}
+
+{% block title %}
+    {{ recipe.title }}
+{% endblock %}
+
+{% block content %}
+
+    <h2>Manage recipe : {{ recipe.title }}</h2>
+
+    <hr />
+
+    <!-- Part 1 : Management of ingredients recipe-->
+    <div>
+
+        <h4>Manage ingredients</h4>
+
+        <h6>Your ingredients list</h6>
+
+    </div>
+
+    <hr/>
+
+    <!-- Part 2 : Management of medias recipe-->
+    <div>
+
+        <h4>Manage medias of recipe</h4>
+
+        <form action="{% url "recipes:recipe-media-upload" recipe.id %}" method="post" enctype="multipart/form-data"
+              class="dropzone">
+            {% csrf_token %}
+            <div class="fallback">
+                {{ image_form }}
+            </div>
+        </form>
+        {% buttons %}
+            <button type="submit" class="btn btn-primary">Submit</button>
+        {% endbuttons %}
+    </div>
+
+    <hr/>
+
+    <!-- Part 3 : Management of steps recipe-->
+    <div>
+
+        <h4>Manage steps</h4>
+
+        <h6>Your different steps</h6>
+
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+
+    <script type="text/javascript" src="{% static "js/dropzone.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/recipe-image-upload.js" %}"></script>
+
+{% endblock %}
