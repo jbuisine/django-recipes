@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 import datetime
 import requests
 
-from recipes.models import Profile, Recipe
+from recipes.models import Profile, Recipe, RecipeComment, RecipeMark, RecipeImage, RecipeVideo
 
 
 class RecipeForm(forms.ModelForm):
@@ -14,6 +14,54 @@ class RecipeForm(forms.ModelForm):
     class Meta:
         model = Recipe
         exclude = ['user', 'members', 'number_of_marks', 'mean_of_marks']
+
+        # define widgets of time field
+        widgets = {
+            'preparation_time': forms.TimeInput(format='%H:%M'),
+            'cooking_time': forms.TimeInput(format='%H:%M'),
+            'relaxation_time': forms.TimeInput(format='%H:%M'),
+        }
+
+
+class CommentForm(forms.ModelForm):
+
+    content = forms.CharField(label='Enter your comment',
+                              widget=forms.Textarea(attrs={'placeholder': 'Comment', 'rows': 2}))
+
+    class Meta:
+        model = RecipeComment
+        fields = ['content']
+
+
+class MediaForm(forms.ModelForm):
+    image = forms.ImageField()
+
+    class Meta:
+        model = RecipeImage()
+        exclude = ['recipe', 'path']
+
+    def __init__(self, *args, **kwargs):
+        self.image = kwargs.pop('image', None)
+        super(MediaForm, self).__init__(*args, **kwargs)
+
+
+class ImageForm(forms.Form):
+    image = forms.ImageField()
+
+    class Meta:
+        model = RecipeImage
+        fields=('image',)
+
+
+class VideoForm(forms.Form):
+    class Meta:
+        model = RecipeVideo
+
+
+class MarkForm(forms.ModelForm):
+    class Meta:
+        model = RecipeMark
+        exclude = ['user', 'recipe']
 
 
 class CustomUserCreationForm(forms.Form):

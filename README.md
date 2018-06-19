@@ -17,11 +17,15 @@ Recipe objects structure is available [here](https://github.com/jbuisine/django-
 - Recipe
     - title
     - realization_cost
+    - published
     - preparation_time
     - cooking_time
     - relaxation_time (if necessary)
     - mean_of_marks (stock mean of marks to avoid computation each time)
     - number_of_marks (to easily compute new mean with new mark)
+    - created_at
+    - updated_at
+    - published_at
     - *recipe_type
     - *difficulty
     - *user
@@ -38,14 +42,15 @@ Recipe objects structure is available [here](https://github.com/jbuisine/django-
     - level (step 1, 2, 3...)
     - *recipe
 
-- Media_media_type
-    - label
-
-- Recipe_media
-    - path
-    - date
+- Recipe_image
+    - image
+    - created_at
     - *recipe
-    - *media_type
+
+- Recipe_video
+    - path
+    - created_at
+    - *recipe
 
 - Ingredient_family [families](http://www.cuisine-libre.fr/familles-alimentaires)
     - name
@@ -69,7 +74,7 @@ Recipe objects structure is available [here](https://github.com/jbuisine/django-
     - *ingredient
     - *unit_measure (based on unit measure of Ingredient)
 
-- Comment
+- Recipe_comment
     - text
     - date
     - *user
@@ -86,7 +91,7 @@ Recipe objects structure is available [here](https://github.com/jbuisine/django-
     - *mark (null if comment)
 
 
-- Mark
+- Recipe_mark
     - mark_score
     - *user
     - *recipe

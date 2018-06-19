@@ -65,8 +65,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('comment', models.ForeignKey(default=None, on_delete=django.db.models.deletion.CASCADE, to='recipes.Comment')),
-                ('mark', models.ForeignKey(default=None, on_delete=django.db.models.deletion.CASCADE, to='recipes.Mark')),
+                ('comment', models.ForeignKey(default=None, on_delete=django.db.models.deletion.CASCADE, to='recipes.RecipeComment')),
+                ('mark', models.ForeignKey(default=None, on_delete=django.db.models.deletion.CASCADE, to='recipes.RecipeMark')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),

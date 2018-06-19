@@ -1,15 +1,14 @@
 {% extends 'recipes/base.html' %}
-
 {% block title %}
     Recipes
 {% endblock %}
 
 {% block content %}
 
-    <h3>Recipes list</h3>
-    {% for recipe in recipes %}
+    <!-- Include of recipes list element -->
+    {% include 'recipes/partials/recipes/_recipes_list.html' with list_title="Latest recipes" %}
 
-        <h5>{{ recipe.title}}</h5>
-        <p>{{ recipe.description }}</p>
-    {% endfor %}
+
+    {% include 'recipes/partials/recipes/_pagination_objects.html' with objects=recipes %}
+
 {% endblock %}
