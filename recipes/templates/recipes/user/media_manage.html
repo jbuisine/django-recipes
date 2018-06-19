@@ -1,0 +1,50 @@
+{% extends 'recipes/base.html' %}
+{% load  staticfiles %}
+{% load bootstrap4 %}
+{% block stylesheets %}
+    {% bootstrap_css %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/dropzone.min.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/basic.min.css" %}">
+{% endblock %}
+
+{% block title %}
+    Manage medias of a recipe
+{% endblock %}
+
+{% block content %}
+    <h2>Manage media</h2>
+    <form id="dz" method="post" enctype="multipart/form-data" class="dropzone">
+        {% csrf_token %}
+        <div class="fallback">
+            {{ form }}
+        </div>
+    </form>
+    {% buttons %}
+        <button type="submit" id="submit-all" class="btn btn-primary">Submit</button>
+    {% endbuttons %}
+{% endblock %}
+
+{% block javascripts %}
+
+    <script type="text/javascript" src="{% static "js/dropzone.js" %}"></script>
+    <script type="text/javascript">
+        Dropzone.autoDiscover = false;
+
+        var myDropzone = new Dropzone("form#dz", {
+            autoProcessQueue: false,
+            addRemoveLinks: true,
+            url: "{% url 'recipes:recipe-media-upload' recipe.id  %}",
+            init: function () {
+                var submitButton = document.querySelector("#submit-all");
+                myDropzone = this;
+
+                submitButton.addEventListener("click", function () {
+                    myDropzone.processQueue();
+                });
+
+                this.on("addedfile", function () {
+                });
+            }});
+
+    </script>
+{% endblock %}
