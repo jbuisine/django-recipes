@@ -2,25 +2,12 @@
 
 {% block content %}
 
-    {% if user.is_authenticated %}
+    {% include 'recipes/partials/users/_profile_view.html' with user=user %}
 
-        <div class="row">
-            <div class="col-4">
-                <img src="{{ user.profile.avatar }}" style="height: 150px; width: 150px; border-radius: 5px;" alt="{{ user.username }}_avatar">
-                <p>
-                    <strong>Country : </strong>{{ user.profile.country }}
-                    <img src="{{ user.profile.country_flag }}" style="height: 18px; width: 22px; border-radius: 3px" alt="{{ user.profile.country }}_flag">
-                </p>
-            </div>
-            <div class="col-8">
-                <h5>Profile of {{ user.username }}</h5>
-                <hr />
-                <p><strong>Firstname : </strong> {{ user.first_name }}</p>
-                <p><strong>Lastname : </strong> {{ user.last_name }}</p>
-                <p><strong>Age : </strong> {{ user.profile.get_age }} </p>
-            </div>
-        </div>
+    <hr />
+    <!-- Include of recipes list element -->
+    {% include 'recipes/partials/recipes/_recipes_list.html' with list_title="Your recipes" %}
 
-    {% endif %}
+    {% include 'recipes/partials/recipes/_pagination_objects.html' with objects=recipes %}
 
 {% endblock %}

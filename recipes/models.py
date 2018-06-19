@@ -2,7 +2,7 @@ from django.db import models
 
 # import of User auth django model
 from django.contrib.auth.models import User
-from datetime import date
+from datetime import date, datetime
 
 
 class Profile(models.Model):
@@ -130,7 +130,7 @@ class Recipe(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     # many to many fields
-    members = models.ManyToManyField(Ingredient, through='RecipeIngredient')
+    ingredients = models.ManyToManyField(Ingredient, through='RecipeIngredient')
 
     def __str__(self):
         return self.title
@@ -172,40 +172,26 @@ class RecipeStep(models.Model):
         return "Step %s  : %s" % (self.level, self.description)
 
 
-class RecipeMediaType(models.Model):
-    """
-        Kind of media for recipe
-    """
-    label = models.CharField(max_length=255)
-
-    def __str__(self):
-        return "%s" % self.label
-
-
-class RecipeMedia(models.Model):
-    """
-        Media of recipe
-    """
-    path = models.TextField(default="")
-    created_at = models.DateTimeField(auto_now_add=True)
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='medias')
-    media_type = models.ForeignKey(RecipeMediaType, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.path
-
-
-class VideoRecipe(models.Model):
+class RecipeVideo(models.Model):
     path = models.URLField()
     created_at = models.DateTimeField(auto_now_add=True)
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='video')
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='videos')
 
-class ImageRecipe(models.Model):
-    image = models.ImageField(upload_to='media/user_upload/')
+
+# useful function to set dynamic directory path to save file
+def user_directory_path(self, filename):
+    # file will be uploaded to MEDIA_ROOT/user_<id>/%Y/%m/%d/<filename>
+    current_date = datetime.today().strftime('%Y/%m/%d')
+    return 'static/media/user_{0}/{1}/{2}'.format(self.recipe.user.id, current_date, filename)
+
+
+class RecipeImage(models.Model):
+    image = models.ImageField(upload_to=user_directory_path)
     created_at = models.DateTimeField(auto_now_add=True)
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='image')
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='images')
 
-class Comment(models.Model):
+
+class RecipeComment(models.Model):
     """
         Comment of recipe
     """
@@ -215,7 +201,7 @@ class Comment(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
 
 
-class Mark(models.Model):
+class RecipeMark(models.Model):
     """
         Mark given by a user for a recipe
     """
@@ -238,8 +224,8 @@ class Notification(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     link = models.TextField(default="")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, default=None)
-    mark = models.ForeignKey(Mark, on_delete=models.CASCADE, default=None)
+    comment = models.ForeignKey(RecipeComment, on_delete=models.CASCADE, default=None)
+    mark = models.ForeignKey(RecipeMark, on_delete=models.CASCADE, default=None)
 
     def __str__(self):
 
