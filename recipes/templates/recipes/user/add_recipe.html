@@ -1,6 +1,11 @@
 {% extends 'recipes/base.html' %}
-
+ {% load  staticfiles %}
 {% load bootstrap4 %}
+{% block stylesheets %}
+        {% bootstrap_css %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/dropzone.min.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/basic.min.css" %}">
+{% endblock %}
 
 {% block title %}
     Add a new recipe
@@ -13,10 +18,33 @@
         {% csrf_token %}
 
         {% bootstrap_form recipe_form %}
-        <button type="button">Upload Medias</button>
         {% buttons %}
             <button type="submit" class="btn btn-primary">Submit</button>
         {% endbuttons %}
     </form>
+
+{% endblock %}
+
+{% block javascripts %}
+
+    <script type="text/javascript" src="{% static "js/dropzone.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/dropzone-amd-module.js" %}"></script>
+    <script>
+$(document).ready(function () {
+    Dropzone.autoDiscover = false;
+    $("#dZUpload").dropzone({
+        url: "/ulpoad",
+        addRemoveLinks: true,
+        success: function (file, response) {
+            var imgName = response;
+            file.previewElement.classList.add("dz-success");
+            console.log("Successfully uploaded :" + imgName);
+        },
+        error: function (file, response) {
+            file.previewElement.classList.add("dz-error");
+        }
+    });
+});
+    </script>
 
 {% endblock %}

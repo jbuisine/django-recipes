@@ -195,6 +195,16 @@ class RecipeMedia(models.Model):
         return self.path
 
 
+class VideoRecipe(models.Model):
+    path = models.URLField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='video')
+
+class ImageRecipe(models.Model):
+    image = models.ImageField(upload_to='media/user_upload/')
+    created_at = models.DateTimeField(auto_now_add=True)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='image')
+
 class Comment(models.Model):
     """
         Comment of recipe

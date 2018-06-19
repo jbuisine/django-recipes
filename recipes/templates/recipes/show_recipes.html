@@ -1,5 +1,4 @@
 {% extends 'recipes/base.html' %}
-
 {% block title %}
     Recipes
 {% endblock %}
@@ -31,7 +30,7 @@
                     </div>
                     <div class="d-flex justify-content-between align-items-center w-100">
                         {{ recipe.description }}
-                        <a href="{% url 'recipe-detail' recipe_id=recipe.id %}">Show</a>
+                        <a href="{% url 'recipes:detail' recipe_id=recipe.id %}">Show</a>
                     </div>
                     <span class="d-block">{{ recipe.realization_cost }}</span>
                 </div>

@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 import datetime
 import requests
 
-from recipes.models import Profile, Recipe, Comment, Mark, RecipeMedia
+from recipes.models import Profile, Recipe, Comment, Mark, RecipeMedia, ImageRecipe, VideoRecipe
 
 
 class RecipeForm(forms.ModelForm):
@@ -34,10 +34,25 @@ class CommentForm(forms.ModelForm):
 
 
 class MediaForm(forms.ModelForm):
+    image = forms.ImageField()
+
     class Meta:
         model = RecipeMedia
-        exclude = ['recipe']
+        exclude = ['recipe','path']
 
+    def __init__(self, *args, **kwargs):
+        self.image = kwargs.pop('image', None)
+        super(MediaForm, self).__init__(*args, **kwargs)
+
+class ImageForm(forms.Form):
+    image = forms.ImageField()
+    class Meta:
+        model = ImageRecipe
+        fields=('image',)
+
+class VideoForm(forms.Form):
+    class Meta:
+        model = VideoRecipe
 
 class MarkForm(forms.ModelForm):
     class Meta:

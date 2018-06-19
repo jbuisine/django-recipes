@@ -15,10 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from recipes import views
-from django.urls import path, include, re_path
+from django.urls import path, include
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('recipes.urls', namespace='recipes')),
-    re_path(r'^recipe/(?P<recipe_id>\d+)/$', views.recipe_detail, name='recipe-detail'),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
