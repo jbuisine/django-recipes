@@ -13,13 +13,15 @@
 
 {% block content %}
    <h2>Manage media</h2>
-    <form action="{% url "recipes:image-upload-ajax" recipe.id  %}" method="post" enctype="multipart/form-data" class="dropzone">
+    <form action="{% url "recipes:image-upload-ajax" recipe.id  %}" method="post" enctype="multipart/form-data" class="dropzone" >
         {% csrf_token %}
-    {% buttons %}
+    <div class="fallback">
+        {{ form }}
+    </div>
+    </form>
+ {% buttons %}
             <button type="submit" class="btn btn-primary">Submit</button>
     {% endbuttons %}
-    </form>
-
 {% endblock %}
 
 {% block javascripts %}
@@ -27,7 +29,7 @@
     <script type="text/javascript" src="{% static "js/dropzone.js" %}"></script>
         <script type="text/javascript">
             Dropzone.options.myDropzone = {
-
+                paramName: "file",
                 // Prevents Dropzone from uploading dropped files immediately
                 autoProcessQueue : false,
 

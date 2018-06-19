@@ -115,8 +115,8 @@ def uploadImage_ajax(request, recipe_id):
     except Recipe.DoesNotExist:
         raise Http404("Recipe does not exist")
 
-    #uploaded_file = request.FILES['file']
+    uploaded_file = request.FILES['file']
     print(request.FILES)
-    #ImageRecipe.objects.create(recipe=recipe_id,image=uploaded_file)
+    ImageRecipe.objects.create(recipe=recipe_id,image=uploaded_file)
 
-    return JsonResponse({'success':request});
+    return JsonResponse({'success':"yes"});
