@@ -2,7 +2,7 @@ from django.db import models
 
 # import of User auth django model
 from django.contrib.auth.models import User
-from datetime import date
+from datetime import date, datetime
 
 
 class Profile(models.Model):
@@ -178,8 +178,15 @@ class RecipeVideo(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='videos')
 
 
+# useful function to set dynamic directory path to save file
+def user_directory_path(self, filename):
+    # file will be uploaded to MEDIA_ROOT/user_<id>/%Y/%m/%d/<filename>
+    current_date = datetime.today().strftime('%Y/%m/%d')
+    return 'static/media/user_{0}/{1}/{2}'.format(self.recipe.user.id, current_date, filename)
+
+
 class RecipeImage(models.Model):
-    image = models.ImageField(upload_to='media/user_upload/')
+    image = models.ImageField(upload_to=user_directory_path)
     created_at = models.DateTimeField(auto_now_add=True)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='images')
 

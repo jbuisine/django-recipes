@@ -130,8 +130,9 @@ def recipe_manage(request, recipe_id):
     if request.method == 'POST':
         image_form = ImageForm(request.POST, request.FILES)
         video_form = VideoForm(request.POST)
+
         if image_form.is_valid():
-            new_file = RecipeImage(image=request.FILES['file'], recipe= recipe)
+            new_file = RecipeImage(image=request.FILES['file'], recipe=recipe)
             new_file.save()
     else:
         video_form = VideoForm()
