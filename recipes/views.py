@@ -9,8 +9,8 @@ from django.shortcuts import redirect
 
 
 # constants
-NUMBER_OF_RECIPES_PER_PAGE = 1
-NUMBER_OF_COMMENTS_PER_PAGE = 1
+NUMBER_OF_RECIPES_PER_PAGE = 6
+NUMBER_OF_COMMENTS_PER_PAGE = 6
 
 
 def signup(request):

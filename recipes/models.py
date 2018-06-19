@@ -130,7 +130,7 @@ class Recipe(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     # many to many fields
-    members = models.ManyToManyField(Ingredient, through='RecipeIngredient')
+    ingredients = models.ManyToManyField(Ingredient, through='RecipeIngredient')
 
     def __str__(self):
         return self.title

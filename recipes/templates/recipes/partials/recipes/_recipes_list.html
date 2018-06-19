@@ -5,8 +5,8 @@
         <div class="media text-muted pt-3">
 
 
-            {% if recipe.medias.all %}
-                <img src="{{ recipe.medias.all.first.path }}" alt="64x64" class="mr-2 rounded"
+            {% if recipe.images.all %}
+                <img src="/{{ recipe.images.all.first.image }}" alt="64x64" class="mr-2 rounded"
                      style="width: 64px; height: 64px;">
             {% else %}
                 <img data-src="holder.js/32x32?theme=thumb&amp;bg=00ffff&amp;fg=00ffff&amp;size=1" alt="32x32"
