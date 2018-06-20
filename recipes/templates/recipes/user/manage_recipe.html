@@ -14,7 +14,10 @@
 {% endblock %}
 
 {% block content %}
-
+    {%  for img in recipe.images.all %}
+        {{ img.recipe }}
+        {{ img.image }}
+    {% endfor %}
     <h2>Manage recipe : {{ recipe.title }}</h2>
 
     <hr/>
@@ -64,8 +67,10 @@
 
     <script type="text/javascript">
         Dropzone.autoDiscover = false;
-
         var myDropzone = new Dropzone("form#dz", {
+            maxFiles: 5,
+            paramName:'file',
+            uploadMultiple: true,
             autoProcessQueue: false,
             addRemoveLinks: true,
             url: "{% url "recipes:recipe-media-upload" recipe.id  %}",
@@ -73,12 +78,31 @@
             init: function () {
                 var submitButton = document.querySelector("#submit-all")
                 myDropzone = this;
+                {% for img in recipe.images.all %}
+                    var mockFile = { name: "{{ img.image }}", size: {{ img.image.size }} };
+                    myDropzone.options.addedfile.call(myDropzone, mockFile);
+                    myDropzone.options.thumbnail.call(myDropzone, mockFile, "{% url 'recipes:home' %}{{ img.image }}");
+                {% endfor %}
                 submitButton.addEventListener("click", function () {
                     myDropzone.processQueue();
                 });
+                this.on("success", function (file,serverResponse) {
 
-                this.on("addedfile", function () {
+                  //  var fileuploded = file.previewElement.querySelector("[data-dz-name]");
+                  //  fileuploded.innerHTML = serverResponse.newfilename;
+
                 });
+            },
+
+            removedfile: function(file){
+                var name = file.name;
+                $.ajax({
+                url: "{% url "recipes:recipe-media-delete" recipe.id  %}",
+                data: "img="+name,
+                dataType: 'json'
+                });
+                var _ref;
+                return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
             }
         });
 

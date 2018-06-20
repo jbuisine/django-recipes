@@ -6,7 +6,7 @@ from django.core.paginator import Paginator
 from recipes.forms import CustomUserCreationForm, RecipeForm, CommentForm, ImageForm, VideoForm
 from recipes.models import Recipe, RecipeComment, RecipeImage
 from django.shortcuts import redirect
-
+import os
 
 # constants
 NUMBER_OF_RECIPES_PER_PAGE = 6
@@ -148,8 +148,19 @@ def recipe_media_upload(request, recipe_id):
     except Recipe.DoesNotExist:
         raise Http404("Recipe does not exist")
 
-    uploaded_file = request.FILES['file']
-    print(request.FILES)
-    RecipeImage.objects.create(recipe=recipe_id, image=uploaded_file)
+    for key in request.FILES:
+        RecipeImage.objects.create(recipe=recipe_id, image=request.FILES[key])
 
-    return JsonResponse({'success': "yes"})
+    return JsonResponse({'newfilename': "" })
+
+@login_required()
+def recipe_media_delete(request,recipe_id):
+    try:
+        recipe_id = Recipe.objects.get(id=recipe_id)
+    except Recipe.DoesNotExist:
+        raise Http404("Recipe does not exist")
+
+    image = request.GET.get('img', None)
+    os.remove(image)
+    RecipeImage.objects.get(image=image,recipe=recipe_id).delete()
+    return JsonResponse({'success': "delete"})

@@ -1,9 +1,9 @@
 from django.db import models
-
+import os
+from django.core.files.storage import default_storage
 # import of User auth django model
 from django.contrib.auth.models import User
 from datetime import date, datetime
-
 
 class Profile(models.Model):
     """
@@ -184,12 +184,10 @@ def user_directory_path(self, filename):
     current_date = datetime.today().strftime('%Y/%m/%d')
     return 'static/media/user_{0}/{1}/{2}'.format(self.recipe.user.id, current_date, filename)
 
-
 class RecipeImage(models.Model):
     image = models.ImageField(upload_to=user_directory_path)
     created_at = models.DateTimeField(auto_now_add=True)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='images')
-
 
 class RecipeComment(models.Model):
     """
