@@ -1,11 +1,16 @@
 from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect, HttpResponseForbidden, Http404, JsonResponse
+from django.http import HttpResponseForbidden, Http404, JsonResponse
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from recipes.forms import CustomUserCreationForm, RecipeForm, CommentForm, ImageForm, VideoForm
-from recipes.models import Recipe, RecipeComment, RecipeImage
+
+from recipes.forms import CustomUserCreationForm, RecipeForm, CommentForm, ImageForm, VideoForm, RecipeIngredientForm
+
+from recipes.models import Recipe, RecipeComment, RecipeImage, Ingredient, IngredientFamily, IngredientUnitMeasure
+
 from django.shortcuts import redirect
+from django.core import serializers
+
 import os
 
 # constants
@@ -20,8 +25,7 @@ def signup(request):
         if form.is_valid():
             form.save()
 
-            # TODO : use of specific redirect
-            return HttpResponseRedirect('/')
+            return redirect('recipes:home')
     else:
         form = CustomUserCreationForm()
 
@@ -59,7 +63,7 @@ def user_detail(request, user_username):
     try:
         selected_user = User.objects.get(username=user_username)
     except Recipe.DoesNotExist:
-        raise Http404("Recipe does not exist")
+        raise Http404("User does not exist")
 
     return render(request, 'recipes/show_profile.html', {'selected_user': selected_user})
 
@@ -108,8 +112,7 @@ def add_recipe(request):
             recipe_obj.user = request.user
             recipe_obj.save()
 
-            # TODO : use of specific redirect
-            return redirect('recipes:media-manage', recipe_id=recipe_obj.id)
+            return redirect('recipes:recipe-manage', recipe_id=recipe_obj.id)
     else:
         recipe_form = RecipeForm()
 
@@ -117,7 +120,7 @@ def add_recipe(request):
 
 
 @login_required()
-def recipe_manage(request, recipe_id):
+def manage_recipe(request, recipe_id):
 
     try:
         recipe = Recipe.objects.get(id=recipe_id)
@@ -130,37 +133,91 @@ def recipe_manage(request, recipe_id):
     if request.method == 'POST':
         image_form = ImageForm(request.POST, request.FILES)
         video_form = VideoForm(request.POST)
+        ingredient_form = RecipeIngredientForm(request.POST)
 
         if image_form.is_valid():
             new_file = RecipeImage(image=request.FILES['file'], recipe=recipe)
             new_file.save()
+
+        if ingredient_form.is_valid():
+            recipe_ingredient_obj = ingredient_form.save(commit=False)
+            recipe_ingredient_obj.recipe = recipe
+            recipe_ingredient_obj.save()
+
     else:
         video_form = VideoForm()
         image_form = ImageForm()
+        ingredient_form = RecipeIngredientForm()
 
-    return render(request, 'recipes/user/manage_recipe.html', {'image_form': image_form, 'recipe': recipe})
+    return render(request, 'recipes/user/manage_recipe.html',
+                  {'image_form': image_form,
+                   'video_form': video_form,
+                   'ingredient_form': ingredient_form,
+                   'recipe': recipe})
 
 
 @login_required()
 def recipe_media_upload(request, recipe_id):
     try:
-        recipe_id = Recipe.objects.get(id=recipe_id)
+        recipe = Recipe.objects.get(id=recipe_id)
     except Recipe.DoesNotExist:
         raise Http404("Recipe does not exist")
 
     for key in request.FILES:
-        RecipeImage.objects.create(recipe=recipe_id, image=request.FILES[key])
+        RecipeImage.objects.create(recipe=recipe, image=request.FILES[key])
 
-    return JsonResponse({'newfilename': "" })
+    return JsonResponse({'newfilename': ""})
+
 
 @login_required()
-def recipe_media_delete(request,recipe_id):
+def recipe_media_delete(request, recipe_id):
     try:
-        recipe_id = Recipe.objects.get(id=recipe_id)
+        recipe = Recipe.objects.get(id=recipe_id)
     except Recipe.DoesNotExist:
         raise Http404("Recipe does not exist")
 
     image = request.GET.get('img', None)
     os.remove(image)
-    RecipeImage.objects.get(image=image,recipe=recipe_id).delete()
+    RecipeImage.objects.get(image=image, recipe=recipe).delete()
+
     return JsonResponse({'success': "delete"})
+
+
+#####################
+# Ingredients parts #
+#####################
+
+@login_required()
+def get_ingredient_families(request):
+
+    ingredient_families = IngredientFamily.objects.all().values('id', 'name')
+
+    return JsonResponse({'results': list(ingredient_families)})
+
+
+@login_required()
+def get_ingredients_of_family(request, ingredient_family_id):
+
+    try:
+        ingredient_family = IngredientFamily.objects.get(id=ingredient_family_id)
+    except Recipe.DoesNotExist:
+        raise Http404("Ingredient family does not exist")
+
+    # get all ingredients
+    ingredients = Ingredient.objects.all().filter(family=ingredient_family).values()
+
+    return JsonResponse({'results': list(ingredients)})
+
+
+@login_required()
+def get_units_of_ingredient(request, ingredient_id):
+    try:
+        ingredient = Ingredient.objects.get(id=ingredient_id)
+    except Recipe.DoesNotExist:
+        raise Http404("Ingredient family does not exist")
+
+    # get all ingredients
+    units_measure = IngredientUnitMeasure.objects.all().filter(ingredient=ingredient)
+
+    return JsonResponse({'units_measure': units_measure})
+

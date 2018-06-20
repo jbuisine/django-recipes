@@ -1,9 +1,9 @@
 from django.db import models
-import os
-from django.core.files.storage import default_storage
+
 # import of User auth django model
 from django.contrib.auth.models import User
 from datetime import date, datetime
+
 
 class Profile(models.Model):
     """
@@ -63,7 +63,7 @@ class IngredientPhoto(models.Model):
     """
     path = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    ingredient = models.OneToOneField(Ingredient, on_delete=models.CASCADE)
+    ingredient = models.OneToOneField(Ingredient, on_delete=models.CASCADE, related_name='photo')
 
     def __str__(self):
         return "Photo of %s : %s" % (self.ingredient, self.path)
@@ -81,6 +81,9 @@ class RecipeDifficulty(models.Model):
     """
     label = models.CharField(max_length=255)
     level = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ['level']
 
     def __str__(self):
         return "Level %s : %s" % (self.level, self.label)
@@ -130,7 +133,7 @@ class Recipe(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     # many to many fields
-    ingredients = models.ManyToManyField(Ingredient, through='RecipeIngredient')
+    recipe_ingredients = models.ManyToManyField(Ingredient, through='RecipeIngredient', related_name='ingredients')
 
     def __str__(self):
         return self.title
@@ -148,7 +151,7 @@ class RecipeIngredient(models.Model):
     """
         Link a recipe and an ingredient with specific quantity
     """
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='ingredients')
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     quantity = models.FloatField(default=0)
 
@@ -184,10 +187,12 @@ def user_directory_path(self, filename):
     current_date = datetime.today().strftime('%Y/%m/%d')
     return 'static/media/user_{0}/{1}/{2}'.format(self.recipe.user.id, current_date, filename)
 
+
 class RecipeImage(models.Model):
     image = models.ImageField(upload_to=user_directory_path)
     created_at = models.DateTimeField(auto_now_add=True)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='images')
+
 
 class RecipeComment(models.Model):
     """

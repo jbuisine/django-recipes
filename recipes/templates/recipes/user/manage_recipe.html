@@ -14,20 +14,64 @@
 {% endblock %}
 
 {% block content %}
-    {%  for img in recipe.images.all %}
-        {{ img.recipe }}
-        {{ img.image }}
-    {% endfor %}
+
     <h2>Manage recipe : {{ recipe.title }}</h2>
 
     <hr/>
+
 
     <!-- Part 1 : Management of ingredients recipe-->
     <div>
 
         <h4>Manage ingredients</h4>
 
-        <h6>Your ingredients list</h6>
+        <hr/>
+
+
+        <h5>Add new ingredient</h5>
+
+        <!--<form id="selectIngredientFamily" method="post">
+
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">Select kind of ingredient</label>
+                <select class="form-control" id="ingredientFamilyList">
+                    <option>------------</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">Select your ingredient</label>
+                <select class="form-control" id="ingredientList">
+                    <option>------------</option>
+                </select>
+            </div>
+        </form>-->
+
+        <form method="post">
+            {% csrf_token %}
+
+            {% bootstrap_form ingredient_form %}
+            {% buttons %}
+                <button type="submit" class="btn btn-primary">Submit</button>
+            {% endbuttons %}
+        </form>
+
+        <h5>Your ingredients list</h5>
+
+        <div class="row">
+            {% for r_ingredient in recipe.ingredients.all %}
+
+                <div class="col-sm-3 card" style="width: 18rem;">
+                    <img class="card-img-top" src="{{ r_ingredient.ingredient.photo.path }}">
+                    <div class="card-body">
+                        <h5 class="card-title"><strong>{{ r_ingredient.ingredient.name }}</strong></h5>
+                        <p>{{ r_ingredient.quantity }} {{ r_ingredient.unit_measure.label }}</p>
+                    </div>
+                </div>
+
+            {% endfor %}
+        </div>
 
     </div>
 
@@ -41,7 +85,7 @@
         <form id="dz" method="post" enctype="multipart/form-data" class="dropzone">
             {% csrf_token %}
             <div class="fallback">
-                {{ form }}
+                {{ image_form }}
             </div>
         </form>
         {% buttons %}
@@ -69,7 +113,7 @@
         Dropzone.autoDiscover = false;
         var myDropzone = new Dropzone("form#dz", {
             maxFiles: 5,
-            paramName:'file',
+            paramName: 'file',
             uploadMultiple: true,
             autoProcessQueue: false,
             addRemoveLinks: true,
@@ -79,31 +123,80 @@
                 var submitButton = document.querySelector("#submit-all")
                 myDropzone = this;
                 {% for img in recipe.images.all %}
-                    var mockFile = { name: "{{ img.image }}", size: {{ img.image.size }} };
+                    var mockFile = {name: "{{ img.image }}", size: {{ img.image.size }}};
                     myDropzone.options.addedfile.call(myDropzone, mockFile);
                     myDropzone.options.thumbnail.call(myDropzone, mockFile, "{% url 'recipes:home' %}{{ img.image }}");
                 {% endfor %}
                 submitButton.addEventListener("click", function () {
                     myDropzone.processQueue();
                 });
-                this.on("success", function (file,serverResponse) {
+                this.on("success", function (file, serverResponse) {
 
-                  //  var fileuploded = file.previewElement.querySelector("[data-dz-name]");
-                  //  fileuploded.innerHTML = serverResponse.newfilename;
+                    //  var fileuploded = file.previewElement.querySelector("[data-dz-name]");
+                    //  fileuploded.innerHTML = serverResponse.newfilename;
 
                 });
             },
 
-            removedfile: function(file){
+            removedfile: function (file) {
                 var name = file.name;
                 $.ajax({
-                url: "{% url "recipes:recipe-media-delete" recipe.id  %}",
-                data: "img="+name,
-                dataType: 'json'
+                    url: "{% url "recipes:recipe-media-delete" recipe.id  %}",
+                    data: "img=" + name,
+                    dataType: 'json'
                 });
                 var _ref;
                 return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
             }
+        });
+
+    </script>
+
+    <!-- Manage ingredient JS script -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            var familySelect = $("#ingredientFamilyList");
+            var ingredientSelect = $("#ingredientList");
+            var ingredients = [];
+
+            $.ajax({
+                url: "{% url "recipes:recipe-ingredients-families"  %}",
+                dataType: 'json',
+                success: function (res) {
+
+                    var families = res.results;
+
+                    $.each(families, function (i, item) {
+
+                        familySelect.append($('<option>', {
+                            value: item.id,
+                            text: item.name
+                        }));
+                    });
+                }
+            });
+
+            familySelect.on('change', function () {
+
+                // find better way to construct URL
+                $.ajax({
+                    url: "{% url 'recipes:recipe-ingredients-of-family' ingredient_family_id='01234' %}".replace('01234', this.value),
+                    dataType: 'json',
+                    success: function (res) {
+
+                        ingredients = res.results;
+
+                        $.each(ingredients, function (i, item) {
+
+                            ingredientSelect.append($('<option>', {
+                                value: item.id,
+                                text: item.name
+                            }));
+                        });
+                    }
+                });
+            });
         });
 
     </script>
