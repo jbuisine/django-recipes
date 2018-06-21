@@ -4,7 +4,8 @@ from django.contrib.auth.models import User
 import datetime
 import requests
 
-from recipes.models import Profile, Recipe, RecipeComment, RecipeMark, RecipeImage, RecipeVideo, RecipeIngredient
+from recipes.models import Profile, Recipe, RecipeComment, RecipeMark, RecipeImage, RecipeVideo, \
+                           RecipeIngredient, IngredientUnitMeasure, IngredientFamily, Ingredient
 
 
 class RecipeForm(forms.ModelForm):
@@ -50,7 +51,7 @@ class ImageForm(forms.Form):
 
     class Meta:
         model = RecipeImage
-        fields=('image',)
+        fields = ('image',)
 
 
 class VideoForm(forms.Form):
@@ -65,9 +66,57 @@ class MarkForm(forms.ModelForm):
 
 
 class RecipeIngredientForm(forms.ModelForm):
+
+    ingredient_families = \
+        forms.ChoiceField(label='Choose the ingredient family',
+                          choices=[(family.id, family.name) for family in IngredientFamily.objects.all()],
+                          required=True)
+
     class Meta:
         model = RecipeIngredient
-        exclude = ['recipe']
+        fields = (
+            'ingredient_families',
+            'ingredient',
+            'quantity',
+            'unit_measure',
+            # other fields
+        )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['ingredient'].queryset = Ingredient.objects.none()
+        self.fields['unit_measure'].queryset = IngredientUnitMeasure.objects.none()
+
+        if 'ingredient_families' in self.data:
+            try:
+                ingredient_family_id = int(self.data.get('ingredient_families'))
+                self.fields['ingredient'].queryset = Ingredient.objects.filter(family_id=ingredient_family_id).order_by('name')
+            except (ValueError, TypeError):
+                pass  # invalid input from the client; ignore and fallback to empty Ingredient queryset
+        elif self.instance.pk:
+            self.fields['ingredient'].queryset = self.instance.ingredient_families.ingredient_set.order_by('name')
+
+        if 'ingredient' in self.data:
+            try:
+                ingredient_id = int(self.data.get('ingredient'))
+                ingredient = Ingredient.objects.get(id=ingredient_id)
+                units = IngredientUnitMeasure.objects.filter(ingredient=ingredient).order_by('name')
+                self.fields['unit_measure'].queryset = units
+            except (ValueError, TypeError):
+                pass  # invalid input from the client; ignore and fallback to empty Unit queryset
+        elif self.instance.pk:
+            self.fields['unit_measure'].queryset = self.instance.ingredient.unit_measure_set.order_by('name')
+
+        """if 'unit_measure' in self.data:
+            try:
+                ingredient_id = int(self.data.get('unit_measure'))
+                ingredient = Ingredient.objects.get(ingredient_id)
+                self.fields['unit_measure'].queryset = IngredientUnitMeasure.objects.filter(
+                    ingredient=ingredient).order_by('name')
+            except (ValueError, TypeError):
+                pass  # invalid input from the client; ignore and fallback to empty City queryset
+        elif self.instance.id:
+            self.fields['unit_measure'].queryset = self.instance.ingredient.unit_measure_set.order_by('name')"""
 
 
 class CustomUserCreationForm(forms.Form):

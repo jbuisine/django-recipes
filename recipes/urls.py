@@ -22,16 +22,7 @@ urlpatterns = [
     re_path(r'^recipe/manage/media/(?P<recipe_id>\d+)/upload$', views.recipe_media_upload, name='recipe-media-upload'),
     re_path(r'^recipe/manage/media/(?P<recipe_id>\d+)/delete$', views.recipe_media_delete, name='recipe-media-delete'),
 
-    re_path(r'^recipe/ingredient-families/$',
-            views.get_ingredient_families,
-            name='recipe-ingredients-families'),
-
-    re_path(r'^recipe/ingredients-of-family/(?P<ingredient_family_id>\d+)$',
-            views.get_ingredients_of_family,
-            name='recipe-ingredients-of-family'),
-
-    re_path(r'^recipe/ingredient-unit/(?P<ingredient_id>\d+)$',
-            views.get_ingredients_of_family,
-            name='recipe-unit-of-ingredient'),
-
+    re_path('recipe/ingredients-of-family', views.get_ingredients_of_family, name='recipe-ingredients-of-family'),
+    re_path('recipe/unit-of-ingredient', views.get_units_of_ingredient, name='recipe-unit-of-ingredient'),
+    re_path(r'^recipe/delete-recipe-ingredient/(?P<recipe_ingredient_id>\d+)/$', views.delete_recipe_ingredient, name='recipe-delete-ingredient')
 ]

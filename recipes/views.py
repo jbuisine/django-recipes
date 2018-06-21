@@ -6,10 +6,10 @@ from django.core.paginator import Paginator
 
 from recipes.forms import CustomUserCreationForm, RecipeForm, CommentForm, ImageForm, VideoForm, RecipeIngredientForm
 
-from recipes.models import Recipe, RecipeComment, RecipeImage, Ingredient, IngredientFamily, IngredientUnitMeasure
+from recipes.models import Recipe, RecipeComment, RecipeImage, RecipeIngredient, Ingredient, IngredientFamily, \
+    IngredientUnitMeasure
 
 from django.shortcuts import redirect
-from django.core import serializers
 
 import os
 
@@ -188,15 +188,9 @@ def recipe_media_delete(request, recipe_id):
 #####################
 
 @login_required()
-def get_ingredient_families(request):
+def get_ingredients_of_family(request):
 
-    ingredient_families = IngredientFamily.objects.all().values('id', 'name')
-
-    return JsonResponse({'results': list(ingredient_families)})
-
-
-@login_required()
-def get_ingredients_of_family(request, ingredient_family_id):
+    ingredient_family_id = request.GET.get('ingredient_family')
 
     try:
         ingredient_family = IngredientFamily.objects.get(id=ingredient_family_id)
@@ -206,18 +200,36 @@ def get_ingredients_of_family(request, ingredient_family_id):
     # get all ingredients
     ingredients = Ingredient.objects.all().filter(family=ingredient_family).values()
 
-    return JsonResponse({'results': list(ingredients)})
+    return render(request, 'recipes/partials/recipes/forms/_recipe_ingredient_select.html', {'ingredients': ingredients})
 
 
 @login_required()
-def get_units_of_ingredient(request, ingredient_id):
+def get_units_of_ingredient(request):
+
+    ingredient_id = request.GET.get('ingredient_id')
+
     try:
         ingredient = Ingredient.objects.get(id=ingredient_id)
     except Recipe.DoesNotExist:
-        raise Http404("Ingredient family does not exist")
+        raise Http404("Ingredient does not exist")
 
     # get all ingredients
     units_measure = IngredientUnitMeasure.objects.all().filter(ingredient=ingredient)
 
-    return JsonResponse({'units_measure': units_measure})
+    return render(request, 'recipes/partials/recipes/forms/_ingredient_units_select.html', {'units_measure': units_measure})
 
+
+@login_required()
+def delete_recipe_ingredient(request, recipe_ingredient_id):
+
+    try:
+        recipe_ingredient = RecipeIngredient.objects.get(id=recipe_ingredient_id)
+    except Recipe.DoesNotExist:
+        raise Http404("Ingredient family does not exist")
+
+    recipe_id = recipe_ingredient.recipe.id
+
+    # remove recipe ingredient
+    recipe_ingredient.delete()
+
+    return redirect('recipes:recipe-manage', recipe_id=recipe_id)

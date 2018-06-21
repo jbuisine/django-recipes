@@ -30,28 +30,15 @@
 
         <h5>Add new ingredient</h5>
 
-        <!--<form id="selectIngredientFamily" method="post">
 
-            {% csrf_token %}
-
-            <div class="form-group">
-                <label for="exampleFormControlSelect1">Select kind of ingredient</label>
-                <select class="form-control" id="ingredientFamilyList">
-                    <option>------------</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="exampleFormControlSelect1">Select your ingredient</label>
-                <select class="form-control" id="ingredientList">
-                    <option>------------</option>
-                </select>
-            </div>
-        </form>-->
-
-        <form method="post">
+        <form method="post" id="recipeIngredientForm"
+              data-ingredients-url="{% url 'recipes:recipe-ingredients-of-family' %}"
+              data-units-url="{% url 'recipes:recipe-unit-of-ingredient' %}"
+              novalidate>
             {% csrf_token %}
 
             {% bootstrap_form ingredient_form %}
+
             {% buttons %}
                 <button type="submit" class="btn btn-primary">Submit</button>
             {% endbuttons %}
@@ -67,6 +54,8 @@
                     <div class="card-body">
                         <h5 class="card-title"><strong>{{ r_ingredient.ingredient.name }}</strong></h5>
                         <p>{{ r_ingredient.quantity }} {{ r_ingredient.unit_measure.label }}</p>
+                        <a href="{% url 'recipes:recipe-delete-ingredient' recipe_ingredient_id=r_ingredient.id %}"
+                           class="btn btn-outline-danger">Delete</a>
                     </div>
                 </div>
 
@@ -120,7 +109,7 @@
             url: "{% url "recipes:recipe-media-upload" recipe.id  %}",
 
             init: function () {
-                var submitButton = document.querySelector("#submit-all")
+                var submitButton = document.querySelector("#submit-all");
                 myDropzone = this;
                 {% for img in recipe.images.all %}
                     var mockFile = {name: "{{ img.image }}", size: {{ img.image.size }}};
@@ -156,47 +145,45 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
-            var familySelect = $("#ingredientFamilyList");
-            var ingredientSelect = $("#ingredientList");
-            var ingredients = [];
+             // Ajax callback function on select change event for ingredient units
+             var ingredient_units_callback = function () {
+                let url = $("#recipeIngredientForm").attr("data-units-url");
+                let ingredientId = $(this).val();
 
-            $.ajax({
-                url: "{% url "recipes:recipe-ingredients-families"  %}",
-                dataType: 'json',
-                success: function (res) {
-
-                    var families = res.results;
-
-                    $.each(families, function (i, item) {
-
-                        familySelect.append($('<option>', {
-                            value: item.id,
-                            text: item.name
-                        }));
-                    });
-                }
-            });
-
-            familySelect.on('change', function () {
-
-                // find better way to construct URL
                 $.ajax({
-                    url: "{% url 'recipes:recipe-ingredients-of-family' ingredient_family_id='01234' %}".replace('01234', this.value),
-                    dataType: 'json',
-                    success: function (res) {
-
-                        ingredients = res.results;
-
-                        $.each(ingredients, function (i, item) {
-
-                            ingredientSelect.append($('<option>', {
-                                value: item.id,
-                                text: item.name
-                            }));
-                        });
+                    url: url,
+                    data: {
+                        'ingredient_id': ingredientId
+                    },
+                    success: function (data) {
+                        $("#id_unit_measure").html(data);
                     }
                 });
-            });
+            };
+
+            // Ajax callback function on select change event for ingredients
+            var ingredient_families_callback = function () {
+                let url = $("#recipeIngredientForm").attr("data-ingredients-url");
+                let ingredientFamilyId = $(this).val();
+
+                $("#id_unit_measure").empty().html('<option value="">---------</option>');
+
+                $.ajax({
+                    url: url,
+                    data: {
+                        'ingredient_family': ingredientFamilyId
+                    },
+                    success: function (data) {
+                        $("#id_ingredient").html(data);
+                    }
+                });
+            };
+
+
+
+            $("#id_ingredient_families").change(ingredient_families_callback);
+            $("#id_ingredient").change(ingredient_units_callback);
+
         });
 
     </script>
