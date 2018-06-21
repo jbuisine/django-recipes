@@ -19,7 +19,6 @@
 
     <hr/>
 
-
     <!-- Part 1 : Management of ingredients recipe-->
     <div>
 
@@ -145,8 +144,8 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
-             // Ajax callback function on select change event for ingredient units
-             var ingredient_units_callback = function () {
+            // Ajax callback function on select change event for ingredient units
+            var ingredient_units_callback = function () {
                 let url = $("#recipeIngredientForm").attr("data-units-url");
                 let ingredientId = $(this).val();
 
@@ -178,8 +177,6 @@
                     }
                 });
             };
-
-
 
             $("#id_ingredient_families").change(ingredient_families_callback);
             $("#id_ingredient").change(ingredient_units_callback);

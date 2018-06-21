@@ -160,7 +160,7 @@ class RecipeIngredient(models.Model):
 
     def __str__(self):
         return "Recipe %s includes %s %s of %s " % (self.recipe, self.quantity,
-                                                    self.unit_measure,  self.ingredient)
+                                                    self.unit_measure, self.ingredient)
 
 
 class RecipeStep(models.Model):

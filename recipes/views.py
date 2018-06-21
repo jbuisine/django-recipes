@@ -39,7 +39,6 @@ def home(request):
 
 @login_required()
 def account(request):
-
     # getting recipes of user
     recipes_list = Recipe.objects.all().filter(published=True, user=request.user).order_by('-published_at')
     paginator = Paginator(recipes_list, NUMBER_OF_RECIPES_PER_PAGE)
@@ -59,7 +58,6 @@ def show_recipes(request):
 
 
 def user_detail(request, user_username):
-
     try:
         selected_user = User.objects.get(username=user_username)
     except Recipe.DoesNotExist:
@@ -121,7 +119,6 @@ def add_recipe(request):
 
 @login_required()
 def manage_recipe(request, recipe_id):
-
     try:
         recipe = Recipe.objects.get(id=recipe_id)
     except Recipe.DoesNotExist:
@@ -189,7 +186,6 @@ def recipe_media_delete(request, recipe_id):
 
 @login_required()
 def get_ingredients_of_family(request):
-
     ingredient_family_id = request.GET.get('ingredient_family')
 
     try:
@@ -200,12 +196,12 @@ def get_ingredients_of_family(request):
     # get all ingredients
     ingredients = Ingredient.objects.all().filter(family=ingredient_family).values()
 
-    return render(request, 'recipes/partials/recipes/forms/_recipe_ingredient_select.html', {'ingredients': ingredients})
+    return render(request, 'recipes/partials/recipes/forms/_recipe_ingredient_select.html',
+                  {'ingredients': ingredients})
 
 
 @login_required()
 def get_units_of_ingredient(request):
-
     ingredient_id = request.GET.get('ingredient_id')
 
     try:
@@ -216,12 +212,12 @@ def get_units_of_ingredient(request):
     # get all ingredients
     units_measure = IngredientUnitMeasure.objects.all().filter(ingredient=ingredient)
 
-    return render(request, 'recipes/partials/recipes/forms/_ingredient_units_select.html', {'units_measure': units_measure})
+    return render(request, 'recipes/partials/recipes/forms/_ingredient_units_select.html',
+                  {'units_measure': units_measure})
 
 
 @login_required()
 def delete_recipe_ingredient(request, recipe_ingredient_id):
-
     try:
         recipe_ingredient = RecipeIngredient.objects.get(id=recipe_ingredient_id)
     except Recipe.DoesNotExist:
