@@ -15,7 +15,7 @@ class RecipeForm(forms.ModelForm):
 
     class Meta:
         model = Recipe
-        exclude = ['user', 'members', 'number_of_marks', 'mean_of_marks', 'recipe_ingredients']
+        exclude = ['user', 'members', 'number_of_marks', 'mean_of_marks', 'recipe_ingredients','slug']
 
         # define widgets of time field
         widgets = {

@@ -3,7 +3,7 @@ from django.db import models
 # import of User auth django model
 from django.contrib.auth.models import User
 from datetime import date, datetime
-
+from django.utils.text import slugify
 
 class Profile(models.Model):
     """
@@ -108,6 +108,7 @@ class Recipe(models.Model):
      """
     # description fields
     title = models.CharField(max_length=255)
+    slug = models.SlugField(unique=True, null=False)
     description = models.TextField()
     realization_cost = models.FloatField()
     published = models.BooleanField(default=False)
@@ -145,6 +146,12 @@ class Recipe(models.Model):
         self.number_of_marks += 1
         # save model
         self.save()
+
+    def save(self, *args, **kwargs):
+        super(Recipe, self).save(*args, **kwargs)
+        if not self.slug:
+            self.slug = slugify(self.title) + "-" + str(self.id)
+            self.save()
 
 
 class RecipeIngredient(models.Model):

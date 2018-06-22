@@ -17,10 +17,10 @@ urlpatterns = [
 
     # recipe part
     path('recipes/add', views.add_recipe, name='add_recipe'),
-    re_path(r'^recipe/(?P<recipe_id>\d+)/$', views.detail, name='recipe-detail'),
-    re_path(r'^recipe/manage/(?P<recipe_id>\d+)/$', views.manage_recipe, name='recipe-manage'),
-    re_path(r'^recipe/manage/media/(?P<recipe_id>\d+)/upload$', views.recipe_media_upload, name='recipe-media-upload'),
-    re_path(r'^recipe/manage/media/(?P<recipe_id>\d+)/delete$', views.recipe_media_delete, name='recipe-media-delete'),
+    path('recipe/<slug:slug>/', views.detail, name='recipe-detail'),
+    path('recipe/manage/<slug:slug>/', views.manage_recipe, name='recipe-manage'),
+    path('recipe/manage/media/<slug:slug>/upload', views.recipe_media_upload, name='recipe-media-upload'),
+    path('recipe/manage/media/<slug:slug>/delete', views.recipe_media_delete, name='recipe-media-delete'),
 
     re_path('recipe/ingredients-of-family', views.get_ingredients_of_family, name='recipe-ingredients-of-family'),
     re_path('recipe/unit-of-ingredient', views.get_units_of_ingredient, name='recipe-unit-of-ingredient'),

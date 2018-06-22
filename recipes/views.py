@@ -3,7 +3,7 @@ from django.http import HttpResponseForbidden, Http404, JsonResponse
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-
+from datetime import datetime
 from recipes.forms import CustomUserCreationForm, RecipeForm, CommentForm, ImageForm, VideoForm, RecipeIngredientForm
 
 from recipes.models import Recipe, RecipeComment, RecipeImage, RecipeIngredient, Ingredient, IngredientFamily, \
@@ -66,9 +66,9 @@ def user_detail(request, user_username):
     return render(request, 'recipes/show_profile.html', {'selected_user': selected_user})
 
 
-def detail(request, recipe_id):
+def detail(request, slug):
     try:
-        recipe_id = Recipe.objects.get(id=recipe_id)
+        recipe_id = Recipe.objects.get(slug=slug)
     except Recipe.DoesNotExist:
         raise Http404("Recipe does not exist")
 
@@ -118,9 +118,9 @@ def add_recipe(request):
 
 
 @login_required()
-def manage_recipe(request, recipe_id):
+def manage_recipe(request, slug):
     try:
-        recipe = Recipe.objects.get(id=recipe_id)
+        recipe = Recipe.objects.get(slug=slug)
     except Recipe.DoesNotExist:
         raise Http404("Recipe does not exist")
 
@@ -154,9 +154,9 @@ def manage_recipe(request, recipe_id):
 
 
 @login_required()
-def recipe_media_upload(request, recipe_id):
+def recipe_media_upload(request, slug):
     try:
-        recipe = Recipe.objects.get(id=recipe_id)
+        recipe = Recipe.objects.get(slug=slug)
     except Recipe.DoesNotExist:
         raise Http404("Recipe does not exist")
 
@@ -167,17 +167,24 @@ def recipe_media_upload(request, recipe_id):
 
 
 @login_required()
-def recipe_media_delete(request, recipe_id):
+def recipe_media_delete(request, slug):
     try:
-        recipe = Recipe.objects.get(id=recipe_id)
+        recipe = Recipe.objects.get(slug=slug)
     except Recipe.DoesNotExist:
         raise Http404("Recipe does not exist")
 
     image = request.GET.get('img', None)
-    os.remove(image)
-    RecipeImage.objects.get(image=image, recipe=recipe).delete()
+    try :
+        RecipeImage.objects.get(image=image, recipe=recipe).delete()
+        os.remove(image)
+        pass
+    except RecipeImage.DoesNotExist:
+        current_date = datetime.today().strftime('%Y/%m/%d')
+        file_path = 'static/media/user_'+str(recipe.user.id)+'/'+current_date+'/'+image
+        RecipeImage.objects.get(image=file_path, recipe=recipe).delete()
+        os.remove(file_path)
 
-    return JsonResponse({'success': "delete"})
+    return JsonResponse({'success': True})
 
 
 #####################
