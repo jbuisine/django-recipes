@@ -172,7 +172,6 @@
                 starSize: 20,
                 callback: function (currentRating, $el) {
 
-                    $el.starRating('setReadOnly', false);
                     let url = "{% url 'recipes:recipe-add-or-update-mark' %}";
 
                     // add or update mark of current user
@@ -190,6 +189,8 @@
                         }
                     });
 
+                    // set read only false, user can update its mark
+                    $(".add-mark-recipe").starRating('setReadOnly', false);
                 }
             });
         });

@@ -148,9 +148,14 @@ class Recipe(models.Model):
 
     def add_mark(self, mark):
         # compute the value of mean
-        self.mean_of_marks = self.mean_of_marks * self.number_of_marks + mark / self.number_of_marks + 1
+        self.mean_of_marks = (self.mean_of_marks * self.number_of_marks + mark) / (self.number_of_marks + 1)
         # increase number of mark
         self.number_of_marks += 1
+
+    def update_mark(self, old_mark, new_mark):
+        # compute the value of mean
+        self.mean_of_marks = (self.mean_of_marks * self.number_of_marks - old_mark + new_mark) \
+                             / self.number_of_marks
 
     def save(self, *args, **kwargs):
         super(Recipe, self).save(*args, **kwargs)

@@ -114,7 +114,7 @@ def add_recipe(request):
             recipe_obj.user = request.user
             recipe_obj.save()
 
-            return redirect('recipes:recipe-manage', recipe_id=recipe_obj.id)
+            return redirect('recipes:recipe-manage', recipe_slug=recipe_obj.slug)
     else:
         recipe_form = RecipeForm()
 
@@ -265,11 +265,16 @@ def add_or_update_mark(request):
 
             # mark already exists
             if mark_obj_exists:
+                # update recipe mark mean (using old and new)
+                recipe.update_mark(mark_obj_exists.mark_score, mark_obj.mark_score)
+                recipe.save()
+
+                # update mark
                 mark_obj_exists.mark_score = mark_obj.mark_score
-                mark_obj.save()
+                mark_obj_exists.save()
             else:
                 mark_obj.save()
                 recipe.add_mark(mark_obj.mark_score)
                 recipe.save()
 
-            return JsonResponse({'updated_mark', recipe.mean_of_marks})
+            return JsonResponse({'updated_mark': recipe.mean_of_marks})
