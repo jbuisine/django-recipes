@@ -7,6 +7,10 @@
     {% bootstrap_css %}
     <link rel="stylesheet" type="text/css" href="{% static "css/dropzone.min.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "css/basic.min.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/star-rating-svg.css" %}">
+    <style>
+    .dz-image img{width: 100%;height: 100%;}
+    </style>
 {% endblock %}
 
 {% block title %}
@@ -14,7 +18,6 @@
 {% endblock %}
 
 {% block content %}
-
     <h2>Manage recipe : {{ recipe.title }}</h2>
 
     <hr/>
@@ -24,7 +27,41 @@
 
         <h4>Manage ingredients</h4>
 
-        <h6>Your ingredients list</h6>
+        <hr/>
+
+
+        <h5>Add new ingredient</h5>
+
+        <form method="post" id="recipeIngredientForm"
+              data-ingredients-url="{% url 'recipes:recipe-ingredients-of-family' %}"
+              data-units-url="{% url 'recipes:recipe-unit-of-ingredient' %}"
+              novalidate>
+            {% csrf_token %}
+
+            {% bootstrap_form ingredient_form %}
+
+            {% buttons %}
+                <button type="submit" class="btn btn-primary">Submit</button>
+            {% endbuttons %}
+        </form>
+
+        <h5>Your ingredients list</h5>
+
+        <div class="row">
+            {% for r_ingredient in recipe.ingredients.all %}
+
+                <div class="col-sm-3 card" style="width: 18rem;">
+                    <img class="card-img-top" src="/{{ r_ingredient.ingredient.photo.path }}">
+                    <div class="card-body">
+                        <h5 class="card-title"><strong>{{ r_ingredient.ingredient.name }}</strong></h5>
+                        <p>{{ r_ingredient.quantity }} {{ r_ingredient.unit_measure.label }}</p>
+                        <a href="{% url 'recipes:recipe-delete-ingredient' recipe_ingredient_id=r_ingredient.id %}"
+                           class="btn btn-outline-danger">Delete</a>
+                    </div>
+                </div>
+
+            {% endfor %}
+        </div>
 
     </div>
 
@@ -38,12 +75,9 @@
         <form id="dz" method="post" enctype="multipart/form-data" class="dropzone">
             {% csrf_token %}
             <div class="fallback">
-                {{ form }}
+                {{ image_form }}
             </div>
         </form>
-        {% buttons %}
-            <button type="submit" id="submit-all" class="btn btn-primary">Submit</button>
-        {% endbuttons %}
     </div>
 
     <hr/>
@@ -62,24 +96,91 @@
 
     <script type="text/javascript" src="{% static "js/dropzone.js" %}"></script>
 
+    <!-- Manage media of recipe script -->
     <script type="text/javascript">
         Dropzone.autoDiscover = false;
-
         var myDropzone = new Dropzone("form#dz", {
-            autoProcessQueue: false,
+            maxFiles: 5,
+            paramName: 'file',
+            uploadMultiple: true,
+           // autoProcessQueue: false,
             addRemoveLinks: true,
-            url: "{% url "recipes:recipe-media-upload" recipe.id  %}",
+            url: "{% url "recipes:recipe-media-upload" recipe.slug %}",
 
             init: function () {
-                var submitButton = document.querySelector("#submit-all")
+               // var submitButton = document.querySelector("#submit-all");
                 myDropzone = this;
-                submitButton.addEventListener("click", function () {
-                    myDropzone.processQueue();
-                });
+                {% for img in recipe.images.all %}
+                    var mockFile = {name: "{{ img.image }}", size: {{ img.image.size }}};
+                    myDropzone.options.addedfile.call(myDropzone, mockFile);
+                    myDropzone.options.thumbnail.call(myDropzone, mockFile, "{% url 'recipes:home' %}{{ img.image }}");
+                {% endfor %}
+               // submitButton.addEventListener("click", function () {
+                //    myDropzone.processQueue();
+               // });
+                this.on("success", function (file, serverResponse) {
 
-                this.on("addedfile", function () {
+                    //  var fileuploded = file.previewElement.querySelector("[data-dz-name]");
+                    //  fileuploded.innerHTML = serverResponse.newfilename;
+
                 });
+            },
+
+            removedfile: function (file) {
+                var name = file.name;
+                $.ajax({
+                    url: "{% url "recipes:recipe-media-delete" recipe.slug  %}",
+                    data: "img=" + name,
+                    dataType: 'json'
+                });
+                var _ref;
+                return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
             }
+        });
+
+    </script>
+
+    <!-- Manage ingredient JS script -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            // Ajax callback function on select change event for ingredient units
+            var ingredient_units_callback = function () {
+                let url = $("#recipeIngredientForm").attr("data-units-url");
+                let ingredientId = $(this).val();
+
+                $.ajax({
+                    url: url,
+                    data: {
+                        'ingredient_id': ingredientId
+                    },
+                    success: function (data) {
+                        $("#id_unit_measure").html(data);
+                    }
+                });
+            };
+
+            // Ajax callback function on select change event for ingredients
+            var ingredient_families_callback = function () {
+                let url = $("#recipeIngredientForm").attr("data-ingredients-url");
+                let ingredientFamilyId = $(this).val();
+
+                $("#id_unit_measure").empty().html('<option value="">---------</option>');
+
+                $.ajax({
+                    url: url,
+                    data: {
+                        'ingredient_family': ingredientFamilyId
+                    },
+                    success: function (data) {
+                        $("#id_ingredient").html(data);
+                    }
+                });
+            };
+
+            $("#id_ingredient_families").change(ingredient_families_callback);
+            $("#id_ingredient").change(ingredient_units_callback);
+
         });
 
     </script>
