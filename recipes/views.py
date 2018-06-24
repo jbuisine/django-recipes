@@ -82,6 +82,15 @@ def detail(request, recipe_slug):
     page = request.GET.get('page')
     comments = paginator.get_page(page)
 
+
+    # get current mark of user if exists
+    current_mark_score = 0
+
+    mark = recipe.marks.all().filter(user=request.user).first()
+
+    if mark:
+        current_mark_score = mark.mark_score
+
     if request.method == 'POST':
 
         comment_form = CommentForm(request.POST)
@@ -100,6 +109,7 @@ def detail(request, recipe_slug):
     return render(request, 'recipes/detail_recipe.html',
                   context={'recipe': recipe,
                            'comments': comments,
+                           'current_mark_score': current_mark_score,
                            'comment_form': comment_form})
 
 
@@ -277,4 +287,5 @@ def add_or_update_mark(request):
                 recipe.add_mark(mark_obj.mark_score)
                 recipe.save()
 
-            return JsonResponse({'updated_mark': recipe.mean_of_marks})
+            return JsonResponse({'recipe_mark_mean': recipe.mean_of_marks,
+                                 'number_of_marks': recipe.number_of_marks})
