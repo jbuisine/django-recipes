@@ -120,10 +120,10 @@ class Recipe(models.Model):
     realization_cost = models.FloatField()
     published = models.BooleanField(default=False)
 
-    # time fields
-    preparation_time = models.DurationField()
-    cooking_time = models.DurationField()
-    relaxation_time = models.DurationField(default=0)
+    # time fields (use of integer field by default : number of minutes)
+    preparation_time = models.IntegerField()
+    cooking_time = models.IntegerField()
+    relaxation_time = models.IntegerField(default=0)
 
     # mark fields
     mean_of_marks = models.FloatField(default=0.)

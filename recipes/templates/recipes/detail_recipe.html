@@ -34,23 +34,23 @@
             <h5> {{ recipe.title }}</h5>
             <hr/>
             <p><strong>Description : </strong> {{ recipe.description }}</p>
-            <div>
+            <p>
                 <strong>Marks mean : </strong>
                 <span class="show-mean-mark-recipe">
 
                 </span>
                 (number of votes : {{ recipe.number_of_marks }})
-            </div>
+            </p>
 
             {% if user.is_authenticated and user != recipe.user %}
-                <div>
+                <p>
                     <strong>Your mark :</strong>
                     <span class="add-mark-recipe"></span>
-                </div>
+                </p>
             {% endif %}
 
-            <p><strong>Preparation time : </strong> {{ recipe.preparation_time }} </p>
-            <p><strong>Preparation time : </strong> {{ recipe.preparation_time }} </p>
+            <p><strong>Preparation time : </strong> {{ recipe.preparation_time }} minutes</p>
+            <p><strong>Cooking time : </strong> {{ recipe.cooking_time }} minutes</p>
         </div>
     </div>
 
@@ -166,6 +166,7 @@
             });
 
             $(".add-mark-recipe").starRating({
+
                 initialRating: 0,
                 strokeColor: '#894A00',
                 strokeWidth: 5,
@@ -185,12 +186,13 @@
                             'recipe': {{ recipe.id }}
                         },
                         success: function (data) {
+                            // update mean rate
                             $(".show-mean-mark-recipe").starRating('setRating', data.updated_mark);
+
+                            // set read only false, user can update its mark
+                            $el.starRating('setReadOnly', false);
                         }
                     });
-
-                    // set read only false, user can update its mark
-                    $(".add-mark-recipe").starRating('setReadOnly', false);
                 }
             });
         });

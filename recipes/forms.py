@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 import datetime
 import requests
+from django.forms import NumberInput
 
 from recipes.models import Profile, Recipe, RecipeComment, RecipeMark, RecipeImage, RecipeVideo, \
     RecipeIngredient, IngredientUnitMeasure, IngredientFamily, Ingredient
@@ -17,11 +18,15 @@ class RecipeForm(forms.ModelForm):
         model = Recipe
         exclude = ['user', 'members', 'number_of_marks', 'mean_of_marks', 'recipe_ingredients','slug']
 
+        prepation_time = forms.IntegerField(label='Preparation time in minutes')
+        cooking_time = forms.IntegerField(label='Cooking time in minutes')
+        relaxation_time = forms.IntegerField(label='Relaxation time in minutes')
+
         # define widgets of time field
         widgets = {
-            'preparation_time': forms.TimeInput(format='%H:%M'),
-            'cooking_time': forms.TimeInput(format='%H:%M'),
-            'relaxation_time': forms.TimeInput(format='%H:%M'),
+            'preparation_time': NumberInput(attrs={'min': 0}),
+            'cooking_time': NumberInput(attrs={'min': 0}),
+            'relaxation_time': NumberInput(attrs={'min': 0}),
         }
 
 
