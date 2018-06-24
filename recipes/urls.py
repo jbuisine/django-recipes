@@ -17,13 +17,16 @@ urlpatterns = [
 
     # recipe part
     path('recipes/add', views.add_recipe, name='add_recipe'),
-    path('recipe/<slug:slug>/', views.detail, name='recipe-detail'),
-    path('recipe/manage/<slug:slug>/', views.manage_recipe, name='recipe-manage'),
-    path('recipe/manage/media/<slug:slug>/upload', views.recipe_media_upload, name='recipe-media-upload'),
-    path('recipe/manage/media/<slug:slug>/delete', views.recipe_media_delete, name='recipe-media-delete'),
+    path('recipe/<slug:recipe_slug>/', views.detail, name='recipe-detail'),
+    path('recipe/manage/<slug:recipe_slug>/', views.manage_recipe, name='recipe-manage'),
+    path('recipe/manage/media/<slug:recipe_slug>/upload', views.recipe_media_upload, name='recipe-media-upload'),
+    path('recipe/manage/media/<slug:recipe_slug>/delete', views.recipe_media_delete, name='recipe-media-delete'),
 
     re_path('recipe/ingredients-of-family', views.get_ingredients_of_family, name='recipe-ingredients-of-family'),
     re_path('recipe/unit-of-ingredient', views.get_units_of_ingredient, name='recipe-unit-of-ingredient'),
     re_path(r'^recipe/delete-recipe-ingredient/(?P<recipe_ingredient_id>\d+)/$', views.delete_recipe_ingredient,
-            name='recipe-delete-ingredient')
+            name='recipe-delete-ingredient'),
+
+    re_path('recipe/add-or-update-mark', views.add_or_update_mark, name='recipe-add-or-update-mark'),
+
 ]

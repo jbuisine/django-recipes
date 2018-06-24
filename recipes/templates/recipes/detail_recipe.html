@@ -1,15 +1,25 @@
 {% extends 'recipes/base.html' %}
+
+{% load staticfiles %}
 {% load bootstrap4 %}
+
 {% block title %}
     Recipes
+{% endblock %}
+
+{% block stylesheets %}
+    {% bootstrap_css %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/star-rating-svg.css" %}">
 {% endblock %}
 
 {% block content %}
 
     <div class="row">
         <div class="col-4">
-            <img src="{{ recipe.medias.all.first.path }}" style="height: 150px; width: 150px; border-radius: 5px;"
-                 alt="{{ recipe.title }}_picture">
+            {% if recipe.images.all %}
+                <img src="/{{ recipe.images.all.first.image }}" style="height: 150px; width: 150px; border-radius: 5px;"
+                     alt="{{ recipe.title }}_picture">
+            {% endif %}
             <p>
                 <strong>Kind : </strong>{{ recipe.recipe_type }}
             </p>
@@ -24,8 +34,21 @@
             <h5> {{ recipe.title }}</h5>
             <hr/>
             <p><strong>Description : </strong> {{ recipe.description }}</p>
-            <p><strong>Marks mean : </strong> {{ recipe.mean_of_marks }} (number of votes : {{ recipe.number_of_marks }})
-            </p>
+            <div>
+                <strong>Marks mean : </strong>
+                <span class="show-mean-mark-recipe">
+
+                </span>
+                (number of votes : {{ recipe.number_of_marks }})
+            </div>
+
+            {% if user.is_authenticated and user != recipe.user %}
+                <div>
+                    <strong>Your mark :</strong>
+                    <span class="add-mark-recipe"></span>
+                </div>
+            {% endif %}
+
             <p><strong>Preparation time : </strong> {{ recipe.preparation_time }} </p>
             <p><strong>Preparation time : </strong> {{ recipe.preparation_time }} </p>
         </div>
@@ -38,7 +61,8 @@
             {% for img in recipe.images.all %}
 
                 {% if forloop.first %}
-                    <li data-target="#carouselExampleIndicators" data-slide-to="{{ forloop.counter }}" class="active"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="{{ forloop.counter }}"
+                        class="active"></li>
                 {% else %}
 
                     <li data-target="#carouselExampleIndicators" data-slide-to="{{ forloop.counter }}"></li>
@@ -52,11 +76,13 @@
 
                 {% if forloop.first %}
                     <div class="carousel-item active">
-                        <img class="d-block w-100" src="/{{ img.image }}"  style="width:100%; height: 400px;" alt="First slide">
+                        <img class="d-block w-100" src="/{{ img.image }}" style="width:100%; height: 400px;"
+                             alt="First slide">
                     </div>
                 {% else %}
                     <div class="carousel-item">
-                        <img class="d-block w-100" src="/{{ img.image }}"  style="width:100%; height: 400px;" alt="Second slide">
+                        <img class="d-block w-100" src="/{{ img.image }}" style="width:100%; height: 400px;"
+                             alt="Second slide">
                     </div>
                 {% endif %}
 
@@ -92,7 +118,7 @@
             {% for comment in comments %}
                 <hr/>
                 <li class="media">
-                    <img class="mr-3" src="{{ comment.user.profile.avatar }}" alt="avatar_{{ comment.user.username }}"
+                    <img class="mr-3" src="/{{ comment.user.profile.avatar }}" alt="avatar_{{ comment.user.username }}"
                          style="width: 75px; height: 75px;">
 
 
@@ -119,4 +145,53 @@
         {% include 'recipes/partials/recipes/_pagination_objects.html' with objects=comments %}
 
     </div>
+{% endblock %}
+
+{% block javascripts %}
+
+    <!-- Rating module : https://github.com/nashio/star-rating-svg -->
+    <script type="text/javascript" src="{% static "js/star-rating-svg.min.js" %}"></script>
+
+    <!-- Manage ingredient JS script -->
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $(".show-mean-mark-recipe").starRating({
+                initialRating: {{ recipe.mean_of_marks }},
+                strokeColor: '#894A00',
+                strokeWidth: 5,
+                starSize: 20,
+                readOnly: true
+            });
+
+            $(".add-mark-recipe").starRating({
+                initialRating: 0,
+                strokeColor: '#894A00',
+                strokeWidth: 5,
+                starSize: 20,
+                callback: function (currentRating, $el) {
+
+                    $el.starRating('setReadOnly', false);
+                    let url = "{% url 'recipes:recipe-add-or-update-mark' %}";
+
+                    // add or update mark of current user
+                    $.ajax({
+                        method: 'POST',
+                        url: url,
+                        data: {
+                            'csrfmiddlewaretoken': '{{ csrf_token }}',
+                            'user': {{ user.id }},
+                            'mark_score': currentRating,
+                            'recipe': {{ recipe.id }}
+                        },
+                        success: function (data) {
+                            $(".show-mean-mark-recipe").starRating('setRating', data.updated_mark);
+                        }
+                    });
+
+                }
+            });
+        });
+    </script>
 {% endblock %}
