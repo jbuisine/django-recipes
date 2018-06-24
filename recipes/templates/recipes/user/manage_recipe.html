@@ -7,6 +7,7 @@
     {% bootstrap_css %}
     <link rel="stylesheet" type="text/css" href="{% static "css/dropzone.min.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "css/basic.min.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/star-rating-svg.css" %}">
     <style>
     .dz-image img{width: 100%;height: 100%;}
     </style>
@@ -31,7 +32,6 @@
 
         <h5>Add new ingredient</h5>
 
-
         <form method="post" id="recipeIngredientForm"
               data-ingredients-url="{% url 'recipes:recipe-ingredients-of-family' %}"
               data-units-url="{% url 'recipes:recipe-unit-of-ingredient' %}"
@@ -51,7 +51,7 @@
             {% for r_ingredient in recipe.ingredients.all %}
 
                 <div class="col-sm-3 card" style="width: 18rem;">
-                    <img class="card-img-top" src="{{ r_ingredient.ingredient.photo.path }}">
+                    <img class="card-img-top" src="/{{ r_ingredient.ingredient.photo.path }}">
                     <div class="card-body">
                         <h5 class="card-title"><strong>{{ r_ingredient.ingredient.name }}</strong></h5>
                         <p>{{ r_ingredient.quantity }} {{ r_ingredient.unit_measure.label }}</p>
@@ -96,6 +96,7 @@
 
     <script type="text/javascript" src="{% static "js/dropzone.js" %}"></script>
 
+    <!-- Manage media of recipe script -->
     <script type="text/javascript">
         Dropzone.autoDiscover = false;
         var myDropzone = new Dropzone("form#dz", {
