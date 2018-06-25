@@ -2,7 +2,7 @@
 {% load  staticfiles %}
 {% load bootstrap4 %}
 {% block stylesheets %}
-    {% bootstrap_css %}
+    {{ block.super }}
     <link rel="stylesheet" type="text/css" href="{% static "css/dropzone.min.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "css/basic.min.css" %}">
 {% endblock %}
@@ -14,12 +14,14 @@
 {% block content %}
 
     <h2>Add new recipe</h2>
-    <form method="post">
+    <form method="post" class="bg-white rounded pb_form_v1">
         {% csrf_token %}
 
         {% bootstrap_form recipe_form %}
         {% buttons %}
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-lg btn-block pb_btn-pill btn-shadow-blue">Validate recipe</button>
+            </div>
         {% endbuttons %}
     </form>
 
