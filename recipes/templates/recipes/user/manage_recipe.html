@@ -4,7 +4,9 @@
 {% load bootstrap4 %}
 
 {% block stylesheets %}
-    {% bootstrap_css %}
+
+    {{ block.super }}
+
     <link rel="stylesheet" type="text/css" href="{% static "css/dropzone.min.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "css/basic.min.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "css/star-rating-svg.css" %}">
@@ -93,6 +95,8 @@
 {% endblock %}
 
 {% block javascripts %}
+
+    {{ block.super }}
 
     <script type="text/javascript" src="{% static "js/dropzone.js" %}"></script>
 

@@ -2,24 +2,27 @@
 {% load  staticfiles %}
 {% load bootstrap4 %}
 {% block stylesheets %}
-    {% bootstrap_css %}
+    {{ block.super }}
     <link rel="stylesheet" type="text/css" href="{% static "css/dropzone.min.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "css/basic.min.css" %}">
 {% endblock %}
 
 {% block title %}
-    Add a new recipe
+    Add recipe
 {% endblock %}
 
 {% block content %}
 
     <h2>Add new recipe</h2>
+
     <form method="post">
         {% csrf_token %}
 
         {% bootstrap_form recipe_form %}
         {% buttons %}
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Validate recipe</button>
+            </div>
         {% endbuttons %}
     </form>
 
@@ -27,6 +30,7 @@
 
 {% block javascripts %}
 
+    {{ block.super }}
     <script type="text/javascript" src="{% static "js/dropzone.js" %}"></script>
     <script type="text/javascript" src="{% static "js/dropzone-amd-module.js" %}"></script>
 

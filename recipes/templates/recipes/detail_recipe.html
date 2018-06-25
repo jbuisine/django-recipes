@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block stylesheets %}
-    {% bootstrap_css %}
+    {{ block.super }}
     <link rel="stylesheet" type="text/css" href="{% static "css/star-rating-svg.css" %}">
 {% endblock %}
 
@@ -172,6 +172,8 @@
 {% endblock %}
 
 {% block javascripts %}
+
+    {{ block.super }}
 
     <!-- Rating module : https://github.com/nashio/star-rating-svg -->
     <script type="text/javascript" src="{% static "js/star-rating-svg.min.js" %}"></script>

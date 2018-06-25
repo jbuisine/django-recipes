@@ -8,15 +8,19 @@
     </title>
     {% block stylesheets %}
         {% load bootstrap4 %}
+        {% load staticfiles %}
         {% bootstrap_css %}
+
+
     {% endblock %}
 </head>
-<body>
+<body data-spy="scroll" data-target="#pb-navbar" data-offset="200">
 
 <!-- Nav web site part -->
 {% include 'recipes/partials/nav.html' %}
+    <!-- END section -->
 
-<div class="container-fluid" style="margin-top: 20px;">
+<div class="container" style="margin-top: 20px;">
 
     {% block content %}
 
