@@ -125,6 +125,8 @@ class Recipe(models.Model):
     cooking_time = models.IntegerField()
     relaxation_time = models.IntegerField(default=0)
 
+    recipe_number_person = models.IntegerField(default=1)
+
     # mark fields
     mean_of_marks = models.FloatField(default=0.)
     number_of_marks = models.IntegerField(default=0)
