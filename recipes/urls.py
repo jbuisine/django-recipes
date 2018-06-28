@@ -1,8 +1,9 @@
-from django.urls import path, re_path
 from django.contrib.auth import views as auth_views
+from django.urls import path, re_path
 
 from recipes import views
 from .views import search
+
 app_name = 'recipes'
 
 urlpatterns = [
@@ -18,6 +19,7 @@ urlpatterns = [
 
     # recipe part
     path('recipes/add', views.add_recipe, name='add_recipe'),
+    path('recipe/publish', views.publish_recipe, name='recipe-publish-state'),
     path('recipe/<slug:recipe_slug>/', views.detail, name='recipe-detail'),
     path('recipe/manage/<slug:recipe_slug>/', views.manage_recipe, name='recipe-manage'),
     path('recipe/manage/media/<slug:recipe_slug>/upload', views.recipe_media_upload, name='recipe-media-upload'),

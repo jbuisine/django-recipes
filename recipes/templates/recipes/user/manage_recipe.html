@@ -31,6 +31,18 @@
 
     <hr/>
 
+    <form method="post" action="{% url 'recipes:recipe-publish-state' %}">
+        {% csrf_token %}
+        <input type="hidden" name="recipe_slug" value="{{ recipe.slug }}">
+        {% buttons %}
+            {% if recipe.published %}
+                <button type="submit" class="btn btn-warning">Unpublish recipe</button>
+            {% else %}
+                <button type="submit" class="btn btn-primary">Publish recipe</button>
+            {% endif %}
+        {% endbuttons %}
+    </form>
+
     <!-- Part 1 : Management of ingredients recipe-->
     <div>
 
@@ -49,7 +61,7 @@
                     {% csrf_token %}
                     {% bootstrap_form ingredient_form %}
                     {% buttons %}
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" name="add_ingredient" class="btn btn-primary">Submit</button>
                     {% endbuttons %}
                 </form>
 
@@ -97,36 +109,14 @@
                     {% csrf_token %}
                     {% bootstrap_form step_form %}
                     {% buttons %}
-                        <button type="submit" class="btn btn-primary">Add step</button>
+                        <button type="submit" name="add_step" class="btn btn-primary">Add step</button>
                     {% endbuttons %}
                 </form>
 
             </div>
 
             <div class="col-4">
-                <h3>Recipe steps</h3>
-
-                <hr />
-
-                {% for step in recipe.steps.all %}
-                    {% if user.is_authenticated and user == recipe.user %}
-                        <a href="{% url 'recipes:recipe-delete-step' step_id=step.id %}">
-                            <button class="btn btn-outline-danger" style="float: right;">
-                                Delete
-                            </button>
-                        </a>
-                    {% endif %}
-
-                    <h5><strong>Step {{ forloop.counter }}</strong></h5>
-
-                    <p>{{ step.description }}</p>
-
-
-                    {% if not forloop.last %}
-                        <hr/>
-                    {% endif %}
-
-                {% endfor %}
+                {% include 'recipes/partials/recipes/_recipes_step_list.html' %}
             </div>
         </div>
     </div>
