@@ -1,0 +1,4 @@
+django
+django-bootstrap4
+django-jquery
+Pillow

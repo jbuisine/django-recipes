@@ -1,9 +1,8 @@
-from django.db import models
+from datetime import date, datetime
 
 # import of User auth django model
 from django.contrib.auth.models import User
-from datetime import date, datetime
-
+from django.db import models
 from django.db.models import Count, Avg
 from django.db.models.functions import Coalesce
 from django.utils.text import slugify
@@ -113,6 +112,7 @@ class RecipeManager(models.Manager):
     """
         Custom manager : query to get aggregate annotations fields
     """
+
     def with_annotates(self):
         return super(RecipeManager, self).get_queryset() \
             .annotate(number_of_marks=Coalesce(Count('marks'), 0)) \
@@ -149,7 +149,7 @@ class Recipe(models.Model):
 
     # foreign key fields
     recipe_difficulty = models.ForeignKey(RecipeDifficulty, on_delete=models.CASCADE)
-    recipe_types = models.ManyToManyField(RecipeType, related_name='types')
+    recipe_types = models.ManyToManyField(RecipeType, related_name='recipe')
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -186,9 +186,8 @@ class RecipeStep(models.Model):
     """
         Specify a step of how to do recipe
     """
-    level = models.IntegerField()
     description = models.TextField()
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='steps')
 
     def __str__(self):
         return "Step %s  : %s" % (self.level, self.description)

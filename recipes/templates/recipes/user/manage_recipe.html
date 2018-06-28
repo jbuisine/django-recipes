@@ -31,6 +31,26 @@
 
     <hr/>
 
+    <form method="post" action="{% url 'recipes:recipe-publish-state' %}">
+        {% csrf_token %}
+        <input type="hidden" name="recipe_slug" value="{{ recipe.slug }}">
+        {% buttons %}
+            {% if recipe.published %}
+                <button type="submit" class="btn btn-warning">Unpublish recipe</button>
+            {% else %}
+                <button type="submit" class="btn btn-primary">Publish recipe</button>
+            {% endif %}
+        {% endbuttons %}
+    </form>
+
+    <form method="post" action="{% url 'recipes:recipe-add-or-update' %}">
+        {% csrf_token %}
+        <input type="hidden" name="recipe_slug" value="{{ recipe.slug }}">
+        {% buttons %}
+            <button type="submit" class="btn btn-warning">Update main information</button>
+        {% endbuttons %}
+    </form>
+
     <!-- Part 1 : Management of ingredients recipe-->
     <div>
 
@@ -49,7 +69,7 @@
                     {% csrf_token %}
                     {% bootstrap_form ingredient_form %}
                     {% buttons %}
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" name="add_ingredient" class="btn btn-primary">Submit</button>
                     {% endbuttons %}
                 </form>
 
@@ -75,11 +95,11 @@
         </form>
         <h3>Manage video</h3>
         <form id="video" method="post" action="{% url "recipes:recipe-video-upload" recipe.slug %}" name="video">
-        {% csrf_token %}
-        {% bootstrap_form video_form %}
-        {% buttons %}
-          <button type="submit" name="submit-video" class="btn btn-primary">Submit</button>
-        {% endbuttons %}
+            {% csrf_token %}
+            {% bootstrap_form video_form %}
+            {% buttons %}
+                <button type="submit" name="submit-video" class="btn btn-primary">Submit</button>
+            {% endbuttons %}
         </form>
     </div>
 
@@ -88,10 +108,25 @@
     <!-- Part 3 : Management of steps recipe-->
     <div>
 
-        <h4>Manage steps</h4>
+        <div class="row">
 
-        <h6>Your different steps</h6>
+            <div class="col-8">
+                <h3>Manage steps</h3>
 
+                <form method="post" action="">
+                    {% csrf_token %}
+                    {% bootstrap_form step_form %}
+                    {% buttons %}
+                        <button type="submit" name="add_step" class="btn btn-primary">Add step</button>
+                    {% endbuttons %}
+                </form>
+
+            </div>
+
+            <div class="col-4">
+                {% include 'recipes/partials/recipes/_recipes_step_list.html' %}
+            </div>
+        </div>
     </div>
 {% endblock %}
 
