@@ -6,7 +6,7 @@ import requests
 from django.forms import NumberInput
 
 from recipes.models import Profile, Recipe, RecipeComment, RecipeMark, RecipeImage, RecipeVideo, \
-    RecipeIngredient, IngredientUnitMeasure, IngredientFamily, Ingredient
+    RecipeIngredient, IngredientUnitMeasure, IngredientFamily, Ingredient, RecipeStep
 
 
 class RecipeForm(forms.ModelForm):
@@ -71,6 +71,12 @@ class MarkForm(forms.ModelForm):
     class Meta:
         model = RecipeMark
         exclude = ['created_at', 'user']
+
+
+class RecipeStepForm(forms.ModelForm):
+    class Meta:
+        model = RecipeStep
+        exclude = ['recipe']
 
 
 def fill_ingredient_families():

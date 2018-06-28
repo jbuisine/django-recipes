@@ -21,3 +21,6 @@ tests/report/
 
 # PyCharm
 .idea/
+
+# binaries
+db.sqlite3

@@ -29,7 +29,13 @@
                              alt="{{ recipe.title }}_picture">
                     {% endif %}
                     <p>
-                        <strong>Kind : </strong>{{ recipe.recipe_type }}
+                        <strong>Kind : </strong>
+                        {% for type in recipe.types.all %}
+                            {{ type }}
+                            {% if not forloop.last %}
+                                ,
+                            {% endif %}
+                        {% endfor %}
                     </p>
                     <p>
                         <strong>Difficulty : </strong>{{ recipe.recipe_difficulty }}

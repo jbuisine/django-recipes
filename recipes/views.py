@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from datetime import datetime
 from recipes.forms import CustomUserCreationForm, RecipeForm, CommentForm, ImageForm, VideoForm, RecipeIngredientForm, \
-    MarkForm
+    MarkForm, RecipeStepForm
 
 from recipes.models import Recipe, RecipeComment, RecipeImage, RecipeIngredient, Ingredient, IngredientFamily, \
     IngredientUnitMeasure, RecipeVideo
@@ -153,15 +153,15 @@ def manage_recipe(request, recipe_slug):
 
     try:
         video = RecipeVideo.objects.get(recipe=recipe)
-        video_form = VideoForm(request.post, instance=video)
+        video_form = VideoForm(instance=video)
     except RecipeVideo.DoesNotExist:
-        video_form = VideoForm(request.post)
+        video_form = VideoForm(request.POST)
 
     return render(request, 'recipes/user/manage_recipe.html',
-                  {
-                   'video_form': video_form,
+                  {'video_form': video_form,
                    'ingredient_form': ingredient_form,
                    'recipe': recipe})
+
 
 @login_required()
 def recipe_video_upload(request,recipe_slug):
@@ -181,6 +181,7 @@ def recipe_video_upload(request,recipe_slug):
             video.save()
 
     return redirect('recipes:recipe-manage', recipe_slug=recipe_slug)
+
 
 @login_required()
 def recipe_media_upload(request, recipe_slug):
@@ -302,3 +303,21 @@ def add_or_update_mark(request):
 
             return JsonResponse({'recipe_mark_mean': recipe.mean_of_marks,
                                  'number_of_marks': recipe.number_of_marks})
+
+
+##############
+# Step parts #
+##############
+
+@login_required()
+def add_recipe_step(request):
+
+    if request.method == 'POST':
+
+        # get step form
+        step_form = RecipeStepForm(request.POST)
+
+        if step_form.is_valid():
+
+            mark_obj = step_form.save(commit=False)
+

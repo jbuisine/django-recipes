@@ -149,7 +149,7 @@ class Recipe(models.Model):
 
     # foreign key fields
     recipe_difficulty = models.ForeignKey(RecipeDifficulty, on_delete=models.CASCADE)
-    recipe_type = models.ForeignKey(RecipeType, on_delete=models.CASCADE)
+    recipe_types = models.ManyToManyField(RecipeType, related_name='types')
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
