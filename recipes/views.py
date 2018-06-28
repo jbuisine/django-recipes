@@ -6,8 +6,13 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from datetime import datetime
 from recipes.forms import CustomUserCreationForm, RecipeForm, CommentForm, ImageForm, VideoForm, RecipeIngredientForm, \
+<<<<<<< Updated upstream
     MarkForm, RecipeStepForm
 
+=======
+    MarkForm
+from django.db.models import Q
+>>>>>>> Stashed changes
 from recipes.models import Recipe, RecipeComment, RecipeImage, RecipeIngredient, Ingredient, IngredientFamily, \
     IngredientUnitMeasure, RecipeVideo
 
@@ -305,6 +310,7 @@ def add_or_update_mark(request):
                                  'number_of_marks': recipe.number_of_marks})
 
 
+<<<<<<< Updated upstream
 ##############
 # Step parts #
 ##############
@@ -321,3 +327,13 @@ def add_recipe_step(request):
 
             mark_obj = step_form.save(commit=False)
 
+=======
+def search(request):
+    query = request.GET.get('search')
+    recipes_list = Recipe.objects.filter(Q(title__icontains=query) | Q(description__icontains=query))
+    paginator = Paginator(recipes_list, NUMBER_OF_RECIPES_PER_PAGE)
+    page = request.GET.get('page')
+    recipes = paginator.get_page(page)
+
+    return render(request, 'recipes/show_recipes.html', {'recipes': recipes})
+>>>>>>> Stashed changes
