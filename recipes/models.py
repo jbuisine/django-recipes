@@ -3,6 +3,9 @@ from django.db import models
 # import of User auth django model
 from django.contrib.auth.models import User
 from datetime import date, datetime
+
+from django.db.models import Count, Avg
+from django.db.models.functions import Coalesce
 from django.utils.text import slugify
 
 
@@ -106,6 +109,16 @@ class RecipeType(models.Model):
         return self.label
 
 
+class RecipeManager(models.Manager):
+    """
+        Custom manager : query to get aggregate annotations fields
+    """
+    def with_annotates(self):
+        return super(RecipeManager, self).get_queryset() \
+            .annotate(number_of_marks=Coalesce(Count('marks'), 0)) \
+            .annotate(mean_of_marks=Coalesce(Avg('marks__mark_score'), 0))
+
+
 class Recipe(models.Model):
     """
          Representation of recipe
@@ -113,6 +126,8 @@ class Recipe(models.Model):
              - associated to a type of recipe
              - can be created, updated and deleted by an user
      """
+    objects = RecipeManager()
+
     # description fields
     title = models.CharField(max_length=255)
     slug = models.SlugField(unique=True, null=False)
@@ -126,10 +141,6 @@ class Recipe(models.Model):
     relaxation_time = models.IntegerField(default=0)
 
     recipe_number_person = models.IntegerField(default=1)
-
-    # mark fields
-    mean_of_marks = models.FloatField(default=0.)
-    number_of_marks = models.IntegerField(default=0)
 
     # date information fields
     created_at = models.DateTimeField(auto_now_add=True)
@@ -147,17 +158,6 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.title
-
-    def add_mark(self, mark):
-        # compute the value of mean
-        self.mean_of_marks = (self.mean_of_marks * self.number_of_marks + mark) / (self.number_of_marks + 1)
-        # increase number of mark
-        self.number_of_marks += 1
-
-    def update_mark(self, old_mark, new_mark):
-        # compute the value of mean
-        self.mean_of_marks = (self.mean_of_marks * self.number_of_marks - old_mark + new_mark) \
-                             / self.number_of_marks
 
     def save(self, *args, **kwargs):
         super(Recipe, self).save(*args, **kwargs)

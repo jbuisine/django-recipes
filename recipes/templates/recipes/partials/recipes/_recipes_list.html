@@ -1,10 +1,10 @@
 <div class="my-3 p-3 bg-white rounded box-shadow">
     <h4 class="border-bottom border-gray pb-2 mb-0">{{ list_title }}</h4>
 
-    <div class="card-deck">
+    <div class="card-deck row">
         {% for recipe in recipes %}
 
-            <div class="card">
+            <div class="card col-4" style="border: none;">
                 {% if recipe.images.all %}
                     <img src="/{{ recipe.images.all.first.image }}" alt="recipe_image" class="card-img-top">
                 {% endif %}

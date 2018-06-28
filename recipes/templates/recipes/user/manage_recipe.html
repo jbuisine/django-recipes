@@ -58,36 +58,8 @@
             </div>
             <div class="col-md-4">
 
-                <div class="my-3 p-3 bg-white rounded box-shadow">
-                    <h6 class="border-bottom border-gray pb-2 mb-0">Your ingredients list</h6>
+                {% include 'recipes/partials/recipes/_recipes_ingredients_list.html' %}
 
-
-                    {% for r_ingredient in recipe.ingredients.all %}
-
-                        <div class="media text-muted pt-3">
-
-                            <img class="mr-2 rounded" src="/{{ r_ingredient.ingredient.photo.path }}"
-                                 style="width: 64px; height: 64px;">
-
-                            <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-                                <div class="d-flex justify-content-between align-items-center w-100">
-                                    <strong class="text-gray-dark">{{ r_ingredient.ingredient.name }}</strong>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center w-100">
-                                    <div class="text-gray-dark"><i>{{ r_ingredient.ingredient.family }}</i></div>
-                                    <a href="{% url 'recipes:recipe-delete-ingredient' recipe_ingredient_id=r_ingredient.id %}">
-                                        <button class="btn btn-outline-danger">
-                                            Delete
-                                        </button>
-                                    </a>
-                                </div>
-                                <span class="d-block">{{ r_ingredient.quantity }} {{ r_ingredient.unit_measure.label }}</span>
-                            </div>
-
-                        </div>
-
-                    {% endfor %}
-                </div>
             </div>
         </div>
     </div>
