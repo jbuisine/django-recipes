@@ -113,8 +113,10 @@ def detail(request, recipe_slug):
 
 
 @login_required()
-def add_recipe(request):
-    if request.method == 'POST':
+def add_or_update_recipe(request):
+
+    if request.method == 'POST' and not 'recipe_slug' in request.POST:
+
         recipe_form = RecipeForm(request.POST)
 
         if recipe_form.is_valid():
@@ -128,7 +130,15 @@ def add_recipe(request):
 
             return redirect('recipes:recipe-manage', recipe_slug=recipe_obj.slug)
     else:
-        recipe_form = RecipeForm()
+
+        recipe_slug = request.POST.get('recipe_slug', '')
+
+        # check if user wants to update or create
+        if recipe_slug == "":
+            recipe_form = RecipeForm()
+        else:
+            current_recipe = Recipe.objects.get(slug=recipe_slug)
+            recipe_form = RecipeForm(instance=current_recipe)
 
     return render(request, 'recipes/user/add_recipe.html', {'recipe_form': recipe_form})
 

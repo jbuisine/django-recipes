@@ -18,7 +18,7 @@ urlpatterns = [
     re_path(r'^profile/(?P<user_username>\w+)/$', views.user_detail, name='user-detail'),
 
     # recipe part
-    path('recipes/add', views.add_recipe, name='add_recipe'),
+    path('recipes/add', views.add_or_update_recipe, name='recipe-add-or-update'),
     path('recipe/publish', views.publish_recipe, name='recipe-publish-state'),
     path('recipe/<slug:recipe_slug>/', views.detail, name='recipe-detail'),
     path('recipe/manage/<slug:recipe_slug>/', views.manage_recipe, name='recipe-manage'),

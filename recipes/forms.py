@@ -16,7 +16,7 @@ class RecipeForm(forms.ModelForm):
 
     class Meta:
         model = Recipe
-        exclude = ['user', 'members', 'number_of_marks', 'mean_of_marks', 'recipe_ingredients','slug']
+        exclude = ['user', 'members', 'number_of_marks', 'mean_of_marks', 'recipe_ingredients', 'slug', 'published']
 
         prepation_time = forms.IntegerField(label='Preparation time in minutes')
         cooking_time = forms.IntegerField(label='Cooking time in minutes')
