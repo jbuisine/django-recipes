@@ -11,12 +11,19 @@
     <link rel="stylesheet" type="text/css" href="{% static "css/basic.min.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "css/star-rating-svg.css" %}">
     <style>
-    .dz-image img{width: 100%;height: 100%;}
+        .dz-image img {
+            width: 100%;
+            height: 100%;
+        }
     </style>
 {% endblock %}
 
 {% block title %}
     {{ recipe.title }}
+{% endblock %}
+
+{% block container %}
+    <div class="container-fluid" style="margin-top: 20px;">
 {% endblock %}
 
 {% block content %}
@@ -31,40 +38,30 @@
 
         <hr/>
 
-
-        <h5>Add new ingredient</h5>
-
-        <form method="post" id="recipeIngredientForm"
-              data-ingredients-url="{% url 'recipes:recipe-ingredients-of-family' %}"
-              data-units-url="{% url 'recipes:recipe-unit-of-ingredient' %}"
-              novalidate>
-            {% csrf_token %}
-
-            {% bootstrap_form ingredient_form %}
-
-            {% buttons %}
-                <button type="submit" class="btn btn-primary">Submit</button>
-            {% endbuttons %}
-        </form>
-
-        <h5>Your ingredients list</h5>
-
         <div class="row">
-            {% for r_ingredient in recipe.ingredients.all %}
+            <div class="col-md-8">
+                <h5>Add new ingredient</h5>
 
-                <div class="col-sm-3 card" style="width: 18rem;">
-                    <img class="card-img-top" src="/{{ r_ingredient.ingredient.photo.path }}">
-                    <div class="card-body">
-                        <h5 class="card-title"><strong>{{ r_ingredient.ingredient.name }}</strong></h5>
-                        <p>{{ r_ingredient.quantity }} {{ r_ingredient.unit_measure.label }}</p>
-                        <a href="{% url 'recipes:recipe-delete-ingredient' recipe_ingredient_id=r_ingredient.id %}"
-                           class="btn btn-outline-danger">Delete</a>
-                    </div>
-                </div>
+                <form method="post" id="recipeIngredientForm"
+                      data-ingredients-url="{% url 'recipes:recipe-ingredients-of-family' %}"
+                      data-units-url="{% url 'recipes:recipe-unit-of-ingredient' %}"
+                      novalidate>
+                    {% csrf_token %}
 
-            {% endfor %}
+                    {% bootstrap_form ingredient_form %}
+
+                    {% buttons %}
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    {% endbuttons %}
+                </form>
+
+            </div>
+            <div class="col-md-4">
+
+                {% include 'recipes/partials/recipes/_recipes_ingredients_list.html' %}
+
+            </div>
         </div>
-
     </div>
 
     <hr/>
@@ -107,21 +104,21 @@
             maxFiles: 5,
             paramName: 'file',
             uploadMultiple: true,
-           // autoProcessQueue: false,
+            // autoProcessQueue: false,
             addRemoveLinks: true,
             url: "{% url "recipes:recipe-media-upload" recipe.slug %}",
 
             init: function () {
-               // var submitButton = document.querySelector("#submit-all");
+                // var submitButton = document.querySelector("#submit-all");
                 myDropzone = this;
                 {% for img in recipe.images.all %}
                     var mockFile = {name: "{{ img.image }}", size: {{ img.image.size }}};
                     myDropzone.options.addedfile.call(myDropzone, mockFile);
                     myDropzone.options.thumbnail.call(myDropzone, mockFile, "{% url 'recipes:home' %}{{ img.image }}");
                 {% endfor %}
-               // submitButton.addEventListener("click", function () {
+                // submitButton.addEventListener("click", function () {
                 //    myDropzone.processQueue();
-               // });
+                // });
                 this.on("success", function (file, serverResponse) {
 
                     //  var fileuploded = file.previewElement.querySelector("[data-dz-name]");

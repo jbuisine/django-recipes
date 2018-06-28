@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.db.models import Avg
 from django.http import HttpResponseForbidden, Http404, JsonResponse
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
@@ -8,7 +9,7 @@ from recipes.forms import CustomUserCreationForm, RecipeForm, CommentForm, Image
     MarkForm
 
 from recipes.models import Recipe, RecipeComment, RecipeImage, RecipeIngredient, Ingredient, IngredientFamily, \
-    IngredientUnitMeasure
+    IngredientUnitMeasure, RecipeMark
 
 from django.shortcuts import redirect
 
@@ -53,7 +54,7 @@ def account(request):
 
 
 def show_recipes(request):
-    recipes_list = Recipe.objects.all().filter(published=True).order_by('-published_at')
+    recipes_list = Recipe.objects.with_annotates().filter(published=True).order_by('-published_at')
     paginator = Paginator(recipes_list, NUMBER_OF_RECIPES_PER_PAGE)
     page = request.GET.get('page')
     recipes = paginator.get_page(page)
@@ -72,7 +73,7 @@ def user_detail(request, user_username):
 
 def detail(request, recipe_slug):
     try:
-        recipe = Recipe.objects.get(slug=recipe_slug)
+        recipe = Recipe.objects.with_annotates().get(slug=recipe_slug)
     except Recipe.DoesNotExist:
         raise Http404("Recipe does not exist")
 
@@ -81,7 +82,6 @@ def detail(request, recipe_slug):
     paginator = Paginator(comments_list, NUMBER_OF_COMMENTS_PER_PAGE)
     page = request.GET.get('page')
     comments = paginator.get_page(page)
-
 
     # get current mark of user if exists
     current_mark_score = 0
@@ -134,7 +134,7 @@ def add_recipe(request):
 @login_required()
 def manage_recipe(request, recipe_slug):
     try:
-        recipe = Recipe.objects.get(slug=recipe_slug)
+        recipe = Recipe.objects.with_annotates().get(slug=recipe_slug)
     except Recipe.DoesNotExist:
         raise Http404("Recipe does not exist")
 
@@ -159,6 +159,11 @@ def manage_recipe(request, recipe_slug):
         video_form = VideoForm()
         image_form = ImageForm()
         ingredient_form = RecipeIngredientForm()
+
+    # add recipe aggregate
+    marks = RecipeMark.objects.filter(recipe=recipe)
+    recipe.mean_of_marks = marks.aggregate(Avg('mark_score'))
+    recipe.number_of_marks = marks.count()
 
     return render(request, 'recipes/user/manage_recipe.html',
                   {'image_form': image_form,
@@ -275,17 +280,15 @@ def add_or_update_mark(request):
 
             # mark already exists
             if mark_obj_exists:
-                # update recipe mark mean (using old and new)
-                recipe.update_mark(mark_obj_exists.mark_score, mark_obj.mark_score)
-                recipe.save()
-
                 # update mark
                 mark_obj_exists.mark_score = mark_obj.mark_score
                 mark_obj_exists.save()
             else:
                 mark_obj.save()
-                recipe.add_mark(mark_obj.mark_score)
-                recipe.save()
+
+            # TODO : find another way to reload annotate (if exists)
+            # get new recipe aggregate values
+            recipe = Recipe.objects.with_annotates().get(id=recipe.id)
 
             return JsonResponse({'recipe_mark_mean': recipe.mean_of_marks,
                                  'number_of_marks': recipe.number_of_marks})
