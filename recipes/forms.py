@@ -59,7 +59,7 @@ class ImageForm(forms.Form):
         fields = ('image',)
 
 
-class VideoForm(forms.Form):
+class VideoForm(forms.ModelForm):
     path = forms.URLField(label='link of your video')
 
     class Meta:

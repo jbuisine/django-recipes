@@ -8,7 +8,7 @@ from recipes.forms import CustomUserCreationForm, RecipeForm, CommentForm, Image
     MarkForm
 
 from recipes.models import Recipe, RecipeComment, RecipeImage, RecipeIngredient, Ingredient, IngredientFamily, \
-    IngredientUnitMeasure
+    IngredientUnitMeasure, RecipeVideo
 
 from django.shortcuts import redirect
 
@@ -142,30 +142,44 @@ def manage_recipe(request, recipe_slug):
         raise HttpResponseForbidden("You cannot update this recipe")
 
     if request.method == 'POST':
-        image_form = ImageForm(request.POST, request.FILES)
-        video_form = VideoForm(request.POST)
         ingredient_form = RecipeIngredientForm(request.POST)
-
-        if image_form.is_valid():
-            new_file = RecipeImage(image=request.FILES['file'], recipe=recipe)
-            new_file.save()
-
         if ingredient_form.is_valid():
             recipe_ingredient_obj = ingredient_form.save(commit=False)
             recipe_ingredient_obj.recipe = recipe
             recipe_ingredient_obj.save()
-
     else:
-        video_form = VideoForm()
-        image_form = ImageForm()
         ingredient_form = RecipeIngredientForm()
 
+    try:
+        video = RecipeVideo.objects.get(recipe=recipe)
+        video_form = VideoForm(request.post, instance=video)
+    except RecipeVideo.DoesNotExist:
+        video_form = VideoForm(request.post)
+
     return render(request, 'recipes/user/manage_recipe.html',
-                  {'image_form': image_form,
+                  {
                    'video_form': video_form,
                    'ingredient_form': ingredient_form,
                    'recipe': recipe})
 
+@login_required()
+def recipe_video_upload(request,recipe_slug):
+    try:
+        recipe = Recipe.objects.get(slug=recipe_slug)
+    except Recipe.DoesNotExist:
+        raise Http404("Recipe does not exist")
+
+    video_form = VideoForm(request.POST)
+    if video_form.is_valid():
+        try:
+            video = RecipeVideo.objects.get(recipe=recipe)
+            video.path = request.POST.get('path')
+            video.save()
+        except RecipeVideo.DoesNotExist:
+            video = RecipeVideo.objects.create(recipe=recipe,path=request.POST.get('path'))
+            video.save()
+
+    return redirect('recipes:recipe-manage', recipe_slug=recipe_slug)
 
 @login_required()
 def recipe_media_upload(request, recipe_slug):

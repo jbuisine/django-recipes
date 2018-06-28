@@ -34,7 +34,7 @@
 
         <h5>Add new ingredient</h5>
 
-        <form method="post" id="recipeIngredientForm"
+        <form method="post" id="recipeIngredientForm" name="ingredient"
               data-ingredients-url="{% url 'recipes:recipe-ingredients-of-family' %}"
               data-units-url="{% url 'recipes:recipe-unit-of-ingredient' %}"
               novalidate>
@@ -43,7 +43,7 @@
             {% bootstrap_form ingredient_form %}
 
             {% buttons %}
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" name="submit-ing" class="btn btn-primary">Submit</button>
             {% endbuttons %}
         </form>
 
@@ -81,8 +81,12 @@
             </div>
         </form>
         <h3>Manage video</h3>
-        <form id="video" method="post">
+        <form id="video" method="post" action="{% url "recipes:recipe-video-upload" recipe.slug %}" name="video">
+        {% csrf_token %}
         {% bootstrap_form video_form %}
+        {% buttons %}
+          <button type="submit" name="submit-video" class="btn btn-primary">Submit</button>
+        {% endbuttons %}
         </form>
     </div>
 
