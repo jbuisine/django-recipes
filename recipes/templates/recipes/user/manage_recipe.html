@@ -71,12 +71,16 @@
     <div>
 
         <h4>Manage medias of recipe</h4>
-
+        <h3>Manage pictures</h3>
         <form id="dz" method="post" enctype="multipart/form-data" class="dropzone">
             {% csrf_token %}
             <div class="fallback">
                 {{ image_form }}
             </div>
+        </form>
+        <h3>Manage video</h3>
+        <form id="video" method="post">
+        {% bootstrap_form video_form %}
         </form>
     </div>
 

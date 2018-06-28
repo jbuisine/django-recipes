@@ -55,8 +55,11 @@ class ImageForm(forms.Form):
 
 
 class VideoForm(forms.Form):
+    path = forms.URLField(label='link of your video')
+
     class Meta:
         model = RecipeVideo
+        fields = ('path',)
 
 
 class MarkForm(forms.ModelForm):
