@@ -11,8 +11,7 @@ from recipes.forms import CustomUserCreationForm, RecipeForm, CommentForm, Image
 from django.db.models import Q
 
 from recipes.models import Recipe, RecipeComment, RecipeImage, RecipeIngredient, Ingredient, IngredientFamily, \
-    IngredientUnitMeasure, RecipeVideo
-
+    IngredientUnitMeasure, RecipeVideo, RecipeStep
 
 from django.shortcuts import redirect
 
@@ -146,12 +145,25 @@ def manage_recipe(request, recipe_slug):
 
     if request.method == 'POST':
         ingredient_form = RecipeIngredientForm(request.POST)
+        step_form = RecipeStepForm(request.POST)
+
         if ingredient_form.is_valid():
             recipe_ingredient_obj = ingredient_form.save(commit=False)
             recipe_ingredient_obj.recipe = recipe
             recipe_ingredient_obj.save()
+
+        if step_form.is_valid():
+            step_obj = step_form.save(commit=False)
+
+            step_count = RecipeStep.objects.filter(recipe=recipe).count()
+
+            step_obj.level = step_count + 1
+            step_obj.recipe = recipe
+            step_obj.save()
+
     else:
         ingredient_form = RecipeIngredientForm()
+        step_form = RecipeStepForm()
 
     try:
         video = RecipeVideo.objects.get(recipe=recipe)
@@ -162,6 +174,7 @@ def manage_recipe(request, recipe_slug):
     return render(request, 'recipes/user/manage_recipe.html',
                   {'video_form': video_form,
                    'ingredient_form': ingredient_form,
+                   'step_form': step_form,
                    'recipe': recipe})
 
 
@@ -307,22 +320,19 @@ def add_or_update_mark(request):
                                  'number_of_marks': recipe.number_of_marks})
 
 
-
-##############
-# Step parts #
-##############
-
 @login_required()
-def add_recipe_step(request):
+def delete_recipe_step(request, step_id):
+    try:
+        recipe_step = RecipeStep.objects.get(id=step_id)
+    except Recipe.DoesNotExist:
+        raise Http404("Recipe step does not exist")
 
-    if request.method == 'POST':
+    recipe_slug = recipe_step.recipe.slug
 
-        # get step form
-        step_form = RecipeStepForm(request.POST)
+    # remove recipe step
+    recipe_step.delete()
 
-        if step_form.is_valid():
-
-            mark_obj = step_form.save(commit=False)
+    return redirect('recipes:recipe-manage', recipe_slug=recipe_slug)
 
 
 def search(request):

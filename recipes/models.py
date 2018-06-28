@@ -188,7 +188,7 @@ class RecipeStep(models.Model):
     """
     level = models.IntegerField()
     description = models.TextField()
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='steps')
 
     def __str__(self):
         return "Step %s  : %s" % (self.level, self.description)

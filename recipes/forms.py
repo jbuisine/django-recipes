@@ -76,7 +76,7 @@ class MarkForm(forms.ModelForm):
 class RecipeStepForm(forms.ModelForm):
     class Meta:
         model = RecipeStep
-        exclude = ['recipe']
+        exclude = ['recipe', 'level']
 
 
 def fill_ingredient_families():

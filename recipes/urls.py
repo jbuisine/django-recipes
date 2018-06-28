@@ -30,4 +30,6 @@ urlpatterns = [
 
     re_path('recipe/add-or-update-mark', views.add_or_update_mark, name='recipe-add-or-update-mark'),
 
+    re_path('recipe/delete-step/(?P<step_id>\d+)/$', views.delete_recipe_step, name='recipe-delete-step'),
+
 ]

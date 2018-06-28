@@ -75,11 +75,11 @@
         </form>
         <h3>Manage video</h3>
         <form id="video" method="post" action="{% url "recipes:recipe-video-upload" recipe.slug %}" name="video">
-        {% csrf_token %}
-        {% bootstrap_form video_form %}
-        {% buttons %}
-          <button type="submit" name="submit-video" class="btn btn-primary">Submit</button>
-        {% endbuttons %}
+            {% csrf_token %}
+            {% bootstrap_form video_form %}
+            {% buttons %}
+                <button type="submit" name="submit-video" class="btn btn-primary">Submit</button>
+            {% endbuttons %}
         </form>
     </div>
 
@@ -88,10 +88,47 @@
     <!-- Part 3 : Management of steps recipe-->
     <div>
 
-        <h4>Manage steps</h4>
+        <div class="row">
 
-        <h6>Your different steps</h6>
+            <div class="col-8">
+                <h3>Manage steps</h3>
 
+                <form method="post" action="">
+                    {% csrf_token %}
+                    {% bootstrap_form step_form %}
+                    {% buttons %}
+                        <button type="submit" class="btn btn-primary">Add step</button>
+                    {% endbuttons %}
+                </form>
+
+            </div>
+
+            <div class="col-4">
+                <h3>Recipe steps</h3>
+
+                <hr />
+
+                {% for step in recipe.steps.all %}
+                    {% if user.is_authenticated and user == recipe.user %}
+                        <a href="{% url 'recipes:recipe-delete-step' step_id=step.id %}">
+                            <button class="btn btn-outline-danger" style="float: right;">
+                                Delete
+                            </button>
+                        </a>
+                    {% endif %}
+
+                    <h5><strong>Step {{ forloop.counter }}</strong></h5>
+
+                    <p>{{ step.description }}</p>
+
+
+                    {% if not forloop.last %}
+                        <hr/>
+                    {% endif %}
+
+                {% endfor %}
+            </div>
+        </div>
     </div>
 {% endblock %}
 
