@@ -4,7 +4,8 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from datetime import datetime
-from recipes.forms import CustomUserCreationForm, RecipeForm, CommentForm, ImageForm, VideoForm, RecipeIngredientForm
+from recipes.forms import CustomUserCreationForm, RecipeForm, CommentForm, ImageForm, VideoForm, RecipeIngredientForm, \
+    MarkForm
 
 from recipes.models import Recipe, RecipeComment, RecipeImage, RecipeIngredient, Ingredient, IngredientFamily, \
     IngredientUnitMeasure
@@ -20,19 +21,22 @@ NUMBER_OF_COMMENTS_PER_PAGE = 6
 
 def signup(request):
     if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
 
-        if form.is_valid():
-            form.save()
+        signup_form = CustomUserCreationForm(request.POST, request.FILES)
+
+        for key in request.FILES:
+            print(key)
+
+        if signup_form.is_valid():
+            signup_form.save()
 
             return redirect('recipes:home')
     else:
-        form = CustomUserCreationForm()
+        signup_form = CustomUserCreationForm()
 
-    return render(request, 'registration/signup.html', {'form': form})
+    return render(request, 'registration/signup.html', {'signup_form': signup_form})
 
 
-@login_required
 def home(request):
     return render(request, 'recipes/index.html')
 
@@ -66,17 +70,26 @@ def user_detail(request, user_username):
     return render(request, 'recipes/show_profile.html', {'selected_user': selected_user})
 
 
-def detail(request, slug):
+def detail(request, recipe_slug):
     try:
-        recipe_id = Recipe.objects.get(slug=slug)
+        recipe = Recipe.objects.get(slug=recipe_slug)
     except Recipe.DoesNotExist:
         raise Http404("Recipe does not exist")
 
-    comments_list = RecipeComment.objects.all().filter(recipe=recipe_id).order_by('-created_at')
+    comments_list = RecipeComment.objects.all().filter(recipe=recipe).order_by('-created_at')
 
     paginator = Paginator(comments_list, NUMBER_OF_COMMENTS_PER_PAGE)
     page = request.GET.get('page')
     comments = paginator.get_page(page)
+
+
+    # get current mark of user if exists
+    current_mark_score = 0
+
+    mark = recipe.marks.all().filter(user=request.user).first()
+
+    if mark:
+        current_mark_score = mark.mark_score
 
     if request.method == 'POST':
 
@@ -85,7 +98,7 @@ def detail(request, slug):
         if comment_form.is_valid():
             obj = comment_form.save(commit=False)
             obj.user = request.user
-            obj.recipe = recipe_id
+            obj.recipe = recipe
             obj.save()
 
             # init new comment form if comment saved
@@ -94,8 +107,9 @@ def detail(request, slug):
         comment_form = CommentForm()
 
     return render(request, 'recipes/detail_recipe.html',
-                  context={'recipe': recipe_id,
+                  context={'recipe': recipe,
                            'comments': comments,
+                           'current_mark_score': current_mark_score,
                            'comment_form': comment_form})
 
 
@@ -110,7 +124,7 @@ def add_recipe(request):
             recipe_obj.user = request.user
             recipe_obj.save()
 
-            return redirect('recipes:recipe-manage', recipe_id=recipe_obj.id)
+            return redirect('recipes:recipe-manage', recipe_slug=recipe_obj.slug)
     else:
         recipe_form = RecipeForm()
 
@@ -118,9 +132,9 @@ def add_recipe(request):
 
 
 @login_required()
-def manage_recipe(request, slug):
+def manage_recipe(request, recipe_slug):
     try:
-        recipe = Recipe.objects.get(slug=slug)
+        recipe = Recipe.objects.get(slug=recipe_slug)
     except Recipe.DoesNotExist:
         raise Http404("Recipe does not exist")
 
@@ -154,9 +168,9 @@ def manage_recipe(request, slug):
 
 
 @login_required()
-def recipe_media_upload(request, slug):
+def recipe_media_upload(request, recipe_slug):
     try:
-        recipe = Recipe.objects.get(slug=slug)
+        recipe = Recipe.objects.get(slug=recipe_slug)
     except Recipe.DoesNotExist:
         raise Http404("Recipe does not exist")
 
@@ -167,13 +181,14 @@ def recipe_media_upload(request, slug):
 
 
 @login_required()
-def recipe_media_delete(request, slug):
+def recipe_media_delete(request, recipe_slug):
     try:
-        recipe = Recipe.objects.get(slug=slug)
+        recipe = Recipe.objects.get(slug=recipe_slug)
     except Recipe.DoesNotExist:
         raise Http404("Recipe does not exist")
 
     image = request.GET.get('img', None)
+
     try :
         RecipeImage.objects.get(image=image, recipe=recipe).delete()
         os.remove(image)
@@ -230,9 +245,47 @@ def delete_recipe_ingredient(request, recipe_ingredient_id):
     except Recipe.DoesNotExist:
         raise Http404("Ingredient family does not exist")
 
-    recipe_id = recipe_ingredient.recipe.id
+    recipe_slug = recipe_ingredient.recipe.slug
 
     # remove recipe ingredient
     recipe_ingredient.delete()
 
-    return redirect('recipes:recipe-manage', recipe_id=recipe_id)
+    return redirect('recipes:recipe-manage', recipe_slug=recipe_slug)
+
+
+###############
+# Marks parts #
+###############
+def add_or_update_mark(request):
+
+    if request.method == 'POST':
+        # get mark form
+        mark_form = MarkForm(request.POST)
+
+        if mark_form.is_valid():
+            mark_obj = mark_form.save(commit=False)
+
+            # getting recipe object from form
+            mark_obj.user = request.user
+
+            # retrieve recipe
+            recipe = mark_obj.recipe
+
+            mark_obj_exists = recipe.marks.all().filter(user=request.user).first()
+
+            # mark already exists
+            if mark_obj_exists:
+                # update recipe mark mean (using old and new)
+                recipe.update_mark(mark_obj_exists.mark_score, mark_obj.mark_score)
+                recipe.save()
+
+                # update mark
+                mark_obj_exists.mark_score = mark_obj.mark_score
+                mark_obj_exists.save()
+            else:
+                mark_obj.save()
+                recipe.add_mark(mark_obj.mark_score)
+                recipe.save()
+
+            return JsonResponse({'recipe_mark_mean': recipe.mean_of_marks,
+                                 'number_of_marks': recipe.number_of_marks})

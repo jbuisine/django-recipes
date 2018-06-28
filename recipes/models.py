@@ -5,12 +5,19 @@ from django.contrib.auth.models import User
 from datetime import date, datetime
 from django.utils.text import slugify
 
+
+# useful function to set dynamic directory path to save file
+def avatar_path(self, filename):
+    # file will be uploaded to MEDIA_ROOT/avatars/user_<id>/<filename>
+    return 'static/media/avatars/{0}/{1}'.format(self.user.id, filename)
+
+
 class Profile(models.Model):
     """
         Custom attributes for user model
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    avatar = models.TextField()
+    avatar = models.ImageField(upload_to=avatar_path)
     date_of_birth = models.DateField()
     country = models.CharField(max_length=255)
     country_flag = models.TextField(default='')
@@ -24,16 +31,6 @@ class Profile(models.Model):
                ((today.month, today.day) < (self.date_of_birth.month, self.date_of_birth.day))
 
 
-class IngredientFamily(models.Model):
-    """
-       Specify a family name of Ingredient
-    """
-    name = models.CharField(max_length=255)
-
-    def __str__(self):
-        return self.name
-
-
 class IngredientUnitMeasure(models.Model):
     """
        Specify a unit measure
@@ -43,6 +40,16 @@ class IngredientUnitMeasure(models.Model):
 
     def __str__(self):
         return "%s (%s)" % (self.name, self.label)
+
+
+class IngredientFamily(models.Model):
+    """
+       Specify a family name of Ingredient
+    """
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
 
 
 class Ingredient(models.Model):
@@ -61,7 +68,7 @@ class IngredientPhoto(models.Model):
     """
         Photo of an ingredient
     """
-    path = models.TextField()
+    path = models.ImageField(upload_to='static/media/ingredients/')
     created_at = models.DateTimeField(auto_now_add=True)
     ingredient = models.OneToOneField(Ingredient, on_delete=models.CASCADE, related_name='photo')
 
@@ -113,10 +120,10 @@ class Recipe(models.Model):
     realization_cost = models.FloatField()
     published = models.BooleanField(default=False)
 
-    # time fields
-    preparation_time = models.DurationField()
-    cooking_time = models.DurationField()
-    relaxation_time = models.DurationField(default=0)
+    # time fields (use of integer field by default : number of minutes)
+    preparation_time = models.IntegerField()
+    cooking_time = models.IntegerField()
+    relaxation_time = models.IntegerField(default=0)
 
     # mark fields
     mean_of_marks = models.FloatField(default=0.)
@@ -141,11 +148,14 @@ class Recipe(models.Model):
 
     def add_mark(self, mark):
         # compute the value of mean
-        self.mean_of_marks = self.mean_of_marks * self.number_of_marks + mark / self.number_of_marks + 1
+        self.mean_of_marks = (self.mean_of_marks * self.number_of_marks + mark) / (self.number_of_marks + 1)
         # increase number of mark
         self.number_of_marks += 1
-        # save model
-        self.save()
+
+    def update_mark(self, old_mark, new_mark):
+        # compute the value of mean
+        self.mean_of_marks = (self.mean_of_marks * self.number_of_marks - old_mark + new_mark) \
+                             / self.number_of_marks
 
     def save(self, *args, **kwargs):
         super(Recipe, self).save(*args, **kwargs)
@@ -218,7 +228,7 @@ class RecipeMark(models.Model):
     mark_score = models.FloatField(default=0.)
     created_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='marks')
 
     def __str__(self):
         return "%s, give a mark %s to %s at %s" % (self.user.username, self.mark_score,

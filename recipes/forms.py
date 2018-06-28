@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 import datetime
 import requests
+from django.forms import NumberInput
 
 from recipes.models import Profile, Recipe, RecipeComment, RecipeMark, RecipeImage, RecipeVideo, \
     RecipeIngredient, IngredientUnitMeasure, IngredientFamily, Ingredient
@@ -17,11 +18,15 @@ class RecipeForm(forms.ModelForm):
         model = Recipe
         exclude = ['user', 'members', 'number_of_marks', 'mean_of_marks', 'recipe_ingredients','slug']
 
+        prepation_time = forms.IntegerField(label='Preparation time in minutes')
+        cooking_time = forms.IntegerField(label='Cooking time in minutes')
+        relaxation_time = forms.IntegerField(label='Relaxation time in minutes')
+
         # define widgets of time field
         widgets = {
-            'preparation_time': forms.TimeInput(format='%H:%M'),
-            'cooking_time': forms.TimeInput(format='%H:%M'),
-            'relaxation_time': forms.TimeInput(format='%H:%M'),
+            'preparation_time': NumberInput(attrs={'min': 0}),
+            'cooking_time': NumberInput(attrs={'min': 0}),
+            'relaxation_time': NumberInput(attrs={'min': 0}),
         }
 
 
@@ -65,14 +70,30 @@ class VideoForm(forms.Form):
 class MarkForm(forms.ModelForm):
     class Meta:
         model = RecipeMark
-        exclude = ['user', 'recipe']
+        exclude = ['created_at', 'user']
+
+
+def fill_ingredient_families():
+    """
+    Function created to avoid issue when filling choices of RecipeIngredientForm
+    when database is not already created
+
+    :return: all choices of ingredients families
+    """
+    families_choices = [('', '-----------')]
+
+    for family in IngredientFamily.objects.all():
+        families_choices.append((family.id, family.name))
+
+    return list(families_choices)
 
 
 class RecipeIngredientForm(forms.ModelForm):
-    ingredient_families = \
-        forms.ChoiceField(label='Choose the ingredient family',
-                          choices=[(family.id, family.name) for family in IngredientFamily.objects.all()],
-                          required=True)
+
+    # use of specific function to fill this choice field
+    ingredient_families = forms.ChoiceField(label='Choose the ingredient family',
+                                            choices=fill_ingredient_families,
+                                            required=True)
 
     class Meta:
         model = RecipeIngredient
@@ -81,7 +102,6 @@ class RecipeIngredientForm(forms.ModelForm):
             'ingredient',
             'quantity',
             'unit_measure',
-            # other fields
         )
 
     def __init__(self, *args, **kwargs):
@@ -111,10 +131,31 @@ class RecipeIngredientForm(forms.ModelForm):
             self.fields['unit_measure'].queryset = self.instance.ingredient.unit_measure_set.order_by('name')
 
 
-class CustomUserCreationForm(forms.Form):
+class CustomUserCreationForm(forms.ModelForm):
+
     """
-        Custom UserCreationForm
+        Custom UserCreationForm using Profile class
     """
+
+    class Meta:
+        model = Profile
+        fields = (
+            'first_name',
+            'last_name',
+            'username',
+            'email',
+            'password1',
+            'password2',
+            'date_of_birth',
+            'country_choice',
+            'avatar',
+        )
+        exclude = ['country', 'county_flag']
+
+        widgets = {
+            'avatar': forms.ClearableFileInput()
+        }
+
     first_name = forms.CharField(label='Enter your firstname ',
                                  widget=forms.TextInput(attrs={'placeholder': 'Firstname'}),
                                  min_length=4,
@@ -155,12 +196,9 @@ class CustomUserCreationForm(forms.Form):
     country_api_url = 'https://restcountries.eu/rest/v2/all'
     country_data = requests.get(url=country_api_url).json()
 
-    country = forms.ChoiceField(label='Your country',
-                                choices=[(idx, val['name']) for idx, val in enumerate(country_data)],
-                                required=True)
-
-    avatar_link = forms.CharField(label='Enter your avatar link',
-                                  widget=forms.TextInput(attrs={'placeholder': 'https://myavatar.com/233'}))
+    country_choice = forms.ChoiceField(label='Your country',
+                                       choices=[(idx, val['name']) for idx, val in enumerate(country_data)],
+                                       required=True)
 
     def clean_username(self):
         username = self.cleaned_data['username'].lower()
@@ -203,12 +241,12 @@ class CustomUserCreationForm(forms.Form):
                                         password=self.cleaned_data['password1'])
 
         # retrieve country index from form
-        country_index = int(self.cleaned_data['country'])
+        country_index = int(self.cleaned_data['country_choice'])
 
         # create specific Profile for this user
         user_profile = Profile()
         user_profile.user = user
-        user_profile.avatar = self.cleaned_data['avatar_link']
+        user_profile.avatar = self.cleaned_data['avatar']
         user_profile.date_of_birth = self.cleaned_data['date_of_birth']
         user_profile.country = self.country_data[country_index]['name']
         user_profile.country_flag = self.country_data[country_index]['flag']
