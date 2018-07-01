@@ -11,7 +11,7 @@ from recipes.forms import CustomUserCreationForm, RecipeForm, CommentForm, Image
 from django.db.models import Q
 
 from recipes.models import Recipe, RecipeComment, RecipeImage, RecipeIngredient, Ingredient, IngredientFamily, \
-    IngredientUnitMeasure, RecipeVideo
+    IngredientUnitMeasure, RecipeVideo, RecipeDifficulty, RecipeType
 
 
 from django.shortcuts import redirect
@@ -48,7 +48,7 @@ def home(request):
 @login_required()
 def account(request):
     # getting recipes of user
-    recipes_list = Recipe.objects.all().filter(published=True, user=request.user).order_by('-published_at')
+    recipes_list = Recipe.objects.all().filter(user=request.user).order_by('-published_at')
     paginator = Paginator(recipes_list, NUMBER_OF_RECIPES_PER_PAGE)
     page = request.GET.get('page')
     recipes = paginator.get_page(page)
@@ -157,7 +157,7 @@ def manage_recipe(request, recipe_slug):
         video = RecipeVideo.objects.get(recipe=recipe)
         video_form = VideoForm(instance=video)
     except RecipeVideo.DoesNotExist:
-        video_form = VideoForm(request.POST)
+        video_form = VideoForm()
 
     return render(request, 'recipes/user/manage_recipe.html',
                   {'video_form': video_form,
@@ -219,6 +219,33 @@ def recipe_media_delete(request, recipe_slug):
 
     return JsonResponse({'success': True})
 
+@login_required()
+def recipe_delete(request, recipe_slug):
+    try:
+        recipe = Recipe.objects.get(slug=recipe_slug)
+    except Recipe.DoesNotExist:
+        raise Http404("Recipe does not exist")
+
+    imgs = RecipeImage.objects.all().filter(recipe=recipe)
+    for img in imgs:
+        os.remove(img.path)
+        img.delete()
+
+    recipe.delete()
+    return redirect('recipes:home')
+
+@login_required()
+def update_recipe(request,recipe_slug):
+    try:
+        recipe = Recipe.objects.get(slug=recipe_slug)
+    except Recipe.DoesNotExist:
+        raise Http404("Recipe does not exist")
+    difficulty = RecipeDifficulty.objects.get(recipe=recipe)
+    recipe_form = RecipeForm(instance=recipe)
+    recipe_form.recipe_difficulty = difficulty
+    recipe_form.recipe_types = recipe.recipe_types.all()
+
+    return render(request, 'recipes/user/add_recipe.html', {'recipe_form': recipe_form, "recipe": recipe})
 
 #####################
 # Ingredients parts #

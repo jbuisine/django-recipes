@@ -18,8 +18,10 @@ urlpatterns = [
 
     # recipe part
     path('recipes/add', views.add_recipe, name='add_recipe'),
+    path('recipes/update/<slug:recipe_slug>/', views.update_recipe, name='update_recipe'),
     path('recipe/<slug:recipe_slug>/', views.detail, name='recipe-detail'),
     path('recipe/manage/<slug:recipe_slug>/', views.manage_recipe, name='recipe-manage'),
+    path('recipe/<slug:recipe_slug>/delete/', views.recipe_delete, name='recipe-delete'),
     path('recipe/manage/media/<slug:recipe_slug>/upload', views.recipe_media_upload, name='recipe-media-upload'),
     path('recipe/manage/media/<slug:recipe_slug>/delete', views.recipe_media_delete, name='recipe-media-delete'),
     path('recipe/manage/media/<slug:recipe_slug>/upload-video', views.recipe_video_upload, name='recipe-video-upload'),

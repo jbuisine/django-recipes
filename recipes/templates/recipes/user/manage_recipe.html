@@ -28,7 +28,7 @@
 
 {% block content %}
     <h2>Manage recipe : {{ recipe.title }}</h2>
-
+    <a href="{% url 'recipes:update_recipe' recipe.slug %}">Advanced modifications</a>
     <hr/>
 
     <!-- Part 1 : Management of ingredients recipe-->
