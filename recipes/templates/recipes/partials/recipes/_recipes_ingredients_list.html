@@ -1,5 +1,5 @@
 <div class="my-3 p-3 bg-white rounded box-shadow">
-    <h6 class="border-bottom border-gray pb-2 mb-0">Ingredients list</h6>
+    <h3 class="border-bottom border-gray pb-2 mb-0">Ingredients list</h3>
 
     {% for r_ingredient in recipe.ingredients.all %}
 
@@ -28,5 +28,7 @@
 
         </div>
 
+    {% empty %}
+        Recipe does not contain ingredients
     {% endfor %}
 </div>

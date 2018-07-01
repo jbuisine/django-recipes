@@ -11,7 +11,7 @@
 
         <ul class="navbar-nav mr-auto">
             {% if user.is_authenticated %}
-                <li class="nav-item"><a class="nav-link" href="{% url 'recipes:add_recipe' %}">Add Recipe</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'recipes:recipe-add-or-update' %}">Add Recipe</a></li>
             {% endif %}
         </ul>
 
@@ -22,6 +22,8 @@
             <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
 
         </form>
+
+
         <ul class="navbar-nav mr-right">
             {% if user.is_authenticated %}
                 <li class="nav-item"><a class="nav-link" href="{% url 'recipes:account' %}">My account</a></li>

@@ -1,22 +1,26 @@
-from django.contrib.auth.models import User
-from django.db.models import Avg
-from django.http import HttpResponseForbidden, Http404, JsonResponse
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator
+import os
 from datetime import datetime
-from recipes.forms import CustomUserCreationForm, RecipeForm, CommentForm, ImageForm, VideoForm, RecipeIngredientForm, \
-    MarkForm, RecipeStepForm
 
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.core.paginator import Paginator
 from django.db.models import Q
+<<<<<<< HEAD
 
 from recipes.models import Recipe, RecipeComment, RecipeImage, RecipeIngredient, Ingredient, IngredientFamily, \
     IngredientUnitMeasure, RecipeVideo, RecipeDifficulty, RecipeType
 
 
+=======
+from django.http import HttpResponseForbidden, Http404, JsonResponse
+>>>>>>> 7aedd09b25d01472808b3c3a2dd1e94a48f41d10
 from django.shortcuts import redirect
+from django.shortcuts import render
 
-import os
+from recipes.forms import CustomUserCreationForm, RecipeForm, CommentForm, VideoForm, RecipeIngredientForm, \
+    MarkForm, RecipeStepForm
+from recipes.models import Recipe, RecipeComment, RecipeImage, RecipeIngredient, Ingredient, IngredientFamily, \
+    IngredientUnitMeasure, RecipeVideo, RecipeStep
 
 # constants
 NUMBER_OF_RECIPES_PER_PAGE = 6
@@ -117,8 +121,10 @@ def detail(request, recipe_slug):
 
 
 @login_required()
-def add_recipe(request):
-    if request.method == 'POST':
+def add_or_update_recipe(request):
+
+    if request.method == 'POST' and not 'recipe_slug' in request.POST:
+
         recipe_form = RecipeForm(request.POST)
 
         if recipe_form.is_valid():
@@ -127,11 +133,44 @@ def add_recipe(request):
             recipe_obj.user = request.user
             recipe_obj.save()
 
+            # save many to many fields
+            recipe_form.save_m2m()
+
             return redirect('recipes:recipe-manage', recipe_slug=recipe_obj.slug)
     else:
-        recipe_form = RecipeForm()
+
+        recipe_slug = request.POST.get('recipe_slug', '')
+
+        # check if user wants to update or create
+        if recipe_slug == "":
+            recipe_form = RecipeForm()
+        else:
+            current_recipe = Recipe.objects.get(slug=recipe_slug)
+            recipe_form = RecipeForm(instance=current_recipe)
 
     return render(request, 'recipes/user/add_recipe.html', {'recipe_form': recipe_form})
+
+
+@login_required()
+def publish_recipe(request):
+    try:
+        recipe_slug = request.POST.get("recipe_slug", "")
+        recipe = Recipe.objects.with_annotates().get(slug=recipe_slug)
+    except Recipe.DoesNotExist:
+        raise Http404("Recipe does not exist")
+
+    if request.user != recipe.user:
+        raise HttpResponseForbidden("You cannot publish this recipe")
+
+    # TODO : check if already true ? Really necessary ?
+    if recipe.published:
+        recipe.published = False
+    else:
+        recipe.published = True
+        recipe.published_at = datetime.now()
+    recipe.save()
+
+    return redirect('recipes:recipe-manage', recipe_slug=recipe_slug)
 
 
 @login_required()
@@ -144,14 +183,41 @@ def manage_recipe(request, recipe_slug):
     if request.user != recipe.user:
         raise HttpResponseForbidden("You cannot update this recipe")
 
-    if request.method == 'POST':
+    # TODO : improve the way of checking form ?
+    if request.method == 'POST' and 'add_ingredient' in request.POST:
+
         ingredient_form = RecipeIngredientForm(request.POST)
+
         if ingredient_form.is_valid():
             recipe_ingredient_obj = ingredient_form.save(commit=False)
+
+            # update the updated date of recipe
+            recipe.updated_at = datetime.now()
+            recipe.save()
+
             recipe_ingredient_obj.recipe = recipe
             recipe_ingredient_obj.save()
     else:
         ingredient_form = RecipeIngredientForm()
+
+    if request.method == 'POST' and 'add_step' in request.POST:
+
+        step_form = RecipeStepForm(request.POST)
+
+        if step_form.is_valid():
+            step_obj = step_form.save(commit=False)
+
+            step_count = RecipeStep.objects.filter(recipe=recipe).count()
+
+            # update the updated date of recipe
+            recipe.updated_at = datetime.now()
+            recipe.save()
+
+            step_obj.level = step_count + 1
+            step_obj.recipe = recipe
+            step_obj.save()
+    else:
+        step_form = RecipeStepForm()
 
     try:
         video = RecipeVideo.objects.get(recipe=recipe)
@@ -162,11 +228,12 @@ def manage_recipe(request, recipe_slug):
     return render(request, 'recipes/user/manage_recipe.html',
                   {'video_form': video_form,
                    'ingredient_form': ingredient_form,
+                   'step_form': step_form,
                    'recipe': recipe})
 
 
 @login_required()
-def recipe_video_upload(request,recipe_slug):
+def recipe_video_upload(request, recipe_slug):
     try:
         recipe = Recipe.objects.get(slug=recipe_slug)
     except Recipe.DoesNotExist:
@@ -179,7 +246,7 @@ def recipe_video_upload(request,recipe_slug):
             video.path = request.POST.get('path')
             video.save()
         except RecipeVideo.DoesNotExist:
-            video = RecipeVideo.objects.create(recipe=recipe,path=request.POST.get('path'))
+            video = RecipeVideo.objects.create(recipe=recipe, path=request.POST.get('path'))
             video.save()
 
     return redirect('recipes:recipe-manage', recipe_slug=recipe_slug)
@@ -207,13 +274,13 @@ def recipe_media_delete(request, recipe_slug):
 
     image = request.GET.get('img', None)
 
-    try :
+    try:
         RecipeImage.objects.get(image=image, recipe=recipe).delete()
         os.remove(image)
         pass
     except RecipeImage.DoesNotExist:
         current_date = datetime.today().strftime('%Y/%m/%d')
-        file_path = 'static/media/user_'+str(recipe.user.id)+'/'+current_date+'/'+image
+        file_path = 'static/media/user_' + str(recipe.user.id) + '/' + current_date + '/' + image
         RecipeImage.objects.get(image=file_path, recipe=recipe).delete()
         os.remove(file_path)
 
@@ -302,7 +369,6 @@ def delete_recipe_ingredient(request, recipe_ingredient_id):
 # Marks parts #
 ###############
 def add_or_update_mark(request):
-
     if request.method == 'POST':
         # get mark form
         mark_form = MarkForm(request.POST)
@@ -334,22 +400,19 @@ def add_or_update_mark(request):
                                  'number_of_marks': recipe.number_of_marks})
 
 
-
-##############
-# Step parts #
-##############
-
 @login_required()
-def add_recipe_step(request):
+def delete_recipe_step(request, step_id):
+    try:
+        recipe_step = RecipeStep.objects.get(id=step_id)
+    except Recipe.DoesNotExist:
+        raise Http404("Recipe step does not exist")
 
-    if request.method == 'POST':
+    recipe_slug = recipe_step.recipe.slug
 
-        # get step form
-        step_form = RecipeStepForm(request.POST)
+    # remove recipe step
+    recipe_step.delete()
 
-        if step_form.is_valid():
-
-            mark_obj = step_form.save(commit=False)
+    return redirect('recipes:recipe-manage', recipe_slug=recipe_slug)
 
 
 def search(request):
@@ -360,4 +423,3 @@ def search(request):
     recipes = paginator.get_page(page)
 
     return render(request, 'recipes/show_recipes.html', {'recipes': recipes})
-

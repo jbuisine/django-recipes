@@ -1,0 +1,26 @@
+<div class="my-3 p-3 bg-white rounded box-shadow">
+    <h3 class="border-bottom border-gray pb-2 mb-0">Recipes steps</h3>
+
+    {% for step in recipe.steps.all %}
+
+        <div style="padding-top: 5px;">
+
+            {% if user.is_authenticated and user == recipe.user %}
+                <a href="{% url 'recipes:recipe-delete-step' step_id=step.id %}">
+                    <button class="btn btn-outline-danger" style="float: right;">
+                        Delete
+                    </button>
+                </a>
+            {% endif %}
+
+            <h5><strong>Step {{ forloop.counter }}</strong></h5>
+
+            <p>{{ step.description }}</p>
+
+            {% if not forloop.last %}
+                <hr/>
+            {% endif %}
+
+        </div>
+    {% endfor %}
+</div>

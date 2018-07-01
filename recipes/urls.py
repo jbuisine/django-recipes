@@ -1,8 +1,9 @@
-from django.urls import path, re_path
 from django.contrib.auth import views as auth_views
+from django.urls import path, re_path
 
 from recipes import views
 from .views import search
+
 app_name = 'recipes'
 
 urlpatterns = [
@@ -17,8 +18,9 @@ urlpatterns = [
     re_path(r'^profile/(?P<user_username>\w+)/$', views.user_detail, name='user-detail'),
 
     # recipe part
-    path('recipes/add', views.add_recipe, name='add_recipe'),
     path('recipes/update/<slug:recipe_slug>/', views.update_recipe, name='update_recipe'),
+    path('recipes/add', views.add_or_update_recipe, name='recipe-add-or-update'),
+    path('recipe/publish', views.publish_recipe, name='recipe-publish-state'),
     path('recipe/<slug:recipe_slug>/', views.detail, name='recipe-detail'),
     path('recipe/manage/<slug:recipe_slug>/', views.manage_recipe, name='recipe-manage'),
     path('recipe/<slug:recipe_slug>/delete/', views.recipe_delete, name='recipe-delete'),
@@ -31,5 +33,7 @@ urlpatterns = [
             name='recipe-delete-ingredient'),
 
     re_path('recipe/add-or-update-mark', views.add_or_update_mark, name='recipe-add-or-update-mark'),
+
+    re_path('recipe/delete-step/(?P<step_id>\d+)/$', views.delete_recipe_step, name='recipe-delete-step'),
 
 ]
