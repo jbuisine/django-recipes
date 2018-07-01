@@ -5,15 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.db.models import Q
-<<<<<<< HEAD
-
-from recipes.models import Recipe, RecipeComment, RecipeImage, RecipeIngredient, Ingredient, IngredientFamily, \
-    IngredientUnitMeasure, RecipeVideo, RecipeDifficulty, RecipeType
-
-
-=======
 from django.http import HttpResponseForbidden, Http404, JsonResponse
->>>>>>> 7aedd09b25d01472808b3c3a2dd1e94a48f41d10
 from django.shortcuts import redirect
 from django.shortcuts import render
 
