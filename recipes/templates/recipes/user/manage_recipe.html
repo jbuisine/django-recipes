@@ -28,7 +28,6 @@
 
 {% block content %}
     <h2>Manage recipe : {{ recipe.title }}</h2>
-    <a href="{% url 'recipes:update_recipe' recipe.slug %}">Advanced modifications</a>
     <hr/>
 
     <form method="post" action="{% url 'recipes:recipe-publish-state' %}">
@@ -45,7 +44,7 @@
 
     <form method="post" action="{% url 'recipes:recipe-add-or-update' %}">
         {% csrf_token %}
-        <input type="hidden" name="recipe_slug" value="{{ recipe.slug }}">
+        <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
         {% buttons %}
             <button type="submit" class="btn btn-warning">Update main information</button>
         {% endbuttons %}

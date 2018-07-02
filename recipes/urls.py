@@ -18,12 +18,12 @@ urlpatterns = [
     re_path(r'^profile/(?P<user_username>\w+)/$', views.user_detail, name='user-detail'),
 
     # recipe part
-    path('recipes/update/<slug:recipe_slug>/', views.update_recipe, name='update_recipe'),
     path('recipes/add', views.add_or_update_recipe, name='recipe-add-or-update'),
     path('recipe/publish', views.publish_recipe, name='recipe-publish-state'),
     path('recipe/<slug:recipe_slug>/', views.detail, name='recipe-detail'),
     path('recipe/manage/<slug:recipe_slug>/', views.manage_recipe, name='recipe-manage'),
     path('recipe/<slug:recipe_slug>/delete/', views.recipe_delete, name='recipe-delete'),
+    re_path(r'recipe/update/(?P<recipe_id>\d+)/$', views.recipe_update, name='recipe-update'),
     path('recipe/manage/media/<slug:recipe_slug>/upload', views.recipe_media_upload, name='recipe-media-upload'),
     path('recipe/manage/media/<slug:recipe_slug>/delete', views.recipe_media_delete, name='recipe-media-delete'),
     path('recipe/manage/media/<slug:recipe_slug>/upload-video', views.recipe_video_upload, name='recipe-video-upload'),

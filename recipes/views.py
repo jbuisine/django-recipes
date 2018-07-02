@@ -115,7 +115,7 @@ def detail(request, recipe_slug):
 @login_required()
 def add_or_update_recipe(request):
 
-    if request.method == 'POST' and not 'recipe_slug' in request.POST:
+    if request.method == 'POST' and not 'recipe_id' in request.POST:
 
         recipe_form = RecipeForm(request.POST)
 
@@ -131,16 +131,17 @@ def add_or_update_recipe(request):
             return redirect('recipes:recipe-manage', recipe_slug=recipe_obj.slug)
     else:
 
-        recipe_slug = request.POST.get('recipe_slug', '')
+        recipe_id = request.POST.get('recipe_id', '')
 
         # check if user wants to update or create
-        if recipe_slug == "":
+        if recipe_id == "":
             recipe_form = RecipeForm()
+            current_recipe = None
         else:
-            current_recipe = Recipe.objects.get(slug=recipe_slug)
+            current_recipe = Recipe.objects.get(id=recipe_id)
             recipe_form = RecipeForm(instance=current_recipe)
 
-    return render(request, 'recipes/user/add_recipe.html', {'recipe_form': recipe_form})
+    return render(request, 'recipes/user/add_recipe.html', {'recipe_form': recipe_form,'recipe':current_recipe})
 
 
 @login_required()
@@ -293,18 +294,19 @@ def recipe_delete(request, recipe_slug):
     recipe.delete()
     return redirect('recipes:home')
 
+
 @login_required()
-def update_recipe(request,recipe_slug):
+def recipe_update(request, recipe_id):
     try:
-        recipe = Recipe.objects.get(slug=recipe_slug)
+        recipe = Recipe.objects.get(id=recipe_id)
     except Recipe.DoesNotExist:
         raise Http404("Recipe does not exist")
-    difficulty = RecipeDifficulty.objects.get(recipe=recipe)
-    recipe_form = RecipeForm(instance=recipe)
-    recipe_form.recipe_difficulty = difficulty
-    recipe_form.recipe_types = recipe.recipe_types.all()
-
-    return render(request, 'recipes/user/add_recipe.html', {'recipe_form': recipe_form, "recipe": recipe})
+    form = RecipeForm(request.POST, instance=recipe)
+    if form.is_valid():
+        obj = form.save(commit=False)
+        obj.save()
+        form.save_m2m()
+    return redirect('recipes:recipe-manage', recipe_slug=recipe.slug)
 
 #####################
 # Ingredients parts #

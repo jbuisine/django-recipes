@@ -14,15 +14,13 @@
 {% block content %}
 
     <h2>{% if recipe %}{{ recipe.title }} Update{% else  %}Add Recipe{% endif %}</h2>
-    {% if recipe %}
-    {% for type in recipe.recipe_types.all %}
-        {{ type }}
-    {% endfor %}
-    {% endif  %}
-    <form method="post">
+    <form method="post" {% if recipe %}action="{% url "recipes:recipe-update" recipe.id %}"{% endif %}>
         {% csrf_token %}
 
         {% bootstrap_form recipe_form %}
+        {% if recipe %}
+            <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
+        {% endif  %}
         {% buttons %}
             <div class="form-group">
                 <button type="submit" class="btn btn-primary">Validate recipe</button>
