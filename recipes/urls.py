@@ -23,6 +23,7 @@ urlpatterns = [
     path('recipe/<slug:recipe_slug>/', views.detail, name='recipe-detail'),
     path('recipe/manage/<slug:recipe_slug>/', views.manage_recipe, name='recipe-manage'),
     path('recipe/<slug:recipe_slug>/delete/', views.recipe_delete, name='recipe-delete'),
+    path('user/password/', views.change_password, name='change_password'),
     re_path(r'recipe/update/(?P<recipe_id>\d+)/$', views.recipe_update, name='recipe-update'),
     path('recipe/manage/media/<slug:recipe_slug>/upload', views.recipe_media_upload, name='recipe-media-upload'),
     path('recipe/manage/media/<slug:recipe_slug>/delete', views.recipe_media_delete, name='recipe-media-delete'),
