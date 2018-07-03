@@ -1,5 +1,6 @@
+{% load i18n %}
 <div class="my-3 p-3 bg-white rounded box-shadow">
-    <h3 class="border-bottom border-gray pb-2 mb-0">Ingredients list</h3>
+    <h3 class="border-bottom border-gray pb-2 mb-0">{% blocktrans %}Ingredients list{% endblocktrans %}</h3>
 
     {% for r_ingredient in recipe.ingredients.all %}
 
@@ -19,7 +20,7 @@
                     {% if user.is_authenticated and user == recipe.user %}
                         <a href="{% url 'recipes:recipe-delete-ingredient' recipe_ingredient_id=r_ingredient.id %}">
                             <button class="btn btn-outline-danger">
-                                Delete
+                               {% blocktrans %} Delete{% endblocktrans %}
                             </button>
                         </a>
                     {% endif %}
@@ -52,6 +53,6 @@
         </div>
 
     {% empty %}
-        Recipe does not contain ingredients
+        {% blocktrans %}Recipe does not contain ingredients{% endblocktrans %}
     {% endfor %}
 </div>

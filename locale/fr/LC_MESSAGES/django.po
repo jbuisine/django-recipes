@@ -1,0 +1,322 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-03 21:10+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: .\djangorecipes\settings.py:123
+msgid "English"
+msgstr "Anglais"
+
+#: .\djangorecipes\settings.py:124
+msgid "French"
+msgstr "Français"
+
+#: .\recipes\forms.py:21
+msgid "Preparation time in minutes"
+msgstr "Temps de préparation en minutes"
+
+#: .\recipes\forms.py:22
+msgid "Cooking time in minutes"
+msgstr "Temps de cuisson en minute"
+
+#: .\recipes\forms.py:23
+msgid "Relaxation time in minutes"
+msgstr "Temps de pause en minutes"
+
+#: .\recipes\forms.py:34
+msgid "Enter your comment"
+msgstr "Entrez votre commentaire"
+
+#: .\recipes\forms.py:35
+msgid "Comment"
+msgstr "Commentaire"
+
+#: .\recipes\forms.py:63
+msgid "link of your video"
+msgstr "lien de la vidéo"
+
+#: .\recipes\forms.py:100
+msgid "Choose the ingredient family"
+msgstr "Choisir la famille de l'ingrédient"
+
+#: .\recipes\forms.py:165
+msgid "Enter your firstname "
+msgstr "Entrez votre prénom"
+
+#: .\recipes\forms.py:171
+msgid "Enter your lastname "
+msgstr "Entrez votre nom"
+
+#: .\recipes\forms.py:177
+msgid "Enter Username"
+msgstr "Entrez votre pseudo"
+
+#: .\recipes\forms.py:183
+msgid "Enter email"
+msgstr "Entrez votre email"
+
+#: .\recipes\forms.py:187
+msgid "Enter password"
+msgstr "Mot de passe"
+
+#: .\recipes\forms.py:192
+msgid "Confirm password"
+msgstr "Confirmation de mot de passe"
+
+#: .\recipes\forms.py:197
+msgid "Date of birth"
+msgstr "Date de naissance"
+
+#: .\recipes\forms.py:205
+msgid "Your country"
+msgstr "Votre pays"
+
+#: .\recipes\forms.py:213
+msgid "Username already exists"
+msgstr "Nom d'utilisateur déjà existant"
+
+#: .\recipes\forms.py:220
+msgid "Email already exists"
+msgstr "Email déjà enregistré"
+
+#: .\recipes\forms.py:228
+msgid "Password don't match"
+msgstr "Les mots de passes ne correspondent pas"
+
+#: .\recipes\templates\recipes\detail_recipe.html:8
+msgid "Recipes"
+msgstr "Recettes"
+
+#: .\recipes\templates\recipes\detail_recipe.html:27
+msgid "Kind :"
+msgstr "Type :"
+
+#: .\recipes\templates\recipes\detail_recipe.html:34
+msgid "Difficulty : "
+msgstr "Difficulté :"
+
+#: .\recipes\templates\recipes\detail_recipe.html:38
+msgid "Published by :"
+msgstr "Publié par :"
+
+#: .\recipes\templates\recipes\detail_recipe.html:45
+msgid "Description :"
+msgstr "Description :"
+
+#: .\recipes\templates\recipes\detail_recipe.html:47
+msgid "Marks mean :"
+msgstr "Notes moyenne :"
+
+#: .\recipes\templates\recipes\detail_recipe.html:51
+msgid "number of votes :"
+msgstr "Nombre de votes :"
+
+#: .\recipes\templates\recipes\detail_recipe.html:56
+msgid "Your mark :"
+msgstr "Votre note :"
+
+#: .\recipes\templates\recipes\detail_recipe.html:61
+msgid "Preparation time : "
+msgstr "Temps de préparation :"
+
+#: .\recipes\templates\recipes\detail_recipe.html:62
+msgid "Cooking time : "
+msgstr "Temps de cuisson :"
+
+#: .\recipes\templates\recipes\detail_recipe.html:106
+msgid "Previous"
+msgstr "Précédent :"
+
+#: .\recipes\templates\recipes\detail_recipe.html:111
+msgid "Next"
+msgstr "Suivant :"
+
+#: .\recipes\templates\recipes\detail_recipe.html:139
+#: .\recipes\templates\recipes\user\change_password.html:17
+#: .\recipes\templates\recipes\user\manage_recipe.html:71
+#: .\recipes\templates\recipes\user\manage_recipe.html:100
+#: .\recipes\templates\registration\login.html:15
+#: .\recipes\templates\registration\signup.html:17
+msgid "Submit"
+msgstr "Valider"
+
+#: .\recipes\templates\recipes\detail_recipe.html:165
+msgid "published at"
+msgstr "Publié à :"
+
+#: .\recipes\templates\recipes\partials\nav.html:15
+#: .\recipes\templates\recipes\user\add_recipe.html:16
+msgid "Add Recipe"
+msgstr "Ajouter une recette"
+
+#: .\recipes\templates\recipes\partials\nav.html:21
+msgid "Search your recipes"
+msgstr "Recherche une recette"
+
+#: .\recipes\templates\recipes\partials\nav.html:23
+msgid "Search"
+msgstr "Rechercher"
+
+#: .\recipes\templates\recipes\partials\nav.html:33
+msgid "My account"
+msgstr "Mon compte"
+
+#: .\recipes\templates\recipes\partials\nav.html:34
+msgid "Logout"
+msgstr "Me déconnecter"
+
+#: .\recipes\templates\recipes\partials\nav.html:36
+#: .\recipes\templates\registration\login.html:5
+#: .\recipes\templates\registration\login.html:8
+msgid "Login"
+msgstr "Me connecter"
+
+#: .\recipes\templates\recipes\partials\nav.html:37
+#: .\recipes\templates\registration\signup.html:10
+msgid "Sign up"
+msgstr "Inscription"
+
+#: .\recipes\templates\recipes\partials\recipes\_recipes_ingredients_list.html:3
+msgid "Ingredients list"
+msgstr "Liste d'ingrédients"
+
+#: .\recipes\templates\recipes\partials\recipes\_recipes_ingredients_list.html:22
+msgid " Delete"
+msgstr "Supprimer"
+
+#: .\recipes\templates\recipes\partials\recipes\_recipes_ingredients_list.html:33
+msgid "Recipe does not contain ingredients"
+msgstr "La recette ne contient pas d'ingrédients"
+
+#: .\recipes\templates\recipes\partials\recipes\_recipes_list.html:15
+msgid "Cost :"
+msgstr "Coût :"
+
+#: .\recipes\templates\recipes\partials\recipes\_recipes_list.html:19
+msgid "Delete"
+msgstr "Supprimer"
+
+#: .\recipes\templates\recipes\partials\recipes\_recipes_list.html:21
+#: .\recipes\templates\recipes\user\add_recipe.html:11
+#: .\recipes\templates\recipes\user\add_recipe.html:16
+msgid "Update"
+msgstr "Modifier"
+
+#: .\recipes\templates\recipes\partials\recipes\_recipes_list.html:26
+msgid "Show"
+msgstr "Voir"
+
+#: .\recipes\templates\recipes\partials\recipes\_recipes_list.html:32
+msgid " No recipes found... "
+msgstr " Aucune recettes de trouvé "
+
+#: .\recipes\templates\recipes\partials\recipes\_recipes_step_list.html:3
+msgid "Recipes steps"
+msgstr "Etapes de la recette"
+
+#: .\recipes\templates\recipes\partials\recipes\_recipes_step_list.html:17
+msgid "Step"
+msgstr "Etape"
+
+#: .\recipes\templates\recipes\partials\users\_profile_view.html:7
+msgid "Country :"
+msgstr "Pays :"
+
+#: .\recipes\templates\recipes\partials\users\_profile_view.html:11
+#: .\recipes\templates\recipes\user\change_password.html:6
+msgid "Update my password"
+msgstr "Changer mon mot de passe"
+
+#: .\recipes\templates\recipes\partials\users\_profile_view.html:14
+msgid "Profile of "
+msgstr "Profil de"
+
+#: .\recipes\templates\recipes\partials\users\_profile_view.html:16
+msgid "Firstname :"
+msgstr "Prénom :"
+
+#: .\recipes\templates\recipes\partials\users\_profile_view.html:17
+msgid "Lastname : "
+msgstr "Nom: "
+
+#: .\recipes\templates\recipes\partials\users\_profile_view.html:18
+msgid "Age : "
+msgstr "Age :"
+
+#: .\recipes\templates\recipes\show_recipes.html:4
+msgid " Recipes"
+msgstr "Rcettes"
+
+#: .\recipes\templates\recipes\user\add_recipe.html:11
+msgid "Add recipe"
+msgstr "Ajouter une recette"
+
+#: .\recipes\templates\recipes\user\add_recipe.html:26
+msgid "Validate Recipe"
+msgstr "Valider la recette"
+
+#: .\recipes\templates\recipes\user\change_password.html:10
+msgid "Update my password "
+msgstr "Changer mon mot de passe"
+
+#: .\recipes\templates\recipes\user\manage_recipe.html:30
+msgid "Manage recipe :"
+msgstr "Manager la recette :"
+
+#: .\recipes\templates\recipes\user\manage_recipe.html:38
+msgid "Unpublish recipe"
+msgstr "Désactiver la recette"
+
+#: .\recipes\templates\recipes\user\manage_recipe.html:40
+msgid "Publish recipe"
+msgstr "Publié la recette"
+
+#: .\recipes\templates\recipes\user\manage_recipe.html:49
+msgid "Update main information"
+msgstr "Modifier les informations principales"
+
+#: .\recipes\templates\recipes\user\manage_recipe.html:56
+msgid "Manage ingredients"
+msgstr "Manager les ingrédients"
+
+#: .\recipes\templates\recipes\user\manage_recipe.html:62
+msgid "Add new ingredient"
+msgstr "Ajouter un nouvel ingrédient"
+
+#: .\recipes\templates\recipes\user\manage_recipe.html:87
+msgid "Manage medias of recipe"
+msgstr "Manager les médias :"
+
+#: .\recipes\templates\recipes\user\manage_recipe.html:95
+msgid "Manage video"
+msgstr "Vidéo de la recette:"
+
+#: .\recipes\templates\recipes\user\manage_recipe.html:113
+msgid "Manage steps"
+msgstr "Manager les étapes"
+
+#: .\recipes\templates\recipes\user\manage_recipe.html:119
+msgid "Add step"
+msgstr "Ajouter une étape"
+
+#: .\recipes\templates\registration\signup.html:6
+msgid " Subscription Django recipes "
+msgstr "M'inscrire sur le site"
+
+#~ msgid "Profile of %(user.username)s"
+#~ msgstr "Profil de %(user.username)s"

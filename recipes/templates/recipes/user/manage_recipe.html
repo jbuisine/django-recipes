@@ -17,7 +17,7 @@
         }
     </style>
 {% endblock %}
-
+{% load i18n %}
 {% block title %}
     {{ recipe.title }}
 {% endblock %}
@@ -27,7 +27,7 @@
 {% endblock %}
 
 {% block content %}
-    <h2>Manage recipe : {{ recipe.title }}</h2>
+    <h2>{% blocktrans %}Manage recipe :{% endblocktrans %} {{ recipe.title }}</h2>
     <hr/>
 
     <form method="post" action="{% url 'recipes:recipe-publish-state' %}">
@@ -35,9 +35,9 @@
         <input type="hidden" name="recipe_slug" value="{{ recipe.slug }}">
         {% buttons %}
             {% if recipe.published %}
-                <button type="submit" class="btn btn-warning">Unpublish recipe</button>
+                <button type="submit" class="btn btn-warning">{% blocktrans %}Unpublish recipe{% endblocktrans %}</button>
             {% else %}
-                <button type="submit" class="btn btn-primary">Publish recipe</button>
+                <button type="submit" class="btn btn-primary">{% blocktrans %}Publish recipe{% endblocktrans %}</button>
             {% endif %}
         {% endbuttons %}
     </form>
@@ -46,20 +46,20 @@
         {% csrf_token %}
         <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
         {% buttons %}
-            <button type="submit" class="btn btn-warning">Update main information</button>
+            <button type="submit" class="btn btn-warning">{% blocktrans %}Update main information{% endblocktrans %}</button>
         {% endbuttons %}
     </form>
 
     <!-- Part 1 : Management of ingredients recipe-->
     <div>
 
-        <h4>Manage ingredients</h4>
+        <h4>{% blocktrans %}Manage ingredients{% endblocktrans %}</h4>
 
         <hr/>
 
         <div class="row">
             <div class="col-md-8">
-                <h5>Add new ingredient</h5>
+                <h5>{% blocktrans %}Add new ingredient{% endblocktrans %}</h5>
 
                 <form method="post" id="recipeIngredientForm"
                       data-ingredients-url="{% url 'recipes:recipe-ingredients-of-family' %}"
@@ -68,7 +68,7 @@
                     {% csrf_token %}
                     {% bootstrap_form ingredient_form %}
                     {% buttons %}
-                        <button type="submit" name="add_ingredient" class="btn btn-primary">Submit</button>
+                        <button type="submit" name="add_ingredient" class="btn btn-primary">{% blocktrans %}Submit{% endblocktrans %}</button>
                     {% endbuttons %}
                 </form>
 
@@ -84,7 +84,7 @@
     <!-- Part 2 : Management of medias recipe-->
     <div>
 
-        <h4>Manage medias of recipe</h4>
+        <h4>{% blocktrans %}Manage medias of recipe{% endblocktrans %}</h4>
         <h3>Manage pictures</h3>
         <form id="dz" method="post" enctype="multipart/form-data" class="dropzone">
             {% csrf_token %}
@@ -92,12 +92,12 @@
                 {{ image_form }}
             </div>
         </form>
-        <h3>Manage video</h3>
+        <h3>{% blocktrans %}Manage video{% endblocktrans %}</h3>
         <form id="video" method="post" action="{% url "recipes:recipe-video-upload" recipe.slug %}" name="video">
             {% csrf_token %}
             {% bootstrap_form video_form %}
             {% buttons %}
-                <button type="submit" name="submit-video" class="btn btn-primary">Submit</button>
+                <button type="submit" name="submit-video" class="btn btn-primary">{% blocktrans %}Submit{% endblocktrans %}</button>
             {% endbuttons %}
         </form>
     </div>
@@ -110,13 +110,13 @@
         <div class="row">
 
             <div class="col-8">
-                <h3>Manage steps</h3>
+                <h3>{% blocktrans %}Manage steps{% endblocktrans %}</h3>
 
                 <form method="post" action="">
                     {% csrf_token %}
                     {% bootstrap_form step_form %}
                     {% buttons %}
-                        <button type="submit" name="add_step" class="btn btn-primary">Add step</button>
+                        <button type="submit" name="add_step" class="btn btn-primary">{% blocktrans %}Add step{% endblocktrans %}</button>
                     {% endbuttons %}
                 </form>
 
