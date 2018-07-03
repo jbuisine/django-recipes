@@ -1,5 +1,6 @@
+{% load i18n %}
 <div class="my-3 p-3 bg-white rounded box-shadow">
-    <h3 class="border-bottom border-gray pb-2 mb-0">Recipes steps</h3>
+    <h3 class="border-bottom border-gray pb-2 mb-0">{% blocktrans %}Recipes steps{% endblocktrans %}</h3>
 
     {% for step in recipe.steps.all %}
 
@@ -13,8 +14,7 @@
                 </a>
             {% endif %}
 
-            <h5><strong>Step {{ forloop.counter }}</strong></h5>
-
+            <h5><strong>{% blocktrans %}Step{% endblocktrans %}{{ forloop.counter }}</strong></h5>
             <p>{{ step.description }}</p>
 
             {% if not forloop.last %}

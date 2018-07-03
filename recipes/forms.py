@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 import datetime
 import requests
 from django.forms import NumberInput
-
+from django.utils.translation import ugettext_lazy as _
 from recipes.models import Profile, Recipe, RecipeComment, RecipeMark, RecipeImage, RecipeVideo, \
     RecipeIngredient, IngredientUnitMeasure, IngredientFamily, Ingredient, RecipeStep
 
@@ -18,9 +18,9 @@ class RecipeForm(forms.ModelForm):
         model = Recipe
         exclude = ['user', 'members', 'number_of_marks', 'mean_of_marks', 'recipe_ingredients', 'slug', 'published']
 
-        prepation_time = forms.IntegerField(label='Preparation time in minutes')
-        cooking_time = forms.IntegerField(label='Cooking time in minutes')
-        relaxation_time = forms.IntegerField(label='Relaxation time in minutes')
+        prepation_time = forms.IntegerField(label=_('Preparation time in minutes'))
+        cooking_time = forms.IntegerField(label=_('Cooking time in minutes'))
+        relaxation_time = forms.IntegerField(label=_('Relaxation time in minutes'))
 
         # define widgets of time field
         widgets = {
@@ -31,8 +31,8 @@ class RecipeForm(forms.ModelForm):
 
 
 class CommentForm(forms.ModelForm):
-    content = forms.CharField(label='Enter your comment',
-                              widget=forms.Textarea(attrs={'placeholder': 'Comment', 'rows': 2}))
+    content = forms.CharField(label= _('Enter your comment'),
+                              widget=forms.Textarea(attrs={'placeholder': _('Comment'), 'rows': 2}))
 
     class Meta:
         model = RecipeComment
@@ -60,7 +60,7 @@ class ImageForm(forms.Form):
 
 
 class VideoForm(forms.ModelForm):
-    path = forms.URLField(label='link of your video')
+    path = forms.URLField(label=_('link of your video'))
 
     class Meta:
         model = RecipeVideo
@@ -97,7 +97,7 @@ def fill_ingredient_families():
 class RecipeIngredientForm(forms.ModelForm):
 
     # use of specific function to fill this choice field
-    ingredient_families = forms.ChoiceField(label='Choose the ingredient family',
+    ingredient_families = forms.ChoiceField(label=_('Choose the ingredient family'),
                                             choices=fill_ingredient_families,
                                             required=True)
 
@@ -162,39 +162,39 @@ class CustomUserCreationForm(forms.ModelForm):
             'avatar': forms.ClearableFileInput()
         }
 
-    first_name = forms.CharField(label='Enter your firstname ',
+    first_name = forms.CharField(label=_('Enter your firstname '),
                                  widget=forms.TextInput(attrs={'placeholder': 'Firstname'}),
                                  min_length=4,
                                  max_length=150,
                                  required=True)
 
-    last_name = forms.CharField(label='Enter your lastname ',
+    last_name = forms.CharField(label=_('Enter your lastname '),
                                 widget=forms.TextInput(attrs={'placeholder': 'Lastname'}),
                                 min_length=4,
                                 max_length=150,
                                 required=True)
 
-    username = forms.CharField(label='Enter Username',
+    username = forms.CharField(label=_('Enter Username'),
                                min_length=4,
                                max_length=150,
                                widget=forms.TextInput(attrs={'placeholder': 'username'}),
                                required=True)
 
-    email = forms.EmailField(label='Enter email',
+    email = forms.EmailField(label=_('Enter email'),
                              widget=forms.TextInput(attrs={'placeholder': 'example@recipes.com'}),
                              required=True)
 
-    password1 = forms.CharField(label='Enter password',
+    password1 = forms.CharField(label=_('Enter password'),
                                 widget=forms.PasswordInput(attrs={'placeholder': ''}),
                                 min_length=8,
                                 required=True)
 
-    password2 = forms.CharField(label='Confirm password',
+    password2 = forms.CharField(label=_('Confirm password'),
                                 widget=forms.PasswordInput(attrs={'placeholder': ''}),
                                 min_length=8,
                                 required=True)
 
-    date_of_birth = forms.DateField(label='Date of birth',
+    date_of_birth = forms.DateField(label=_('Date of birth'),
                                     required=True,
                                     widget=forms.SelectDateWidget(years=range(1900, datetime.date.today().year + 1)))
 
@@ -202,7 +202,7 @@ class CustomUserCreationForm(forms.ModelForm):
     country_api_url = 'https://restcountries.eu/rest/v2/all'
     country_data = requests.get(url=country_api_url).json()
 
-    country_choice = forms.ChoiceField(label='Your country',
+    country_choice = forms.ChoiceField(label=_('Your country'),
                                        choices=[(idx, val['name']) for idx, val in enumerate(country_data)],
                                        required=True)
 
@@ -210,14 +210,14 @@ class CustomUserCreationForm(forms.ModelForm):
         username = self.cleaned_data['username'].lower()
         r = User.objects.filter(username=username)
         if r.count():
-            raise ValidationError("Username already exists")
+            raise ValidationError(_("Username already exists"))
         return username
 
     def clean_email(self):
         email = self.cleaned_data['email'].lower()
         r = User.objects.filter(email=email)
         if r.count():
-            raise ValidationError("Email already exists")
+            raise ValidationError(_("Email already exists"))
         return email
 
     def clean_password2(self):
@@ -225,7 +225,7 @@ class CustomUserCreationForm(forms.ModelForm):
         password2 = self.cleaned_data.get('password2')
 
         if password1 and password2 and password1 != password2:
-            raise ValidationError("Password don't match")
+            raise ValidationError(_("Password don't match"))
 
         return password2
 

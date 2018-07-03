@@ -1,19 +1,20 @@
+{% load i18n %}
 <div class="row">
     <div class="col-4">
         <img src="/{{ user.profile.avatar }}" style="height: 150px; width: 150px; border-radius: 5px;"
              alt="{{ user.username }}_avatar">
         <p>
-            <strong>Country : </strong>{{ user.profile.country }}
+            <strong>{% blocktrans %}Country :{% endblocktrans %}</strong>{{ user.profile.country }}
             <img src="{{ user.profile.country_flag }}" style="height: 18px; width: 22px; border-radius: 3px"
                  alt="{{ user.profile.country }}_flag">
         </p>
-        <p><a href="{% url "recipes:change_password" %}">Update my password</a></p>
+        <p><a href="{% url "recipes:change_password" %}">{% blocktrans %}Update my password{% endblocktrans %}</a></p>
     </div>
     <div class="col-8">
-        <h5>Profile of {{ user.username }}</h5>
+        <h5>{% blocktrans %}Profile of {% endblocktrans %}{{ user.username }}</h5>
         <hr/>
-        <p><strong>Firstname : </strong> {{ user.first_name }}</p>
-        <p><strong>Lastname : </strong> {{ user.last_name }}</p>
-        <p><strong>Age : </strong> {{ user.profile.get_age }} </p>
+        <p><strong>{% blocktrans %}Firstname :{% endblocktrans %} </strong> {{ user.first_name }}</p>
+        <p><strong>{% blocktrans %}Lastname : {% endblocktrans %}</strong> {{ user.last_name }}</p>
+        <p><strong>{% blocktrans %}Age : {% endblocktrans %}</strong> {{ user.profile.get_age }}</p>
     </div>
 </div>

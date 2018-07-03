@@ -1,6 +1,5 @@
 import os
 from datetime import datetime
-
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
@@ -19,7 +18,6 @@ from recipes.models import Recipe, RecipeComment, RecipeImage, RecipeIngredient,
 # constants
 NUMBER_OF_RECIPES_PER_PAGE = 6
 NUMBER_OF_COMMENTS_PER_PAGE = 6
-
 
 def signup(request):
     if request.method == 'POST':

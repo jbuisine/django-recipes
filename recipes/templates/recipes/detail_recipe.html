@@ -3,9 +3,9 @@
 {% load staticfiles %}
 {% load bootstrap4 %}
 {% load recipes_extras %}
-
+{% load i18n %}
 {% block title %}
-    Recipes
+    {% blocktrans %}Recipes{% endblocktrans %}
 {% endblock %}
 
 {% block stylesheets %}
@@ -24,42 +24,42 @@
                      alt="{{ recipe.title }}_picture">
             {% endif %}
             <p>
-                <strong>Kind : </strong>
+                <strong>{% blocktrans %}Kind :{% endblocktrans %}</strong>
                 {% for type in recipe.recipe_types.all %}
                     {{ type }}{% if not forloop.last %}, {% endif %}
                 {% endfor %}
             </p>
 
             <p>
-                <strong>Difficulty : </strong>{{ recipe.recipe_difficulty }}
+                <strong>{% blocktrans %}Difficulty : {% endblocktrans %}</strong>{{ recipe.recipe_difficulty }}
             </p>
 
             <p>
-                <strong>Published by : </strong>{{ recipe.user.username }}
+                <strong>{% blocktrans %}Published by :{% endblocktrans %} </strong>{{ recipe.user.username }}
             </p>
         </div>
 
         <div class="col-3">
             <h5> {{ recipe.title }}</h5>
             <hr/>
-            <p><strong>Description : </strong> {{ recipe.description }}</p>
+            <p><strong>{% blocktrans %}Description :{% endblocktrans %}</strong> {{ recipe.description }}</p>
             <p>
-                <strong>Marks mean : </strong>
+                <strong>{% blocktrans %}Marks mean :{% endblocktrans %}</strong>
                 <span class="show-mean-mark-recipe">
 
                 </span>
-                (number of votes : <span class="recipe-number-of-marks">{{ recipe.number_of_marks }}</span>)
+                ({% blocktrans %}number of votes :{% endblocktrans %}<span class="recipe-number-of-marks">{{ recipe.number_of_marks }}</span>)
             </p>
 
             {% if user.is_authenticated and user != recipe.user %}
                 <p>
-                    <strong>Your mark :</strong>
+                    <strong>{% blocktrans %}Your mark :{% endblocktrans %}</strong>
                     <span class="add-mark-recipe"></span>
                 </p>
             {% endif %}
 
-            <p><strong>Preparation time : </strong> {{ recipe.preparation_time | duration_format}}</p>
-            <p><strong>Cooking time : </strong> {{ recipe.cooking_time | duration_format}}</p>
+            <p><strong>{% blocktrans %}Preparation time : {% endblocktrans %}</strong> {{ recipe.preparation_time | duration_format}}</p>
+            <p><strong>{% blocktrans %}Cooking time : {% endblocktrans %}</strong> {{ recipe.cooking_time | duration_format}}</p>
         </div>
 
         <div class="col-6">
@@ -103,12 +103,12 @@
                 <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button"
                    data-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
+                    <span class="sr-only">{% blocktrans %}Previous{% endblocktrans %}</span>
                 </a>
                 <a class="carousel-control-next" href="#carouselExampleIndicators" role="button"
                    data-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
+                    <span class="sr-only">{% blocktrans %}Next{% endblocktrans %}</span>
                 </a>
             </div>
         </div>
@@ -136,7 +136,7 @@
 
                 {% bootstrap_form comment_form %}
                 {% buttons %}
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary">{% blocktrans %}Submit{% endblocktrans %}</button>
                 {% endbuttons %}
             </form>
         {% endif %}
@@ -162,7 +162,7 @@
                             </strong>
                         </h5>
                         <div>
-                            <i>published at {{ comment.created_at }}</i>
+                            <i>{% blocktrans %}published at{% endblocktrans %} {{ comment.created_at }}</i>
                         </div>
                         {{ comment.content }}
                     </div>

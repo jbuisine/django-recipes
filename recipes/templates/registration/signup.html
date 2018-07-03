@@ -1,20 +1,20 @@
 {% extends 'recipes/base.html' %}
 
 {% load bootstrap4 %}
-
+{% load i18n %}
 {% block title %}
-    Subscription Django recipes
+    {% blocktrans %} Subscription Django recipes {% endblocktrans %}
 {% endblock %}
 
 {% block content %}
-    <h2>Sign up</h2>
+    <h2>{% blocktrans %}Sign up{% endblocktrans %}</h2>
     <form enctype="multipart/form-data" method="post">
         {% csrf_token %}
 
         {% bootstrap_form signup_form %}
 
         {% buttons %}
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">{% blocktrans %}Submit{% endblocktrans %}</button>
         {% endbuttons %}
     </form>
 {% endblock %}

@@ -1,6 +1,6 @@
 <div class="my-3 p-3 bg-white rounded box-shadow">
     <h4 class="border-bottom border-gray pb-2 mb-0">{{ list_title }}</h4>
-
+{% load i18n %}
     <div class="card-deck row">
         {% for recipe in recipes %}
 
@@ -12,24 +12,24 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ recipe.title }}</h5>
                     <p class="card-text">{{ recipe.description }}</p>
-                    <span class="d-block"><strong>Cost :</strong> {{ recipe.realization_cost }} €</span>
+                    <span class="d-block"><strong>{% blocktrans %}Cost :{% endblocktrans %}</strong> {{ recipe.realization_cost }} €</span>
                 </div>
                 <div class="card-footer">
                     {% if user.is_authenticated and user == recipe.user %}
-                        <a href="{% url 'recipes:recipe-delete' recipe_slug=recipe.slug %}"><button type="button" class="btn btn-danger">Delete</button></a>
+                        <a href="{% url 'recipes:recipe-delete' recipe_slug=recipe.slug %}"><button type="button" class="btn btn-danger">{% blocktrans %}Delete{% endblocktrans %}</button></a>
                         <a href="{% url 'recipes:recipe-manage' recipe_slug=recipe.slug %}">
-                            <button type="button" class="btn btn-outline-" style="float: right">Update</button>
+                            <button type="button" class="btn btn-outline-" style="float: right">{% blocktrans %}Update{% endblocktrans %}</button>
                         </a>
                     {% endif %}
                     <div class="text-muted">
                         <a href="{% url 'recipes:recipe-detail' recipe_slug=recipe.slug %}">
-                            <button type="button" class="btn btn-outline-primary">Show</button>
+                            <button type="button" class="btn btn-outline-primary">{% blocktrans %}Show{% endblocktrans %}</button>
                         </a>
                     </div>
                 </div>
             </div>
         {% empty %}
-            No recipes found...
+           {% blocktrans %} No recipes found... {% endblocktrans %}
         {% endfor %}
 
     </div>
