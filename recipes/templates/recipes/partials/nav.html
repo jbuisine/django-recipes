@@ -8,24 +8,46 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-
         <ul class="navbar-nav mr-auto">
             {% if user.is_authenticated %}
-                <li class="nav-item"><a class="nav-link" href="{% url 'recipes:recipe-add-or-update' %}">Add Recipe</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'recipes:recipe-add-or-update' %}">Add Recipe</a>
+                </li>
             {% endif %}
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    Family
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    {% for type in recipe_types %}
+                        <a class="dropdown-item" href="{% url 'recipes:home-type' type_id=type.id %}">{{ type.label }}</a>
+                    {% endfor  %}
+                </div>
+            </li>
+
+            <!-- <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    Difficulty
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  {% for difficulty in recipe_difficulties %}
+                        <a class="dropdown-item" href="{% url 'recipes:home-difficulty' difficulty_id=difficulty.id %}">{{ difficulty.label }}</a>
+                    {% endfor  %}
+                </div>
+            </li> -->
         </ul>
 
-        <form method="GET" action="{% url 'recipes:search' %}" class="form-inline my-2 my-lg-0 px-5">
 
-            <input class="form-control mr-sm-2" name="search" value="{{ request.GET.search }}" type="search" placeholder="Search your recipes" aria-label="Search">
-            
+        <form method="GET" action="{% url 'recipes:home' %}" class="form-inline my-2 my-lg-0 px-5">
+
+            <input class="form-control mr-sm-2" name="search" value="{{ request.GET.search }}" type="search"
+                   placeholder="Search your recipes" aria-label="Search">
+
             <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
 
         </form>
-
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-  Search+
-</button>
 
         <ul class="navbar-nav mr-right">
             {% if user.is_authenticated %}

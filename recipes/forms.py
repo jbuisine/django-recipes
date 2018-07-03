@@ -1,8 +1,9 @@
-from django import forms
-from django.core.exceptions import ValidationError
-from django.contrib.auth.models import User
 import datetime
+
 import requests
+from django import forms
+from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.forms import NumberInput
 
 from recipes.models import Profile, Recipe, RecipeComment, RecipeMark, RecipeImage, RecipeVideo, \
@@ -95,7 +96,6 @@ def fill_ingredient_families():
 
 
 class RecipeIngredientForm(forms.ModelForm):
-
     # use of specific function to fill this choice field
     ingredient_families = forms.ChoiceField(label='Choose the ingredient family',
                                             choices=fill_ingredient_families,
@@ -106,8 +106,8 @@ class RecipeIngredientForm(forms.ModelForm):
         fields = (
             'ingredient_families',
             'ingredient',
-            'quantity',
             'unit_measure',
+            'quantity',
         )
 
     def __init__(self, *args, **kwargs):
@@ -138,7 +138,6 @@ class RecipeIngredientForm(forms.ModelForm):
 
 
 class CustomUserCreationForm(forms.ModelForm):
-
     """
         Custom UserCreationForm using Profile class
     """

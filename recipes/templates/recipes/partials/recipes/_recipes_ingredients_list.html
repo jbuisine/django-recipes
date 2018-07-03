@@ -13,6 +13,7 @@
                     <strong class="text-gray-dark">{{ r_ingredient.ingredient.name }}</strong>
                 </div>
                 <div class="d-flex justify-content-between align-items-center w-100">
+
                     <div class="text-gray-dark"><i>{{ r_ingredient.ingredient.family }}</i></div>
 
                     {% if user.is_authenticated and user == recipe.user %}
@@ -23,7 +24,29 @@
                         </a>
                     {% endif %}
                 </div>
-                <span class="d-block">{{ r_ingredient.quantity }} {{ r_ingredient.unit_measure.label }}</span>
+
+                {% if user.is_authenticated and user == recipe.user %}
+                    <form method="post" action="{% url 'recipes:recipe-update-ingredient' %}">
+                        <div class="form-row">
+                            <div class="col-5">
+
+                                {% csrf_token %}
+                                <input type="number" min="0" name="quantity" class="form-control" value="{{ r_ingredient.quantity }}">
+                                <input type="hidden" name="recipe_ingredient_id" class="form-control" value="{{ r_ingredient.id }}">
+
+                                <label class="form-check-label" for="quantity">
+                                    In {{ r_ingredient.unit_measure.name }}
+                                    ({{ r_ingredient.unit_measure.label }})
+                                </label>
+                            </div>
+                            <div class="col-6">
+                                <button class="btn btn-outline-primary">Update</button>
+                            </div>
+                        </div>
+                    </form>
+                {% else %}
+                    <span class="d-block">{{ r_ingredient.quantity }} {{ r_ingredient.unit_measure.label }}</span>
+                {% endif %}
             </div>
 
         </div>

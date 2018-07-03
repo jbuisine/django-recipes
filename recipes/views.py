@@ -1,14 +1,14 @@
 import os
 from datetime import datetime
 
+from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import HttpResponseForbidden, Http404, JsonResponse
-from django.contrib import messages
-from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render, redirect
 
 from recipes.forms import CustomUserCreationForm, RecipeForm, CommentForm, VideoForm, RecipeIngredientForm, \
@@ -39,10 +39,6 @@ def signup(request):
     return render(request, 'registration/signup.html', {'signup_form': signup_form})
 
 
-def home(request):
-    return render(request, 'recipes/index.html')
-
-
 @login_required()
 def change_password(request):
     if request.method == 'POST':
@@ -60,6 +56,7 @@ def change_password(request):
         'form': form
     })
 
+
 @login_required()
 def account(request):
     # getting recipes of user
@@ -71,8 +68,19 @@ def account(request):
     return render(request, 'recipes/user/account.html', {'recipes': recipes})
 
 
-def show_recipes(request):
-    recipes_list = Recipe.objects.with_annotates().filter(published=True).order_by('-published_at')
+def show_recipes(request, type_id=None):
+    # get query result
+    query = request.GET.get('search', "")
+
+    recipes_list = Recipe.objects.with_annotates().filter(
+        Q(title__icontains=query) |
+        Q(description__icontains=query) |
+        Q(ingredients__ingredient__name__icontains=query),
+        Q(published=True)).order_by('-published_at')
+
+    if type_id:
+        recipes_list = recipes_list.filter(recipe_types__in=[type_id])
+
     paginator = Paginator(recipes_list, NUMBER_OF_RECIPES_PER_PAGE)
     page = request.GET.get('page')
     recipes = paginator.get_page(page)
@@ -104,7 +112,11 @@ def detail(request, recipe_slug):
     # get current mark of user if exists
     current_mark_score = 0
 
-    mark = recipe.marks.all().filter(user=request.user).first()
+    # by default mark can be None if user is not connected
+    mark = None
+
+    if request.user.is_authenticated:
+        mark = recipe.marks.all().filter(user=request.user).first()
 
     if mark:
         current_mark_score = mark.mark_score
@@ -133,7 +145,6 @@ def detail(request, recipe_slug):
 
 @login_required()
 def add_or_update_recipe(request):
-
     if request.method == 'POST' and not 'recipe_id' in request.POST:
 
         recipe_form = RecipeForm(request.POST)
@@ -160,7 +171,7 @@ def add_or_update_recipe(request):
             current_recipe = Recipe.objects.get(id=recipe_id)
             recipe_form = RecipeForm(instance=current_recipe)
 
-    return render(request, 'recipes/user/add_recipe.html', {'recipe_form': recipe_form,'recipe':current_recipe})
+    return render(request, 'recipes/user/add_recipe.html', {'recipe_form': recipe_form, 'recipe': current_recipe})
 
 
 @login_required()
@@ -298,6 +309,7 @@ def recipe_media_delete(request, recipe_slug):
 
     return JsonResponse({'success': True})
 
+
 @login_required()
 def recipe_delete(request, recipe_slug):
     try:
@@ -327,6 +339,7 @@ def recipe_update(request, recipe_id):
         form.save_m2m()
     return redirect('recipes:recipe-manage', recipe_slug=recipe.slug)
 
+
 #####################
 # Ingredients parts #
 #####################
@@ -334,14 +347,19 @@ def recipe_update(request, recipe_id):
 @login_required()
 def get_ingredients_of_family(request):
     ingredient_family_id = request.GET.get('ingredient_family')
+    recipe_id = request.GET.get('recipe')
 
     try:
         ingredient_family = IngredientFamily.objects.get(id=ingredient_family_id)
+        recipe = Recipe.objects.get(id=recipe_id)
     except Recipe.DoesNotExist:
-        raise Http404("Ingredient family does not exist")
+        raise Http404("Ingredient family or recipe does not exist")
 
     # get all ingredients
-    ingredients = Ingredient.objects.all().filter(family=ingredient_family).values()
+
+    recipe_ingredients = recipe.recipe_ingredients.all().values('id')
+
+    ingredients = Ingredient.objects.all().filter(family=ingredient_family).exclude(id__in=recipe_ingredients).values()
 
     return render(request, 'recipes/partials/recipes/forms/_recipe_ingredient_select.html',
                   {'ingredients': ingredients})
@@ -376,6 +394,23 @@ def delete_recipe_ingredient(request, recipe_ingredient_id):
     recipe_ingredient.delete()
 
     return redirect('recipes:recipe-manage', recipe_slug=recipe_slug)
+
+
+@login_required()
+def update_recipe_ingredient(request):
+    try:
+        qty = request.POST.get('quantity')
+        recipe_ingredient_id = request.POST.get('recipe_ingredient_id')
+
+        recipe_ingredient = RecipeIngredient.objects.get(id=recipe_ingredient_id)
+
+    except Recipe.DoesNotExist:
+        raise Http404("Recipe ingredient does not exist")
+
+    recipe_ingredient.quantity = qty
+    recipe_ingredient.save()
+
+    return redirect('recipes:recipe-manage', recipe_slug=recipe_ingredient.recipe.slug)
 
 
 ###############
@@ -428,11 +463,33 @@ def delete_recipe_step(request, step_id):
     return redirect('recipes:recipe-manage', recipe_slug=recipe_slug)
 
 
-def search(request):
-    query = request.GET.get('search')
-    recipes_list = Recipe.objects.filter(Q(title__icontains=query) | Q(description__icontains=query))
-    paginator = Paginator(recipes_list, NUMBER_OF_RECIPES_PER_PAGE)
-    page = request.GET.get('page')
-    recipes = paginator.get_page(page)
+@login_required()
+def delete_recipe_step(request, step_id):
+    try:
+        recipe_step = RecipeStep.objects.get(id=step_id)
+    except Recipe.DoesNotExist:
+        raise Http404("Recipe step does not exist")
 
-    return render(request, 'recipes/show_recipes.html', {'recipes': recipes})
+    recipe_slug = recipe_step.recipe.slug
+
+    # remove recipe step
+    recipe_step.delete()
+
+    return redirect('recipes:recipe-manage', recipe_slug=recipe_slug)
+
+
+@login_required()
+def update_recipe_step(request):
+    try:
+        description = request.POST.get('description')
+        step_id = request.POST.get('step_id')
+
+        step = RecipeStep.objects.get(id=step_id)
+
+    except Recipe.DoesNotExist:
+        raise Http404("Step does not exist")
+
+    step.description = description
+    step.save()
+
+    return redirect('recipes:recipe-manage', recipe_slug=step.recipe.slug)
