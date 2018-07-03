@@ -209,7 +209,8 @@
                 $.ajax({
                     url: url,
                     data: {
-                        'ingredient_family': ingredientFamilyId
+                        'ingredient_family': ingredientFamilyId,
+                        'recipe': {{ recipe.id }}
                     },
                     success: function (data) {
                         $("#id_ingredient").html(data);

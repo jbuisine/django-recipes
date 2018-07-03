@@ -15,9 +15,9 @@
 </head>
 <body data-spy="scroll" data-target="#pb-navbar" data-offset="200">
 
+{% load recipes_extras %}
 <!-- Nav web site part -->
-{% include 'recipes/partials/nav.html' %}
-{% include 'recipes/partials/recipes/_Modal_Search.html' %}
+{% navigation %}
 <!-- END section -->
 
 {% block container %}

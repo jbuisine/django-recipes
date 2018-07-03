@@ -15,7 +15,26 @@
 
             <h5><strong>Step {{ forloop.counter }}</strong></h5>
 
-            <p>{{ step.description }}</p>
+
+            {% if user.is_authenticated and user == recipe.user %}
+                <form method="post" action="{% url 'recipes:recipe-update-step' %}">
+                    <div class="form-row">
+                        <div class="col-8">
+
+                            {% csrf_token %}
+                            <textarea cols="5" name="description" class="form-control">{{ step.description }}</textarea>
+                            <input type="hidden" name="step_id" class="form-control"
+                                   value="{{ step.id }}">
+                        </div>
+                        <div class="col-4">
+                            <button class="btn btn-outline-primary">Update</button>
+                        </div>
+                    </div>
+                </form>
+            {% else %}
+                <p>{{ step.description }}</p>
+            {% endif %}
+
 
             {% if not forloop.last %}
                 <hr/>
