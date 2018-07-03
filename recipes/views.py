@@ -68,17 +68,18 @@ def account(request):
     return render(request, 'recipes/user/account.html', {'recipes': recipes})
 
 
-def show_recipes(request):
+def show_recipes(request, type_id=None):
     # get query result
     query = request.GET.get('search', "")
-    difficulty_id = request.GET.get('difficulty_id', "")
-    type_id = request.GET.get('type_id', "")
 
     recipes_list = Recipe.objects.with_annotates().filter(
         Q(title__icontains=query) |
         Q(description__icontains=query) |
         Q(ingredients__ingredient__name__icontains=query),
         Q(published=True)).order_by('-published_at')
+
+    if type_id:
+        recipes_list = recipes_list.filter(recipe_types__in=[type_id])
 
     paginator = Paginator(recipes_list, NUMBER_OF_RECIPES_PER_PAGE)
     page = request.GET.get('page')
