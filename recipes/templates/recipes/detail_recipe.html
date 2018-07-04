@@ -59,6 +59,10 @@
                 <strong>{% blocktrans %}Published by :{% endblocktrans %} </strong> <a
                     href="{% url 'users:user-detail' user_username_slug=recipe.user.username %}">{{ recipe.user.username }}</a>
             </p>
+
+             <p>
+                <strong>{% blocktrans %}Published at :{% endblocktrans %} </strong> {{ recipe.published_at | date:"m/d/Y h:m"  }}
+            </p>
         </div>
 
         <div class="col-3">
@@ -67,7 +71,7 @@
             <p><strong>{% blocktrans %}Description :{% endblocktrans %}</strong> {{ recipe.description }}</p>
             <p>
                 <strong>{% blocktrans %}Mark :{% endblocktrans %}</strong>
-                <span class="show-mean-mark-recipe" data-rating="{{ recipe.mean_of_marks }}"></span>
+                <span class="show-mean-mark-recipe"></span>
 
                 {% if recipe.number_of_marks > 1 %}
                     ({{ recipe.number_of_marks }} votes)
@@ -87,6 +91,14 @@
                 : {% endblocktrans %}</strong> {{ recipe.preparation_time | duration_format }}</p>
             <p><strong>{% blocktrans %}Cooking time
                 : {% endblocktrans %}</strong> {{ recipe.cooking_time | duration_format }}</p>
+
+            {% if recipe.relaxation_time != 0 %}
+            <p><strong>{% blocktrans %}Relaxation time
+                : {% endblocktrans %}</strong> {{ recipe.relaxation_time | duration_format }}</p>
+            {% endif %}
+
+            <p><strong>{% blocktrans %}Number of person
+                : {% endblocktrans %}</strong> {{ recipe.recipe_number_person }}</p>
         </div>
 
         <div class="col-6">

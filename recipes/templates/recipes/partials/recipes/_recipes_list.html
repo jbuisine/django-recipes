@@ -18,12 +18,12 @@
 
                     <div class="card-body">
 
-                        <span><i>Published by
+                        <span style="font-size: 14px;"><i>Published by
                             <a href="{% url 'users:user-detail' user_username_slug=recipe.user.username %}">{{ recipe.user.username }}</a>,
-                            {{ recipe.published_at | date:"m/d/Y" }}
+                            {{ recipe.published_at | date:"m/d/Y h:m" }}
                             </i></span>
                         <hr/>
-                        <h5 class="card-title">{{ recipe.title }}</h5>
+                        <h5 class="card-title"><strong>{{ recipe.title }}</strong></h5>
                         <p class="card-text">{{ recipe.description }}</p>
                         <span class="d-block"><strong>Mark :</strong> <span class="show-mean-mark-recipe"
                                                                             data-rating="{{ recipe.mean_of_marks }}"></span>
