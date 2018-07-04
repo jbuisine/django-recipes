@@ -11,24 +11,19 @@ class RecipeForm(forms.ModelForm):
         Recipe form utilization
     """
 
+    realization_cost = forms.FloatField(label=_('Recipe cost in €'), widget=NumberInput(attrs={'min': 0}))
+    preparation_time = forms.IntegerField(label=_('Preparation time in minutes'), widget=NumberInput(attrs={'min': 0}))
+    cooking_time = forms.IntegerField(label=_('Cooking time in minutes'), widget=NumberInput(attrs={'min': 0}))
+    relaxation_time = forms.IntegerField(label=_('Relaxation time in minutes'),
+                                         widget=NumberInput(attrs={'min': 0, 'value': 0}))
+
     class Meta:
         model = Recipe
         exclude = ['user', 'members', 'number_of_marks', 'mean_of_marks', 'recipe_ingredients', 'slug', 'published']
 
-        prepation_time = forms.IntegerField(label=_('Preparation time in minutes'))
-        cooking_time = forms.IntegerField(label=_('Cooking time in minutes'))
-        relaxation_time = forms.IntegerField(label=_('Relaxation time in minutes'))
-
-        # define widgets of time field
-        widgets = {
-            'preparation_time': NumberInput(attrs={'min': 0}),
-            'cooking_time': NumberInput(attrs={'min': 0}),
-            'relaxation_time': NumberInput(attrs={'min': 0}),
-        }
-
 
 class CommentForm(forms.ModelForm):
-    content = forms.CharField(label= _('Enter your comment'),
+    content = forms.CharField(label=_('Enter your comment'),
                               widget=forms.Textarea(attrs={'placeholder': _('Comment'), 'rows': 2}))
 
     class Meta:

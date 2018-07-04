@@ -1,7 +1,9 @@
 {% extends 'recipes/base.html' %}
 {% load i18n %}
+{% load staticfiles %}
+
 {% block content %}
 
-    {% include 'recipes/partials/users/_profile_view.html' with user=user %}
+    {% include 'recipes/partials/users/_profile_view.html' with selected_user=user %}
 
 {% endblock %}

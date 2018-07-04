@@ -7,11 +7,11 @@ from django.core.paginator import Paginator
 from django.http import Http404
 from django.shortcuts import render, redirect
 
-# Create your views here.
-from users.forms import CustomUserCreationForm
 from recipes.models import Recipe
 from recipes.views import NUMBER_OF_RECIPES_PER_PAGE
 from recipes.views import recipe_query_search
+# Create your views here.
+from users.forms import CustomUserCreationForm
 
 
 def signup(request):
@@ -51,16 +51,13 @@ def change_password(request):
 def account(request):
     # getting recipes of user
 
-    query = request.GET.get('search', "")
+    recipes = Recipe.objects.with_annotates().filter(user=request.user).all()
 
-    recipes = recipe_query_search(query)
+    mean_of_marks_user = 0
+    if recipes.count() != 0:
+        mean_of_marks_user = sum([recipe.mean_of_marks for recipe in recipes]) / recipes.count()
 
-    recipes_list = recipes.filter(user=request.user).order_by('-published_at')
-    paginator = Paginator(recipes_list, NUMBER_OF_RECIPES_PER_PAGE)
-    page = request.GET.get('page')
-    recipes = paginator.get_page(page)
-
-    return render(request, 'users/account.html', {'recipes': recipes})
+    return render(request, 'users/account.html', {'mean_of_marks_user': mean_of_marks_user})
 
 
 @login_required()
@@ -69,7 +66,7 @@ def user_recipes(request):
 
     query = request.GET.get('search', "")
 
-    recipes = recipe_query_search(query)
+    recipes = recipe_query_search(query, None)
 
     recipes_list = recipes.filter(user=request.user).order_by('-published_at')
     paginator = Paginator(recipes_list, NUMBER_OF_RECIPES_PER_PAGE)
@@ -81,8 +78,15 @@ def user_recipes(request):
 
 def user_detail(request, user_username_slug):
     try:
-        selected_user = User.objects.get(slug=user_username_slug)
+        selected_user = User.objects.get(username=user_username_slug)
     except Recipe.DoesNotExist:
         raise Http404("User does not exist")
 
-    return render(request, 'users/show_profile.html', {'selected_user': selected_user})
+    recipes = Recipe.objects.with_annotates().filter(user=selected_user).all()
+
+    mean_of_marks_user = 0
+    if recipes.count() != 0:
+        mean_of_marks_user = sum([recipe.mean_of_marks for recipe in recipes]) / recipes.count()
+
+    return render(request, 'users/show_profile.html',
+                  {'selected_user': selected_user, 'mean_of_marks_user': mean_of_marks_user})

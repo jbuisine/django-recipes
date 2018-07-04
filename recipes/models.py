@@ -133,7 +133,7 @@ class Recipe(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField(unique=True, null=False)
     description = models.TextField()
-    realization_cost = models.FloatField(default=0., validators=[MinValueValidator(0)])
+    realization_cost = models.FloatField(default=0, validators=[MinValueValidator(0)])
     published = models.BooleanField(default=False)
 
     # time fields (use of integer field by default : number of minutes)
