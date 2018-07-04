@@ -22,6 +22,10 @@
                 <img src="/{{ recipe.images.all.first.image }}"
                      style="height: 150px; width: 150px; border-radius: 5px;"
                      alt="{{ recipe.title }}_picture">
+            {% else %}
+                <img src="/media/recipes/default_recipe.jpg"
+                     style="height: 150px; width: 150px; border-radius: 5px;"
+                     alt="{{ recipe.title }}_picture">
             {% endif %}
             <p>
                 <strong>{% blocktrans %}Kind :{% endblocktrans %}</strong>
@@ -48,7 +52,8 @@
                 <span class="show-mean-mark-recipe">
 
                 </span>
-                ({% blocktrans %}number of votes :{% endblocktrans %}<span class="recipe-number-of-marks">{{ recipe.number_of_marks }}</span>)
+                ({% blocktrans %}number of votes :{% endblocktrans %}<span
+                    class="recipe-number-of-marks">{{ recipe.number_of_marks }}</span>)
             </p>
 
             {% if user.is_authenticated and user != recipe.user %}
@@ -58,8 +63,10 @@
                 </p>
             {% endif %}
 
-            <p><strong>{% blocktrans %}Preparation time : {% endblocktrans %}</strong> {{ recipe.preparation_time | duration_format}}</p>
-            <p><strong>{% blocktrans %}Cooking time : {% endblocktrans %}</strong> {{ recipe.cooking_time | duration_format}}</p>
+            <p><strong>{% blocktrans %}Preparation time
+                : {% endblocktrans %}</strong> {{ recipe.preparation_time | duration_format }}</p>
+            <p><strong>{% blocktrans %}Cooking time
+                : {% endblocktrans %}</strong> {{ recipe.cooking_time | duration_format }}</p>
         </div>
 
         <div class="col-6">
@@ -77,6 +84,11 @@
                                 data-slide-to="{{ forloop.counter }}"></li>
                         {% endif %}
 
+                    {% empty %}
+
+                        <li data-target="#carouselExampleIndicators"
+                            data-slide-to="0"
+                            class="active"></li>
                     {% endfor %}
                 </ol>
                 <div class="carousel-inner">
@@ -97,6 +109,13 @@
                             </div>
                         {% endif %}
 
+                    {% empty %}
+
+                        <div class="carousel-item">
+                            <img class="d-block w-100" src="/media/recipes/default_recipe.jpg"
+                                 style="width:100%; height: 400px;"
+                                 alt="Second slide">
+                        </div>
                     {% endfor %}
 
                 </div>
@@ -154,7 +173,7 @@
                     <div class="media-body">
                         <h5 class="mt-0 mb-1">
                             <strong>
-                                <a href="{% url 'recipes:user-detail' user_username=comment.user.username %}"> {{ comment.user.username }}</a>
+                                <a href="{% url 'users:user-detail' user_username_slug=comment.user.username %}"> {{ comment.user.username }}</a>
                                 <img src="{{ comment.user.profile.country_flag }}"
                                      style="height: 18px; width: 22px; border-radius: 3px"
                                      alt="{{ user.profile.country }}_flag">

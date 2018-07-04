@@ -1,24 +1,41 @@
 {% load i18n %}
 <div class="row">
     <div class="col-4">
-        <img src="/{{ user.profile.avatar }}" style="height: 150px; width: 150px; border-radius: 5px;"
-             alt="{{ user.username }}_avatar">
+
+        {% if user.profile.avatar %}
+            <img src="/{{ user.profile.avatar }}" style="height: 150px; width: 150px; border-radius: 5px;"
+                 alt="{{ user.username }}_avatar">
+        {% else %}
+            <img src="/media/avatars/default_avatar.png" style="height: 150px; width: 150px; border-radius: 5px;"
+                 alt="{{ user.username }}_avatar">
+        {% endif %}
         <p>
-            <strong>{% blocktrans %}Country :{% endblocktrans %}</strong>{{ user.profile.country }}
+            <strong>{% blocktrans %}Country : {% endblocktrans %}</strong>{{ user.profile.country }}
             <img src="{{ user.profile.country_flag }}" style="height: 18px; width: 22px; border-radius: 3px"
                  alt="{{ user.profile.country }}_flag">
         </p>
         {% if user.is_athenticated %}
             <p>
-                <a href="{% url "recipes:change_password" %}">{% blocktrans %}Update my password{% endblocktrans %}</a>
+                <a href="{% url "recipes:change-password" %}">{% blocktrans %}Update my password{% endblocktrans %}</a>
             </p>
         {% endif %}
     </div>
     <div class="col-8">
-        <h5>{% blocktrans %}Profile of {% endblocktrans %}{{ user.username }}</h5>
+        <h5>{% blocktrans %}Profile of {% endblocktrans %}<strong>{{ user.username }}</strong></h5>
         <hr/>
         <p><strong>{% blocktrans %}Firstname :{% endblocktrans %} </strong> {{ user.first_name }}</p>
         <p><strong>{% blocktrans %}Lastname : {% endblocktrans %}</strong> {{ user.last_name }}</p>
         <p><strong>{% blocktrans %}Age : {% endblocktrans %}</strong> {{ user.profile.get_age }}</p>
+        <p><strong>{% blocktrans %}Mail : {% endblocktrans %}</strong> {{ user.email }}</p>
+        <p><strong>{% blocktrans %}Number of recipes published
+            : {% endblocktrans %}</strong> {{ user.recipes.all.count }}</p>
+
+        {% if user.recipes.with_annotates %}
+            <p><strong>{% blocktrans %}Mean mark obtained
+                : {% endblocktrans %}</strong> {{ user.recipes.with_annotates.first.mean_of_marks }}</p>
+        {% else %}
+            <p><strong>{% blocktrans %}Mean mark obtained
+                : {% endblocktrans %}</strong>0</p>
+        {% endif %}
     </div>
 </div>

@@ -10,7 +10,8 @@ def navigation(context):
     return {
         'recipe_types': RecipeType.objects.all(),
         'recipe_difficulties': RecipeDifficulty.objects.all(),
-        'user': context['request'].user
+        'user': context['request'].user,
+        'request': context['request']
     }
 
 

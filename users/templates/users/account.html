@@ -1,0 +1,7 @@
+{% extends 'recipes/base.html' %}
+{% load i18n %}
+{% block content %}
+
+    {% include 'recipes/partials/users/_profile_view.html' with user=user %}
+
+{% endblock %}

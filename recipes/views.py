@@ -1,17 +1,13 @@
 import os
 from datetime import datetime
 
-from django.contrib import messages
-from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import PasswordChangeForm
-from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import HttpResponseForbidden, Http404, JsonResponse
 from django.shortcuts import render, redirect
 
-from recipes.forms import CustomUserCreationForm, RecipeForm, CommentForm, VideoForm, RecipeIngredientForm, \
+from recipes.forms import RecipeForm, CommentForm, VideoForm, RecipeIngredientForm, \
     MarkForm, RecipeStepForm
 from recipes.models import Recipe, RecipeComment, RecipeImage, RecipeIngredient, Ingredient, IngredientFamily, \
     IngredientUnitMeasure, RecipeVideo, RecipeStep
@@ -21,62 +17,37 @@ NUMBER_OF_RECIPES_PER_PAGE = 6
 NUMBER_OF_COMMENTS_PER_PAGE = 6
 
 
-def signup(request):
-    if request.method == 'POST':
-
-        signup_form = CustomUserCreationForm(request.POST, request.FILES)
-
-        for key in request.FILES:
-            print(key)
-
-        if signup_form.is_valid():
-            signup_form.save()
-
-            return redirect('recipes:home')
-    else:
-        signup_form = CustomUserCreationForm()
-
-    return render(request, 'registration/signup.html', {'signup_form': signup_form})
-
-
-@login_required()
-def change_password(request):
-    if request.method == 'POST':
-        form = PasswordChangeForm(request.user, request.POST)
-        if form.is_valid():
-            user = form.save()
-            update_session_auth_hash(request, user)  # Important!
-            messages.success(request, 'Your password was successfully updated!')
-            return redirect('change_password')
-        else:
-            messages.error(request, 'Please correct the error below.')
-    else:
-        form = PasswordChangeForm(request.user)
-    return render(request, 'recipes/user/change_password.html', {
-        'form': form
-    })
-
-
-@login_required()
-def account(request):
-    # getting recipes of user
-    recipes_list = Recipe.objects.all().filter(user=request.user).order_by('-published_at')
-    paginator = Paginator(recipes_list, NUMBER_OF_RECIPES_PER_PAGE)
-    page = request.GET.get('page')
-    recipes = paginator.get_page(page)
-
-    return render(request, 'recipes/user/account.html', {'recipes': recipes})
-
-
-def show_recipes(request, type_id=None):
-    # get query result
-    query = request.GET.get('search', "")
-
-    recipes_list = Recipe.objects.with_annotates().filter(
+def recipe_query_search(query):
+    """
+        Useful function to filter recipe by criteria
+    :param query: search string
+    :return: recipes query set
+    """
+    return Recipe.objects.with_annotates().filter(
         Q(title__icontains=query) |
         Q(description__icontains=query) |
         Q(ingredients__ingredient__name__icontains=query),
         Q(published=True)).order_by('-published_at')
+
+
+def show_recipes(request):
+    # get query result
+    query = request.GET.get('search', "")
+
+    recipes_list = recipe_query_search(query)
+
+    paginator = Paginator(recipes_list, NUMBER_OF_RECIPES_PER_PAGE)
+    page = request.GET.get('page')
+    recipes = paginator.get_page(page)
+
+    return render(request, 'recipes/show_recipes.html', {'recipes': recipes})
+
+
+def show_recipes_by_type(request, type_id=None):
+    # get query result
+    query = request.GET.get('search', "")
+
+    recipes_list = recipe_query_search(query)
 
     if type_id:
         recipes_list = recipes_list.filter(recipe_types__in=[type_id])
@@ -88,13 +59,20 @@ def show_recipes(request, type_id=None):
     return render(request, 'recipes/show_recipes.html', {'recipes': recipes})
 
 
-def user_detail(request, user_username):
-    try:
-        selected_user = User.objects.get(username=user_username)
-    except Recipe.DoesNotExist:
-        raise Http404("User does not exist")
+def show_recipes_by_difficulty(request, difficulty_id=None):
+    # get query result
+    query = request.GET.get('search', "")
 
-    return render(request, 'recipes/show_profile.html', {'selected_user': selected_user})
+    recipes_list = recipe_query_search(query)
+
+    if difficulty_id:
+        recipes_list = recipes_list.filter(recipe_difficulty_id=difficulty_id)
+
+    paginator = Paginator(recipes_list, NUMBER_OF_RECIPES_PER_PAGE)
+    page = request.GET.get('page')
+    recipes = paginator.get_page(page)
+
+    return render(request, 'recipes/show_recipes.html', {'recipes': recipes})
 
 
 def detail(request, recipe_slug):
@@ -145,6 +123,9 @@ def detail(request, recipe_slug):
 
 @login_required()
 def add_or_update_recipe(request):
+
+    current_recipe = None
+
     if request.method == 'POST' and not 'recipe_id' in request.POST:
 
         recipe_form = RecipeForm(request.POST)
@@ -166,7 +147,6 @@ def add_or_update_recipe(request):
         # check if user wants to update or create
         if recipe_id == "":
             recipe_form = RecipeForm()
-            current_recipe = None
         else:
             current_recipe = Recipe.objects.get(id=recipe_id)
             recipe_form = RecipeForm(instance=current_recipe)

@@ -24,3 +24,8 @@ tests/report/
 
 # binaries
 db.sqlite3
+
+# data
+media
+!media/avatars/default_avatar.png
+!media/recipes/default_recipe.jpg

@@ -1,0 +1,11 @@
+{% extends 'recipes/base.html' %}
+{% load i18n %}
+{% block content %}
+
+    <hr />
+    <!-- Include of recipes list element -->
+    {% include 'recipes/partials/recipes/_recipes_list.html' with list_title="Your recipes" %}
+
+    {% include 'recipes/partials/recipes/_pagination_objects.html' with objects=recipes %}
+
+{% endblock %}

@@ -104,7 +104,7 @@ Recipe objects structure is available [here](https://github.com/jbuisine/django-
 You need to have python, pip
 
 ```
-pip install django django-bootstrap4 django-jquery
+pip install -r requirements.txt
 ```
 
 ## Configuration
@@ -132,6 +132,13 @@ python project/manage.py runserver 8080
 ## Utilisation
 
 The default server address is [http://localhost:8000](http://localhost:8000)
+
+Accounts for testing:
+
+* admin:azerty11 (Admin role)
+* tcaron:azerty11
+* agambart:azerty11
+* jbuisine:azerty11
 
 ## How to contribute ?
 
