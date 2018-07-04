@@ -13,21 +13,28 @@ from recipes.models import Recipe, RecipeComment, RecipeImage, RecipeIngredient,
     IngredientUnitMeasure, RecipeVideo, RecipeStep
 
 # constants
-NUMBER_OF_RECIPES_PER_PAGE = 6
-NUMBER_OF_COMMENTS_PER_PAGE = 6
+NUMBER_OF_RECIPES_PER_PAGE = 3
+NUMBER_OF_COMMENTS_PER_PAGE = 3
 
 
-def recipe_query_search(query):
+def recipe_query_search(query, published = True):
     """
         Useful function to filter recipe by criteria
     :param query: search string
+    :param published: specify if we want only the published recipe or not
     :return: recipes query set
     """
-    return Recipe.objects.with_annotates().filter(
-        Q(title__icontains=query) |
-        Q(description__icontains=query) |
-        Q(ingredients__ingredient__name__icontains=query),
-        Q(published=True)).order_by('-published_at')
+    if published == None:
+        return Recipe.objects.with_annotates().filter(
+            Q(title__icontains=query) |
+            Q(description__icontains=query) |
+            Q(ingredients__ingredient__name__icontains=query)).order_by('-published_at')
+    else:
+        return Recipe.objects.with_annotates().filter(
+            Q(title__icontains=query) |
+            Q(description__icontains=query) |
+            Q(ingredients__ingredient__name__icontains=query),
+            Q(published=published)).order_by('-published_at')
 
 
 def show_recipes(request):

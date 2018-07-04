@@ -1,3 +1,5 @@
+{% load recipes_extras %}
+
 <div class="my-3 p-3 bg-white rounded box-shadow">
     <h4 class="border-bottom border-gray pb-2 mb-0">{{ list_title }}</h4>
     {% load i18n %}
@@ -9,13 +11,34 @@
                     {% if recipe.images.all %}
                         <img src="/{{ recipe.images.all.first.image }}" alt="recipe_image" class="card-img-top"
                              style="height: 250px;">
+                    {% else %}
+                        <img src="/media/recipes/default_recipe.jpg" alt="recipe_image" class="card-img-top"
+                             style="height: 250px;">
                     {% endif %}
 
                     <div class="card-body">
-                        <h5 class="card-title">{{ recipe.title }}</h5>
+
+                        <span style="font-size: 14px;"><i>Published by
+                            <a href="{% url 'users:user-detail' user_username_slug=recipe.user.username %}">{{ recipe.user.username }}</a>,
+                            {{ recipe.published_at | date:"m/d/Y h:m" }}
+                            </i></span>
+                        <hr/>
+                        <h5 class="card-title"><strong>{{ recipe.title }}</strong></h5>
                         <p class="card-text">{{ recipe.description }}</p>
+                        <span class="d-block"><strong>Mark :</strong> <span class="show-mean-mark-recipe"
+                                                                            data-rating="{{ recipe.mean_of_marks }}"></span>
+                        <span class="d-block"><strong>{% blocktrans %}Kind :{% endblocktrans %}</strong>
+                                {% for type in recipe.recipe_types.all %}
+                                    {{ type }}{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                        </span>
+                        <span class="d-block"><strong>Difficulty :</strong> {{ recipe.recipe_difficulty.label }}</span>
                         <span class="d-block"><strong>Cost :</strong> {{ recipe.realization_cost }} €</span>
+                        <span class="d-block"><strong>Preparation time :</strong> {{ recipe.preparation_time | duration_format }}</span>
+
+
                     </div>
+
                     <div class="card-footer">
                         {% if user.is_authenticated and user == recipe.user %}
 

@@ -12,7 +12,7 @@ from django.utils.text import slugify
 # useful function to set dynamic directory path to save file
 def avatar_path(self, filename):
     # file will be uploaded to MEDIA_ROOT/avatars/user_<id>/<filename>
-    return 'avatars/{0}/{1}'.format(self.user.id, filename)
+    return 'media/avatars/{0}/{1}'.format(self.user.id, filename)
 
 
 class Profile(models.Model):
@@ -71,7 +71,7 @@ class IngredientPhoto(models.Model):
     """
         Photo of an ingredient
     """
-    path = models.ImageField(upload_to='ingredients/')
+    path = models.ImageField(upload_to='media/ingredients/')
     created_at = models.DateTimeField(auto_now_add=True)
     ingredient = models.OneToOneField(Ingredient, on_delete=models.CASCADE, related_name='photo')
 
@@ -133,7 +133,7 @@ class Recipe(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField(unique=True, null=False)
     description = models.TextField()
-    realization_cost = models.FloatField(default=0., validators=[MinValueValidator(0)])
+    realization_cost = models.FloatField(default=0, validators=[MinValueValidator(0)])
     published = models.BooleanField(default=False)
 
     # time fields (use of integer field by default : number of minutes)
@@ -204,7 +204,7 @@ class RecipeVideo(models.Model):
 def user_directory_path(self, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/%Y/%m/%d/<filename>
     current_date = datetime.today().strftime('%Y/%m/%d')
-    return 'user_{0}/{1}/{2}'.format(self.recipe.user.id, current_date, filename)
+    return 'media/user_{0}/{1}/{2}'.format(self.recipe.user.id, current_date, filename)
 
 
 class RecipeImage(models.Model):

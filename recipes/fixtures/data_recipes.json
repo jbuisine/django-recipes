@@ -1,0 +1,2503 @@
+[
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 1,
+    "fields": {
+      "app_label": "admin",
+      "model": "logentry"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 2,
+    "fields": {
+      "app_label": "auth",
+      "model": "permission"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 3,
+    "fields": {
+      "app_label": "auth",
+      "model": "group"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 4,
+    "fields": {
+      "app_label": "auth",
+      "model": "user"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 5,
+    "fields": {
+      "app_label": "contenttypes",
+      "model": "contenttype"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 6,
+    "fields": {
+      "app_label": "sessions",
+      "model": "session"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 7,
+    "fields": {
+      "app_label": "recipes",
+      "model": "ingredient"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 8,
+    "fields": {
+      "app_label": "recipes",
+      "model": "ingredientfamily"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 9,
+    "fields": {
+      "app_label": "recipes",
+      "model": "ingredientphoto"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 10,
+    "fields": {
+      "app_label": "recipes",
+      "model": "ingredientunitmeasure"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 11,
+    "fields": {
+      "app_label": "recipes",
+      "model": "notification"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 12,
+    "fields": {
+      "app_label": "recipes",
+      "model": "profile"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 13,
+    "fields": {
+      "app_label": "recipes",
+      "model": "recipe"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 14,
+    "fields": {
+      "app_label": "recipes",
+      "model": "recipecomment"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 15,
+    "fields": {
+      "app_label": "recipes",
+      "model": "recipedifficulty"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 16,
+    "fields": {
+      "app_label": "recipes",
+      "model": "recipeimage"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 17,
+    "fields": {
+      "app_label": "recipes",
+      "model": "recipeingredient"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 18,
+    "fields": {
+      "app_label": "recipes",
+      "model": "recipemark"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 19,
+    "fields": {
+      "app_label": "recipes",
+      "model": "recipestep"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 20,
+    "fields": {
+      "app_label": "recipes",
+      "model": "recipetype"
+    }
+  },
+  {
+    "model": "contenttypes.contenttype",
+    "pk": 21,
+    "fields": {
+      "app_label": "recipes",
+      "model": "recipevideo"
+    }
+  },
+  {
+    "model": "recipes.ingredientunitmeasure",
+    "pk": 1,
+    "fields": {
+      "name": "Unit",
+      "label": ""
+    }
+  },
+  {
+    "model": "recipes.ingredientunitmeasure",
+    "pk": 2,
+    "fields": {
+      "name": "Milliliter",
+      "label": "ml"
+    }
+  },
+  {
+    "model": "recipes.ingredientunitmeasure",
+    "pk": 3,
+    "fields": {
+      "name": "Centiliter",
+      "label": "cl"
+    }
+  },
+  {
+    "model": "recipes.ingredientunitmeasure",
+    "pk": 4,
+    "fields": {
+      "name": "Liter",
+      "label": "L"
+    }
+  },
+  {
+    "model": "recipes.ingredientunitmeasure",
+    "pk": 5,
+    "fields": {
+      "name": "Gram",
+      "label": "g"
+    }
+  },
+  {
+    "model": "recipes.ingredientunitmeasure",
+    "pk": 6,
+    "fields": {
+      "name": "Kilogram",
+      "label": "kg"
+    }
+  },
+  {
+    "model": "recipes.ingredientfamily",
+    "pk": 1,
+    "fields": {
+      "name": "Meat, fish, egg"
+    }
+  },
+  {
+    "model": "recipes.ingredientfamily",
+    "pk": 3,
+    "fields": {
+      "name": "Cereals and starchy foods"
+    }
+  },
+  {
+    "model": "recipes.ingredientfamily",
+    "pk": 5,
+    "fields": {
+      "name": "Fatty body"
+    }
+  },
+  {
+    "model": "recipes.ingredientfamily",
+    "pk": 6,
+    "fields": {
+      "name": "Fruits and vegetables"
+    }
+  },
+  {
+    "model": "recipes.ingredientfamily",
+    "pk": 7,
+    "fields": {
+      "name": "Sugar"
+    }
+  },
+  {
+    "model": "recipes.ingredientfamily",
+    "pk": 8,
+    "fields": {
+      "name": "Dairy products"
+    }
+  },
+  {
+    "model": "recipes.ingredient",
+    "pk": 1,
+    "fields": {
+      "name": "Beef",
+      "family": 1,
+      "unit_measure": [
+        5,
+        6
+      ]
+    }
+  },
+  {
+    "model": "recipes.ingredient",
+    "pk": 2,
+    "fields": {
+      "name": "Black pepper",
+      "family": 5,
+      "unit_measure": [
+        5
+      ]
+    }
+  },
+  {
+    "model": "recipes.ingredient",
+    "pk": 3,
+    "fields": {
+      "name": "Salt",
+      "family": 5,
+      "unit_measure": [
+        5
+      ]
+    }
+  },
+  {
+    "model": "recipes.ingredient",
+    "pk": 4,
+    "fields": {
+      "name": "Green bean",
+      "family": 6,
+      "unit_measure": [
+        5,
+        6
+      ]
+    }
+  },
+  {
+    "model": "recipes.ingredient",
+    "pk": 5,
+    "fields": {
+      "name": "Sole fish",
+      "family": 1,
+      "unit_measure": [
+        5,
+        6
+      ]
+    }
+  },
+  {
+    "model": "recipes.ingredient",
+    "pk": 6,
+    "fields": {
+      "name": "Colza oil",
+      "family": 5,
+      "unit_measure": [
+        2,
+        3,
+        4
+      ]
+    }
+  },
+  {
+    "model": "recipes.ingredient",
+    "pk": 7,
+    "fields": {
+      "name": "Wheat",
+      "family": 3,
+      "unit_measure": [
+        5,
+        6
+      ]
+    }
+  },
+  {
+    "model": "recipes.ingredient",
+    "pk": 8,
+    "fields": {
+      "name": "Cucumber",
+      "family": 6,
+      "unit_measure": [
+        1,
+        5,
+        6
+      ]
+    }
+  },
+  {
+    "model": "recipes.ingredient",
+    "pk": 9,
+    "fields": {
+      "name": "Nature yogurt",
+      "family": 8,
+      "unit_measure": [
+        5,
+        6
+      ]
+    }
+  },
+  {
+    "model": "recipes.ingredient",
+    "pk": 10,
+    "fields": {
+      "name": "Black chocolate",
+      "family": 7,
+      "unit_measure": [
+        1,
+        5,
+        6
+      ]
+    }
+  },
+  {
+    "model": "recipes.ingredient",
+    "pk": 11,
+    "fields": {
+      "name": "Sugar",
+      "family": 7,
+      "unit_measure": [
+        5,
+        6
+      ]
+    }
+  },
+  {
+    "model": "recipes.ingredientphoto",
+    "pk": 1,
+    "fields": {
+      "path": "media/ingredients/beef.jpg",
+      "created_at": "2018-07-04T18:39:26.848Z",
+      "ingredient": 1
+    }
+  },
+  {
+    "model": "recipes.ingredientphoto",
+    "pk": 2,
+    "fields": {
+      "path": "media/ingredients/blackpepper.jpg",
+      "created_at": "2018-07-04T18:39:57.523Z",
+      "ingredient": 2
+    }
+  },
+  {
+    "model": "recipes.ingredientphoto",
+    "pk": 3,
+    "fields": {
+      "path": "media/ingredients/salt.jpg",
+      "created_at": "2018-07-04T18:40:11.571Z",
+      "ingredient": 3
+    }
+  },
+  {
+    "model": "recipes.ingredientphoto",
+    "pk": 4,
+    "fields": {
+      "path": "media/ingredients/green-bean.jpg",
+      "created_at": "2018-07-04T18:40:29.948Z",
+      "ingredient": 4
+    }
+  },
+  {
+    "model": "recipes.ingredientphoto",
+    "pk": 5,
+    "fields": {
+      "path": "media/ingredients/fish-sole.jpg",
+      "created_at": "2018-07-04T18:40:50.775Z",
+      "ingredient": 5
+    }
+  },
+  {
+    "model": "recipes.ingredientphoto",
+    "pk": 6,
+    "fields": {
+      "path": "media/ingredients/colza-oil.jpeg",
+      "created_at": "2018-07-04T18:41:22.974Z",
+      "ingredient": 6
+    }
+  },
+  {
+    "model": "recipes.ingredientphoto",
+    "pk": 7,
+    "fields": {
+      "path": "media/ingredients/wheat.jpg",
+      "created_at": "2018-07-04T18:41:42.993Z",
+      "ingredient": 7
+    }
+  },
+  {
+    "model": "recipes.ingredientphoto",
+    "pk": 8,
+    "fields": {
+      "path": "media/ingredients/cucumber.jpg",
+      "created_at": "2018-07-04T18:42:14.943Z",
+      "ingredient": 8
+    }
+  },
+  {
+    "model": "recipes.ingredientphoto",
+    "pk": 9,
+    "fields": {
+      "path": "media/ingredients/nature-yogurt.jpg",
+      "created_at": "2018-07-04T18:43:01.785Z",
+      "ingredient": 9
+    }
+  },
+  {
+    "model": "recipes.ingredientphoto",
+    "pk": 10,
+    "fields": {
+      "path": "media/ingredients/black-chocolate.jpg",
+      "created_at": "2018-07-04T18:43:59.233Z",
+      "ingredient": 10
+    }
+  },
+  {
+    "model": "recipes.ingredientphoto",
+    "pk": 11,
+    "fields": {
+      "path": "media/ingredients/sugar.jpg",
+      "created_at": "2018-07-04T18:44:58.670Z",
+      "ingredient": 11
+    }
+  },
+  {
+    "model": "recipes.recipedifficulty",
+    "pk": 1,
+    "fields": {
+      "label": "Very easy",
+      "level": 1
+    }
+  },
+  {
+    "model": "recipes.recipedifficulty",
+    "pk": 2,
+    "fields": {
+      "label": "Easy",
+      "level": 2
+    }
+  },
+  {
+    "model": "recipes.recipedifficulty",
+    "pk": 3,
+    "fields": {
+      "label": "Medium",
+      "level": 3
+    }
+  },
+  {
+    "model": "recipes.recipedifficulty",
+    "pk": 4,
+    "fields": {
+      "label": "Medium-hard",
+      "level": 4
+    }
+  },
+  {
+    "model": "recipes.recipedifficulty",
+    "pk": 5,
+    "fields": {
+      "label": "Difficult",
+      "level": 5
+    }
+  },
+  {
+    "model": "recipes.recipedifficulty",
+    "pk": 6,
+    "fields": {
+      "label": "Expert",
+      "level": 6
+    }
+  },
+  {
+    "model": "recipes.recipetype",
+    "pk": 1,
+    "fields": {
+      "label": "Breakfast"
+    }
+  },
+  {
+    "model": "recipes.recipetype",
+    "pk": 2,
+    "fields": {
+      "label": "Meal"
+    }
+  },
+  {
+    "model": "recipes.recipetype",
+    "pk": 3,
+    "fields": {
+      "label": "Diner"
+    }
+  },
+  {
+    "model": "recipes.recipetype",
+    "pk": 4,
+    "fields": {
+      "label": "Dessert"
+    }
+  },
+  {
+    "model": "recipes.recipetype",
+    "pk": 5,
+    "fields": {
+      "label": "Cake"
+    }
+  },
+  {
+    "model": "recipes.recipetype",
+    "pk": 6,
+    "fields": {
+      "label": "Summer"
+    }
+  },
+  {
+    "model": "recipes.recipetype",
+    "pk": 7,
+    "fields": {
+      "label": "Spring"
+    }
+  },
+  {
+    "model": "recipes.recipetype",
+    "pk": 8,
+    "fields": {
+      "label": "Autumn"
+    }
+  },
+  {
+    "model": "recipes.recipetype",
+    "pk": 9,
+    "fields": {
+      "label": "Winter"
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 1,
+    "fields": {
+      "recipe": 1,
+      "ingredient": 11,
+      "quantity": 200.0,
+      "unit_measure": 5
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 2,
+    "fields": {
+      "recipe": 1,
+      "ingredient": 9,
+      "quantity": 500.0,
+      "unit_measure": 5
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 3,
+    "fields": {
+      "recipe": 1,
+      "ingredient": 7,
+      "quantity": 250.0,
+      "unit_measure": 5
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 4,
+    "fields": {
+      "recipe": 2,
+      "ingredient": 1,
+      "quantity": 1.0,
+      "unit_measure": 6
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 5,
+    "fields": {
+      "recipe": 2,
+      "ingredient": 3,
+      "quantity": 20.0,
+      "unit_measure": 5
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 6,
+    "fields": {
+      "recipe": 2,
+      "ingredient": 7,
+      "quantity": 300.0,
+      "unit_measure": 5
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 7,
+    "fields": {
+      "recipe": 3,
+      "ingredient": 1,
+      "quantity": 500.0,
+      "unit_measure": 5
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 8,
+    "fields": {
+      "recipe": 3,
+      "ingredient": 3,
+      "quantity": 20.0,
+      "unit_measure": 5
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 9,
+    "fields": {
+      "recipe": 3,
+      "ingredient": 2,
+      "quantity": 22.0,
+      "unit_measure": 5
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 10,
+    "fields": {
+      "recipe": 4,
+      "ingredient": 1,
+      "quantity": 800.0,
+      "unit_measure": 5
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 11,
+    "fields": {
+      "recipe": 4,
+      "ingredient": 4,
+      "quantity": 200.0,
+      "unit_measure": 5
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 12,
+    "fields": {
+      "recipe": 4,
+      "ingredient": 8,
+      "quantity": 120.0,
+      "unit_measure": 5
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 13,
+    "fields": {
+      "recipe": 5,
+      "ingredient": 5,
+      "quantity": 3.0,
+      "unit_measure": 6
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 14,
+    "fields": {
+      "recipe": 5,
+      "ingredient": 2,
+      "quantity": 20.0,
+      "unit_measure": 5
+    }
+  },
+  {
+    "model": "recipes.recipeingredient",
+    "pk": 15,
+    "fields": {
+      "recipe": 5,
+      "ingredient": 6,
+      "quantity": 25.0,
+      "unit_measure": 3
+    }
+  },
+  {
+    "model": "recipes.recipestep",
+    "pk": 1,
+    "fields": {
+      "description": "First take you plate and put sugar with yogurt",
+      "recipe": 1
+    }
+  },
+  {
+    "model": "recipes.recipestep",
+    "pk": 2,
+    "fields": {
+      "description": "Make your dough",
+      "recipe": 1
+    }
+  },
+  {
+    "model": "recipes.recipestep",
+    "pk": 3,
+    "fields": {
+      "description": "Mix everything for 10 minutes and put in the oven",
+      "recipe": 1
+    }
+  },
+  {
+    "model": "recipes.recipestep",
+    "pk": 4,
+    "fields": {
+      "description": "Prepare all your ingredients and your oven",
+      "recipe": 2
+    }
+  },
+  {
+    "model": "recipes.recipestep",
+    "pk": 5,
+    "fields": {
+      "description": "Put everything in your plate",
+      "recipe": 2
+    }
+  },
+  {
+    "model": "recipes.recipestep",
+    "pk": 6,
+    "fields": {
+      "description": "Put pizza in the oven for 25 min",
+      "recipe": 2
+    }
+  },
+  {
+    "model": "recipes.recipestep",
+    "pk": 7,
+    "fields": {
+      "description": "Get all your ingredients prepared, and then heat the water",
+      "recipe": 3
+    }
+  },
+  {
+    "model": "recipes.recipestep",
+    "pk": 8,
+    "fields": {
+      "description": "Put your pasta during 10 min",
+      "recipe": 3
+    }
+  },
+  {
+    "model": "recipes.recipestep",
+    "pk": 9,
+    "fields": {
+      "description": "When you pasta are ready, put the heat beef in your plate",
+      "recipe": 3
+    }
+  },
+  {
+    "model": "recipes.recipestep",
+    "pk": 10,
+    "fields": {
+      "description": "Cut all your vegetables in parts",
+      "recipe": 4
+    }
+  },
+  {
+    "model": "recipes.recipestep",
+    "pk": 11,
+    "fields": {
+      "description": "Prepare your beef to split it in parts too",
+      "recipe": 4
+    }
+  },
+  {
+    "model": "recipes.recipestep",
+    "pk": 12,
+    "fields": {
+      "description": "Heat the whole in your pan during few minutes",
+      "recipe": 4
+    }
+  },
+  {
+    "model": "recipes.recipestep",
+    "pk": 13,
+    "fields": {
+      "description": "Prepare your fish and cut it in parts",
+      "recipe": 5
+    }
+  },
+  {
+    "model": "recipes.recipestep",
+    "pk": 14,
+    "fields": {
+      "description": "Put all spycies prepared on your fish",
+      "recipe": 5
+    }
+  },
+  {
+    "model": "recipes.recipestep",
+    "pk": 15,
+    "fields": {
+      "description": "Put it in your pan during 15 min approximatively",
+      "recipe": 5
+    }
+  },
+  {
+    "model": "recipes.recipeimage",
+    "pk": 1,
+    "fields": {
+      "image": "media/user_6/2018/07/04/yogurt-cake.jpg",
+      "created_at": "2018-07-04T19:07:03.972Z",
+      "recipe": 1
+    }
+  },
+  {
+    "model": "recipes.recipeimage",
+    "pk": 2,
+    "fields": {
+      "image": "media/user_6/2018/07/04/recipe1.jpg",
+      "created_at": "2018-07-04T20:43:11.695Z",
+      "recipe": 2
+    }
+  },
+  {
+    "model": "recipes.recipeimage",
+    "pk": 3,
+    "fields": {
+      "image": "media/user_8/2018/07/04/pasta.jpg",
+      "created_at": "2018-07-04T20:47:14.305Z",
+      "recipe": 3
+    }
+  },
+  {
+    "model": "recipes.recipeimage",
+    "pk": 4,
+    "fields": {
+      "image": "media/user_8/2018/07/04/beef-recipe.jpg",
+      "created_at": "2018-07-04T20:55:43.782Z",
+      "recipe": 4
+    }
+  },
+  {
+    "model": "recipes.recipeimage",
+    "pk": 5,
+    "fields": {
+      "image": "media/user_7/2018/07/04/fish-recipe.jpg",
+      "created_at": "2018-07-04T21:11:59.069Z",
+      "recipe": 5
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 1,
+    "fields": {
+      "name": "Can add log entry",
+      "content_type": 1,
+      "codename": "add_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 2,
+    "fields": {
+      "name": "Can change log entry",
+      "content_type": 1,
+      "codename": "change_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 3,
+    "fields": {
+      "name": "Can delete log entry",
+      "content_type": 1,
+      "codename": "delete_logentry"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 4,
+    "fields": {
+      "name": "Can add permission",
+      "content_type": 2,
+      "codename": "add_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 5,
+    "fields": {
+      "name": "Can change permission",
+      "content_type": 2,
+      "codename": "change_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 6,
+    "fields": {
+      "name": "Can delete permission",
+      "content_type": 2,
+      "codename": "delete_permission"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 7,
+    "fields": {
+      "name": "Can add group",
+      "content_type": 3,
+      "codename": "add_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 8,
+    "fields": {
+      "name": "Can change group",
+      "content_type": 3,
+      "codename": "change_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 9,
+    "fields": {
+      "name": "Can delete group",
+      "content_type": 3,
+      "codename": "delete_group"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 10,
+    "fields": {
+      "name": "Can add user",
+      "content_type": 4,
+      "codename": "add_user"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 11,
+    "fields": {
+      "name": "Can change user",
+      "content_type": 4,
+      "codename": "change_user"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 12,
+    "fields": {
+      "name": "Can delete user",
+      "content_type": 4,
+      "codename": "delete_user"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 13,
+    "fields": {
+      "name": "Can add content type",
+      "content_type": 5,
+      "codename": "add_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 14,
+    "fields": {
+      "name": "Can change content type",
+      "content_type": 5,
+      "codename": "change_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 15,
+    "fields": {
+      "name": "Can delete content type",
+      "content_type": 5,
+      "codename": "delete_contenttype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 16,
+    "fields": {
+      "name": "Can add session",
+      "content_type": 6,
+      "codename": "add_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 17,
+    "fields": {
+      "name": "Can change session",
+      "content_type": 6,
+      "codename": "change_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 18,
+    "fields": {
+      "name": "Can delete session",
+      "content_type": 6,
+      "codename": "delete_session"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 19,
+    "fields": {
+      "name": "Can add ingredient",
+      "content_type": 7,
+      "codename": "add_ingredient"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 20,
+    "fields": {
+      "name": "Can change ingredient",
+      "content_type": 7,
+      "codename": "change_ingredient"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 21,
+    "fields": {
+      "name": "Can delete ingredient",
+      "content_type": 7,
+      "codename": "delete_ingredient"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 22,
+    "fields": {
+      "name": "Can add ingredient family",
+      "content_type": 8,
+      "codename": "add_ingredientfamily"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 23,
+    "fields": {
+      "name": "Can change ingredient family",
+      "content_type": 8,
+      "codename": "change_ingredientfamily"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 24,
+    "fields": {
+      "name": "Can delete ingredient family",
+      "content_type": 8,
+      "codename": "delete_ingredientfamily"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 25,
+    "fields": {
+      "name": "Can add ingredient photo",
+      "content_type": 9,
+      "codename": "add_ingredientphoto"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 26,
+    "fields": {
+      "name": "Can change ingredient photo",
+      "content_type": 9,
+      "codename": "change_ingredientphoto"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 27,
+    "fields": {
+      "name": "Can delete ingredient photo",
+      "content_type": 9,
+      "codename": "delete_ingredientphoto"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 28,
+    "fields": {
+      "name": "Can add ingredient unit measure",
+      "content_type": 10,
+      "codename": "add_ingredientunitmeasure"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 29,
+    "fields": {
+      "name": "Can change ingredient unit measure",
+      "content_type": 10,
+      "codename": "change_ingredientunitmeasure"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 30,
+    "fields": {
+      "name": "Can delete ingredient unit measure",
+      "content_type": 10,
+      "codename": "delete_ingredientunitmeasure"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 31,
+    "fields": {
+      "name": "Can add notification",
+      "content_type": 11,
+      "codename": "add_notification"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 32,
+    "fields": {
+      "name": "Can change notification",
+      "content_type": 11,
+      "codename": "change_notification"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 33,
+    "fields": {
+      "name": "Can delete notification",
+      "content_type": 11,
+      "codename": "delete_notification"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 34,
+    "fields": {
+      "name": "Can add profile",
+      "content_type": 12,
+      "codename": "add_profile"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 35,
+    "fields": {
+      "name": "Can change profile",
+      "content_type": 12,
+      "codename": "change_profile"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 36,
+    "fields": {
+      "name": "Can delete profile",
+      "content_type": 12,
+      "codename": "delete_profile"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 37,
+    "fields": {
+      "name": "Can add recipe",
+      "content_type": 13,
+      "codename": "add_recipe"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 38,
+    "fields": {
+      "name": "Can change recipe",
+      "content_type": 13,
+      "codename": "change_recipe"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 39,
+    "fields": {
+      "name": "Can delete recipe",
+      "content_type": 13,
+      "codename": "delete_recipe"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 40,
+    "fields": {
+      "name": "Can add recipe comment",
+      "content_type": 14,
+      "codename": "add_recipecomment"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 41,
+    "fields": {
+      "name": "Can change recipe comment",
+      "content_type": 14,
+      "codename": "change_recipecomment"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 42,
+    "fields": {
+      "name": "Can delete recipe comment",
+      "content_type": 14,
+      "codename": "delete_recipecomment"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 43,
+    "fields": {
+      "name": "Can add recipe difficulty",
+      "content_type": 15,
+      "codename": "add_recipedifficulty"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 44,
+    "fields": {
+      "name": "Can change recipe difficulty",
+      "content_type": 15,
+      "codename": "change_recipedifficulty"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 45,
+    "fields": {
+      "name": "Can delete recipe difficulty",
+      "content_type": 15,
+      "codename": "delete_recipedifficulty"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 46,
+    "fields": {
+      "name": "Can add recipe image",
+      "content_type": 16,
+      "codename": "add_recipeimage"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 47,
+    "fields": {
+      "name": "Can change recipe image",
+      "content_type": 16,
+      "codename": "change_recipeimage"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 48,
+    "fields": {
+      "name": "Can delete recipe image",
+      "content_type": 16,
+      "codename": "delete_recipeimage"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 49,
+    "fields": {
+      "name": "Can add recipe ingredient",
+      "content_type": 17,
+      "codename": "add_recipeingredient"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 50,
+    "fields": {
+      "name": "Can change recipe ingredient",
+      "content_type": 17,
+      "codename": "change_recipeingredient"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 51,
+    "fields": {
+      "name": "Can delete recipe ingredient",
+      "content_type": 17,
+      "codename": "delete_recipeingredient"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 52,
+    "fields": {
+      "name": "Can add recipe mark",
+      "content_type": 18,
+      "codename": "add_recipemark"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 53,
+    "fields": {
+      "name": "Can change recipe mark",
+      "content_type": 18,
+      "codename": "change_recipemark"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 54,
+    "fields": {
+      "name": "Can delete recipe mark",
+      "content_type": 18,
+      "codename": "delete_recipemark"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 55,
+    "fields": {
+      "name": "Can add recipe step",
+      "content_type": 19,
+      "codename": "add_recipestep"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 56,
+    "fields": {
+      "name": "Can change recipe step",
+      "content_type": 19,
+      "codename": "change_recipestep"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 57,
+    "fields": {
+      "name": "Can delete recipe step",
+      "content_type": 19,
+      "codename": "delete_recipestep"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 58,
+    "fields": {
+      "name": "Can add recipe type",
+      "content_type": 20,
+      "codename": "add_recipetype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 59,
+    "fields": {
+      "name": "Can change recipe type",
+      "content_type": 20,
+      "codename": "change_recipetype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 60,
+    "fields": {
+      "name": "Can delete recipe type",
+      "content_type": 20,
+      "codename": "delete_recipetype"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 61,
+    "fields": {
+      "name": "Can add recipe video",
+      "content_type": 21,
+      "codename": "add_recipevideo"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 62,
+    "fields": {
+      "name": "Can change recipe video",
+      "content_type": 21,
+      "codename": "change_recipevideo"
+    }
+  },
+  {
+    "model": "auth.permission",
+    "pk": 63,
+    "fields": {
+      "name": "Can delete recipe video",
+      "content_type": 21,
+      "codename": "delete_recipevideo"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$100000$KadgejGHbntJ$HKgWbn4RfmixZvd21zMcFXLIxuViNOHcQ1hNvRCcQjg=",
+      "last_login": "2018-07-04T18:14:00.013Z",
+      "is_superuser": true,
+      "username": "admin",
+      "first_name": "",
+      "last_name": "",
+      "email": "contact@jeromebuisine.fr",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2018-07-04T17:13:08.041Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 6,
+    "fields": {
+      "password": "pbkdf2_sha256$100000$j6vjVqd9jYcl$fM+md4U72QXA5XxmojFSvAKxkUdfDYACc83EpQJbVv4=",
+      "last_login": "2018-07-04T21:15:50.834Z",
+      "is_superuser": false,
+      "username": "jbuisine",
+      "first_name": "J\u00e9r\u00f4me",
+      "last_name": "Buisine",
+      "email": "jeromebuisine@djangorecipes.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2018-07-04T17:55:29.132Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 7,
+    "fields": {
+      "password": "pbkdf2_sha256$100000$Axv4puKb7LJ1$RjoLZuQuPdOVqi6+Ud83+vMzbgT7uzDBmq4TZ1xrTOg=",
+      "last_login": "2018-07-04T21:15:17.594Z",
+      "is_superuser": false,
+      "username": "tcaron",
+      "first_name": "Thomas",
+      "last_name": "Caron",
+      "email": "thomascaron@djangorecipes.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2018-07-04T18:04:50.502Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 8,
+    "fields": {
+      "password": "pbkdf2_sha256$100000$ZXrNkhNSpwcC$x4ajLbq3d20GhtjJLPpsHSpz35GmZhLocNZhrmBSDOg=",
+      "last_login": "2018-07-04T21:15:37.674Z",
+      "is_superuser": false,
+      "username": "agambart",
+      "first_name": "Alexandre",
+      "last_name": "Gambart",
+      "email": "alexandregambart@djangorecipes.com",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2018-07-04T18:07:34.340Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "recipes.profile",
+    "pk": 5,
+    "fields": {
+      "user": 6,
+      "avatar": "",
+      "date_of_birth": "1994-07-07",
+      "country": "France",
+      "country_flag": "https://restcountries.eu/data/fra.svg"
+    }
+  },
+  {
+    "model": "recipes.profile",
+    "pk": 6,
+    "fields": {
+      "user": 7,
+      "avatar": "media/avatars/7/batman.png",
+      "date_of_birth": "1994-07-07",
+      "country": "France",
+      "country_flag": "https://restcountries.eu/data/fra.svg"
+    }
+  },
+  {
+    "model": "recipes.profile",
+    "pk": 7,
+    "fields": {
+      "user": 8,
+      "avatar": "media/avatars/8/avatar.png",
+      "date_of_birth": "1994-10-20",
+      "country": "France",
+      "country_flag": "https://restcountries.eu/data/fra.svg"
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 1,
+    "fields": {
+      "title": "Nature Cake",
+      "slug": "nature-cake-1",
+      "description": "Recipe which explains how make nature cake with yogurt",
+      "realization_cost": 35.0,
+      "published": true,
+      "preparation_time": 30,
+      "cooking_time": 35,
+      "relaxation_time": 0,
+      "recipe_number_person": 4,
+      "created_at": "2018-07-04T18:52:06.198Z",
+      "updated_at": "2018-07-04T19:08:49.581Z",
+      "published_at": "2018-07-04T19:08:49.581Z",
+      "recipe_difficulty": 2,
+      "user": 6,
+      "recipe_types": [
+        4,
+        5
+      ]
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 2,
+    "fields": {
+      "title": "Mixed pizza",
+      "slug": "mixed-pizza-2",
+      "description": "New recipe pizza with some beef and fish",
+      "realization_cost": 25.0,
+      "published": true,
+      "preparation_time": 35,
+      "cooking_time": 20,
+      "relaxation_time": 0,
+      "recipe_number_person": 6,
+      "created_at": "2018-07-04T20:36:26.268Z",
+      "updated_at": "2018-07-04T20:44:44.890Z",
+      "published_at": "2018-07-04T20:44:44.890Z",
+      "recipe_difficulty": 3,
+      "user": 6,
+      "recipe_types": [
+        2,
+        3,
+        8
+      ]
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 3,
+    "fields": {
+      "title": "Pasta with beef",
+      "slug": "pasta-with-beef-3",
+      "description": "Pasta recipe which contains some beef !",
+      "realization_cost": 15.0,
+      "published": true,
+      "preparation_time": 20,
+      "cooking_time": 15,
+      "relaxation_time": 0,
+      "recipe_number_person": 1,
+      "created_at": "2018-07-04T20:47:06.693Z",
+      "updated_at": "2018-07-04T20:49:28.965Z",
+      "published_at": "2018-07-04T20:49:28.965Z",
+      "recipe_difficulty": 1,
+      "user": 8,
+      "recipe_types": [
+        2
+      ]
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 4,
+    "fields": {
+      "title": "Beef with vegetables",
+      "slug": "beef-with-vegetables-4",
+      "description": "Beef recipe with some beautiful vegetables",
+      "realization_cost": 20.0,
+      "published": true,
+      "preparation_time": 30,
+      "cooking_time": 75,
+      "relaxation_time": 0,
+      "recipe_number_person": 6,
+      "created_at": "2018-07-04T20:54:37.370Z",
+      "updated_at": "2018-07-04T20:57:41.556Z",
+      "published_at": "2018-07-04T20:57:41.556Z",
+      "recipe_difficulty": 4,
+      "user": 8,
+      "recipe_types": [
+        2,
+        3,
+        9
+      ]
+    }
+  },
+  {
+    "model": "recipes.recipe",
+    "pk": 5,
+    "fields": {
+      "title": "Fish piri pire",
+      "slug": "fish-piri-pire-5",
+      "description": "Fish with some spicies ingredient for summer",
+      "realization_cost": 20.0,
+      "published": true,
+      "preparation_time": 35,
+      "cooking_time": 10,
+      "relaxation_time": 10,
+      "recipe_number_person": 2,
+      "created_at": "2018-07-04T21:11:52.626Z",
+      "updated_at": "2018-07-04T21:13:49.066Z",
+      "published_at": "2018-07-04T21:13:49.066Z",
+      "recipe_difficulty": 6,
+      "user": 7,
+      "recipe_types": [
+        2,
+        6
+      ]
+    }
+  },
+  {
+    "model": "recipes.recipecomment",
+    "pk": 1,
+    "fields": {
+      "content": "Great recipe but with chocolate it could be better !",
+      "created_at": "2018-07-04T19:15:25.608Z",
+      "user": 7,
+      "recipe": 1
+    }
+  },
+  {
+    "model": "recipes.recipecomment",
+    "pk": 2,
+    "fields": {
+      "content": "Great pizza ! I recommend it !",
+      "created_at": "2018-07-04T20:45:37.169Z",
+      "user": 8,
+      "recipe": 2
+    }
+  },
+  {
+    "model": "recipes.recipecomment",
+    "pk": 3,
+    "fields": {
+      "content": "Seems to be great but I was disapointed",
+      "created_at": "2018-07-04T20:58:22.473Z",
+      "user": 7,
+      "recipe": 4
+    }
+  },
+  {
+    "model": "recipes.recipecomment",
+    "pk": 4,
+    "fields": {
+      "content": "Ho sorry, I will improve my recipe later",
+      "created_at": "2018-07-04T20:58:48.682Z",
+      "user": 8,
+      "recipe": 4
+    }
+  },
+  {
+    "model": "recipes.recipecomment",
+    "pk": 5,
+    "fields": {
+      "content": "Disapointed too...",
+      "created_at": "2018-07-04T20:59:16.883Z",
+      "user": 6,
+      "recipe": 4
+    }
+  },
+  {
+    "model": "recipes.recipecomment",
+    "pk": 6,
+    "fields": {
+      "content": "Very very good recipe !",
+      "created_at": "2018-07-04T21:02:07.380Z",
+      "user": 6,
+      "recipe": 3
+    }
+  },
+  {
+    "model": "recipes.recipecomment",
+    "pk": 7,
+    "fields": {
+      "content": "Just tell me what I can improve...",
+      "created_at": "2018-07-04T21:05:48.176Z",
+      "user": 8,
+      "recipe": 4
+    }
+  },
+  {
+    "model": "recipes.recipecomment",
+    "pk": 8,
+    "fields": {
+      "content": "Great !",
+      "created_at": "2018-07-04T21:06:28.403Z",
+      "user": 7,
+      "recipe": 2
+    }
+  },
+  {
+    "model": "recipes.recipecomment",
+    "pk": 9,
+    "fields": {
+      "content": "Nice !",
+      "created_at": "2018-07-04T21:06:38.771Z",
+      "user": 7,
+      "recipe": 3
+    }
+  },
+  {
+    "model": "recipes.recipecomment",
+    "pk": 10,
+    "fields": {
+      "content": "So spicy !!",
+      "created_at": "2018-07-04T21:14:45.049Z",
+      "user": 8,
+      "recipe": 5
+    }
+  },
+  {
+    "model": "recipes.recipecomment",
+    "pk": 11,
+    "fields": {
+      "content": "Good recipe.",
+      "created_at": "2018-07-04T21:15:12.389Z",
+      "user": 6,
+      "recipe": 5
+    }
+  },
+  {
+    "model": "recipes.recipecomment",
+    "pk": 12,
+    "fields": {
+      "content": "Thanks !",
+      "created_at": "2018-07-04T21:15:46.593Z",
+      "user": 8,
+      "recipe": 3
+    }
+  },
+  {
+    "model": "recipes.recipecomment",
+    "pk": 13,
+    "fields": {
+      "content": "No problem, I will share it to my friends",
+      "created_at": "2018-07-04T21:16:07.880Z",
+      "user": 6,
+      "recipe": 3
+    }
+  },
+  {
+    "model": "recipes.recipemark",
+    "pk": 1,
+    "fields": {
+      "mark_score": 5.0,
+      "created_at": "2018-07-04T19:13:54.135Z",
+      "user": 7,
+      "recipe": 1
+    }
+  },
+  {
+    "model": "recipes.recipemark",
+    "pk": 2,
+    "fields": {
+      "mark_score": 3.0,
+      "created_at": "2018-07-04T20:44:53.887Z",
+      "user": 8,
+      "recipe": 2
+    }
+  },
+  {
+    "model": "recipes.recipemark",
+    "pk": 3,
+    "fields": {
+      "mark_score": 5.0,
+      "created_at": "2018-07-04T20:58:05.142Z",
+      "user": 7,
+      "recipe": 4
+    }
+  },
+  {
+    "model": "recipes.recipemark",
+    "pk": 4,
+    "fields": {
+      "mark_score": 1.5,
+      "created_at": "2018-07-04T20:59:09.626Z",
+      "user": 6,
+      "recipe": 4
+    }
+  },
+  {
+    "model": "recipes.recipemark",
+    "pk": 5,
+    "fields": {
+      "mark_score": 4.5,
+      "created_at": "2018-07-04T21:02:00.258Z",
+      "user": 6,
+      "recipe": 3
+    }
+  },
+  {
+    "model": "recipes.recipemark",
+    "pk": 6,
+    "fields": {
+      "mark_score": 5.0,
+      "created_at": "2018-07-04T21:06:19.719Z",
+      "user": 7,
+      "recipe": 2
+    }
+  },
+  {
+    "model": "recipes.recipemark",
+    "pk": 7,
+    "fields": {
+      "mark_score": 5.0,
+      "created_at": "2018-07-04T21:06:35.067Z",
+      "user": 7,
+      "recipe": 3
+    }
+  },
+  {
+    "model": "recipes.recipemark",
+    "pk": 8,
+    "fields": {
+      "mark_score": 4.0,
+      "created_at": "2018-07-04T21:14:33.064Z",
+      "user": 6,
+      "recipe": 5
+    }
+  },
+  {
+    "model": "recipes.recipemark",
+    "pk": 9,
+    "fields": {
+      "mark_score": 5.0,
+      "created_at": "2018-07-04T21:14:48.167Z",
+      "user": 8,
+      "recipe": 5
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 1,
+    "fields": {
+      "action_time": "2018-07-04T18:15:07.583Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "1",
+      "object_repr": "Meat, fish, egg",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 2,
+    "fields": {
+      "action_time": "2018-07-04T18:15:07.674Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "2",
+      "object_repr": "Meat, fish, egg",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 3,
+    "fields": {
+      "action_time": "2018-07-04T18:15:12.742Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "2",
+      "object_repr": "Meat, fish, egg",
+      "action_flag": 3,
+      "change_message": ""
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 4,
+    "fields": {
+      "action_time": "2018-07-04T18:15:18.937Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "3",
+      "object_repr": "Cereals and starchy foods",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 5,
+    "fields": {
+      "action_time": "2018-07-04T18:15:24.339Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "4",
+      "object_repr": "Fruits and vegetables",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 6,
+    "fields": {
+      "action_time": "2018-07-04T18:15:38.175Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "5",
+      "object_repr": "Fatty body",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 7,
+    "fields": {
+      "action_time": "2018-07-04T18:15:46.891Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "6",
+      "object_repr": "Fruits and vegetables",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 8,
+    "fields": {
+      "action_time": "2018-07-04T18:15:53.124Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "4",
+      "object_repr": "Fruits and vegetables",
+      "action_flag": 3,
+      "change_message": ""
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 9,
+    "fields": {
+      "action_time": "2018-07-04T18:15:58.787Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "7",
+      "object_repr": "Sugar",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 10,
+    "fields": {
+      "action_time": "2018-07-04T18:16:03.415Z",
+      "user": 1,
+      "content_type": 8,
+      "object_id": "8",
+      "object_repr": "Dairy products",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 11,
+    "fields": {
+      "action_time": "2018-07-04T18:16:14.503Z",
+      "user": 1,
+      "content_type": 15,
+      "object_id": "1",
+      "object_repr": "Level 1 : Easy",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 12,
+    "fields": {
+      "action_time": "2018-07-04T18:16:25.939Z",
+      "user": 1,
+      "content_type": 15,
+      "object_id": "2",
+      "object_repr": "Level 2 : Easy",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 13,
+    "fields": {
+      "action_time": "2018-07-04T18:16:32.909Z",
+      "user": 1,
+      "content_type": 15,
+      "object_id": "1",
+      "object_repr": "Level 1 : Very easy",
+      "action_flag": 2,
+      "change_message": "[{\"changed\": {\"fields\": [\"label\"]}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 14,
+    "fields": {
+      "action_time": "2018-07-04T18:16:40.213Z",
+      "user": 1,
+      "content_type": 15,
+      "object_id": "3",
+      "object_repr": "Level 3 : Medium",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 15,
+    "fields": {
+      "action_time": "2018-07-04T18:16:46.300Z",
+      "user": 1,
+      "content_type": 15,
+      "object_id": "4",
+      "object_repr": "Level 4 : Medium-hard",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 16,
+    "fields": {
+      "action_time": "2018-07-04T18:16:51.124Z",
+      "user": 1,
+      "content_type": 15,
+      "object_id": "5",
+      "object_repr": "Level 5 : Difficult",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 17,
+    "fields": {
+      "action_time": "2018-07-04T18:16:55.368Z",
+      "user": 1,
+      "content_type": 15,
+      "object_id": "6",
+      "object_repr": "Level 6 : Expert",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 18,
+    "fields": {
+      "action_time": "2018-07-04T18:20:09.864Z",
+      "user": 1,
+      "content_type": 20,
+      "object_id": "1",
+      "object_repr": "Breakfast",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 19,
+    "fields": {
+      "action_time": "2018-07-04T18:20:14.223Z",
+      "user": 1,
+      "content_type": 20,
+      "object_id": "2",
+      "object_repr": "Meal",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 20,
+    "fields": {
+      "action_time": "2018-07-04T18:20:17.495Z",
+      "user": 1,
+      "content_type": 20,
+      "object_id": "3",
+      "object_repr": "Diner",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 21,
+    "fields": {
+      "action_time": "2018-07-04T18:20:21.463Z",
+      "user": 1,
+      "content_type": 20,
+      "object_id": "4",
+      "object_repr": "Dessert",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 22,
+    "fields": {
+      "action_time": "2018-07-04T18:20:26.271Z",
+      "user": 1,
+      "content_type": 20,
+      "object_id": "5",
+      "object_repr": "Cake",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 23,
+    "fields": {
+      "action_time": "2018-07-04T18:20:30.022Z",
+      "user": 1,
+      "content_type": 20,
+      "object_id": "6",
+      "object_repr": "Summer",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 24,
+    "fields": {
+      "action_time": "2018-07-04T18:20:33.124Z",
+      "user": 1,
+      "content_type": 20,
+      "object_id": "7",
+      "object_repr": "Spring",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 25,
+    "fields": {
+      "action_time": "2018-07-04T18:20:36.677Z",
+      "user": 1,
+      "content_type": 20,
+      "object_id": "8",
+      "object_repr": "Autumn",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 26,
+    "fields": {
+      "action_time": "2018-07-04T18:20:39.331Z",
+      "user": 1,
+      "content_type": 20,
+      "object_id": "9",
+      "object_repr": "Winter",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 27,
+    "fields": {
+      "action_time": "2018-07-04T18:20:48.571Z",
+      "user": 1,
+      "content_type": 10,
+      "object_id": "1",
+      "object_repr": "Unit ()",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 28,
+    "fields": {
+      "action_time": "2018-07-04T18:20:57.219Z",
+      "user": 1,
+      "content_type": 10,
+      "object_id": "2",
+      "object_repr": "Milliliter (ml)",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 29,
+    "fields": {
+      "action_time": "2018-07-04T18:21:02.673Z",
+      "user": 1,
+      "content_type": 10,
+      "object_id": "3",
+      "object_repr": "Centiliter (cl)",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 30,
+    "fields": {
+      "action_time": "2018-07-04T18:21:06.790Z",
+      "user": 1,
+      "content_type": 10,
+      "object_id": "4",
+      "object_repr": "Liter (L)",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 31,
+    "fields": {
+      "action_time": "2018-07-04T18:21:12.298Z",
+      "user": 1,
+      "content_type": 10,
+      "object_id": "5",
+      "object_repr": "Gram (g)",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 32,
+    "fields": {
+      "action_time": "2018-07-04T18:21:16.922Z",
+      "user": 1,
+      "content_type": 10,
+      "object_id": "6",
+      "object_repr": "Kilogram (kg)",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 33,
+    "fields": {
+      "action_time": "2018-07-04T18:39:26.848Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "1",
+      "object_repr": "Beef",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}, {\"added\": {\"name\": \"ingredient-ingredientunitmeasure relationship\", \"object\": \"Ingredient_unit_measure object (1)\"}}, {\"added\": {\"name\": \"ingredient-ingredientunitmeasure relationship\", \"object\": \"Ingredient_unit_measure object (2)\"}}, {\"added\": {\"name\": \"ingredient photo\", \"object\": \"Photo of Beef : media/ingredients/beef.jpg\"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 34,
+    "fields": {
+      "action_time": "2018-07-04T18:39:57.523Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "2",
+      "object_repr": "Black pepper",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}, {\"added\": {\"name\": \"ingredient-ingredientunitmeasure relationship\", \"object\": \"Ingredient_unit_measure object (3)\"}}, {\"added\": {\"name\": \"ingredient photo\", \"object\": \"Photo of Black pepper : media/ingredients/blackpepper.jpg\"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 35,
+    "fields": {
+      "action_time": "2018-07-04T18:40:11.571Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "3",
+      "object_repr": "Salt",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}, {\"added\": {\"name\": \"ingredient-ingredientunitmeasure relationship\", \"object\": \"Ingredient_unit_measure object (4)\"}}, {\"added\": {\"name\": \"ingredient photo\", \"object\": \"Photo of Salt : media/ingredients/salt.jpg\"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 36,
+    "fields": {
+      "action_time": "2018-07-04T18:40:29.948Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "4",
+      "object_repr": "Green bean",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}, {\"added\": {\"name\": \"ingredient-ingredientunitmeasure relationship\", \"object\": \"Ingredient_unit_measure object (5)\"}}, {\"added\": {\"name\": \"ingredient-ingredientunitmeasure relationship\", \"object\": \"Ingredient_unit_measure object (6)\"}}, {\"added\": {\"name\": \"ingredient photo\", \"object\": \"Photo of Green bean : media/ingredients/green-bean.jpg\"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 37,
+    "fields": {
+      "action_time": "2018-07-04T18:40:50.776Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "5",
+      "object_repr": "Sole fish",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}, {\"added\": {\"name\": \"ingredient-ingredientunitmeasure relationship\", \"object\": \"Ingredient_unit_measure object (7)\"}}, {\"added\": {\"name\": \"ingredient-ingredientunitmeasure relationship\", \"object\": \"Ingredient_unit_measure object (8)\"}}, {\"added\": {\"name\": \"ingredient photo\", \"object\": \"Photo of Sole fish : media/ingredients/fish-sole.jpg\"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 38,
+    "fields": {
+      "action_time": "2018-07-04T18:41:22.975Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "6",
+      "object_repr": "Colza oil",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}, {\"added\": {\"name\": \"ingredient-ingredientunitmeasure relationship\", \"object\": \"Ingredient_unit_measure object (9)\"}}, {\"added\": {\"name\": \"ingredient-ingredientunitmeasure relationship\", \"object\": \"Ingredient_unit_measure object (10)\"}}, {\"added\": {\"name\": \"ingredient-ingredientunitmeasure relationship\", \"object\": \"Ingredient_unit_measure object (11)\"}}, {\"added\": {\"name\": \"ingredient photo\", \"object\": \"Photo of Colza oil : media/ingredients/colza-oil.jpeg\"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 39,
+    "fields": {
+      "action_time": "2018-07-04T18:41:42.993Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "7",
+      "object_repr": "Wheat",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}, {\"added\": {\"name\": \"ingredient-ingredientunitmeasure relationship\", \"object\": \"Ingredient_unit_measure object (12)\"}}, {\"added\": {\"name\": \"ingredient-ingredientunitmeasure relationship\", \"object\": \"Ingredient_unit_measure object (13)\"}}, {\"added\": {\"name\": \"ingredient photo\", \"object\": \"Photo of Wheat : media/ingredients/wheat.jpg\"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 40,
+    "fields": {
+      "action_time": "2018-07-04T18:42:14.944Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "8",
+      "object_repr": "Cucumber",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}, {\"added\": {\"name\": \"ingredient-ingredientunitmeasure relationship\", \"object\": \"Ingredient_unit_measure object (14)\"}}, {\"added\": {\"name\": \"ingredient photo\", \"object\": \"Photo of Cucumber : media/ingredients/cucumber.jpg\"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 41,
+    "fields": {
+      "action_time": "2018-07-04T18:42:26.500Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "8",
+      "object_repr": "Cucumber",
+      "action_flag": 2,
+      "change_message": "[{\"added\": {\"name\": \"ingredient-ingredientunitmeasure relationship\", \"object\": \"Ingredient_unit_measure object (15)\"}}, {\"added\": {\"name\": \"ingredient-ingredientunitmeasure relationship\", \"object\": \"Ingredient_unit_measure object (16)\"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 42,
+    "fields": {
+      "action_time": "2018-07-04T18:43:01.785Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "9",
+      "object_repr": "Nature yogurt",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}, {\"added\": {\"name\": \"ingredient-ingredientunitmeasure relationship\", \"object\": \"Ingredient_unit_measure object (17)\"}}, {\"added\": {\"name\": \"ingredient-ingredientunitmeasure relationship\", \"object\": \"Ingredient_unit_measure object (18)\"}}, {\"added\": {\"name\": \"ingredient photo\", \"object\": \"Photo of Nature yogurt : media/ingredients/nature-yogurt.jpg\"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 43,
+    "fields": {
+      "action_time": "2018-07-04T18:43:59.234Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "10",
+      "object_repr": "Black chocolate",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}, {\"added\": {\"name\": \"ingredient-ingredientunitmeasure relationship\", \"object\": \"Ingredient_unit_measure object (19)\"}}, {\"added\": {\"name\": \"ingredient-ingredientunitmeasure relationship\", \"object\": \"Ingredient_unit_measure object (20)\"}}, {\"added\": {\"name\": \"ingredient-ingredientunitmeasure relationship\", \"object\": \"Ingredient_unit_measure object (21)\"}}, {\"added\": {\"name\": \"ingredient photo\", \"object\": \"Photo of Black chocolate : media/ingredients/black-chocolate.jpg\"}}]"
+    }
+  },
+  {
+    "model": "admin.logentry",
+    "pk": 44,
+    "fields": {
+      "action_time": "2018-07-04T18:44:58.672Z",
+      "user": 1,
+      "content_type": 7,
+      "object_id": "11",
+      "object_repr": "Sugar",
+      "action_flag": 1,
+      "change_message": "[{\"added\": {}}, {\"added\": {\"name\": \"ingredient-ingredientunitmeasure relationship\", \"object\": \"Ingredient_unit_measure object (22)\"}}, {\"added\": {\"name\": \"ingredient-ingredientunitmeasure relationship\", \"object\": \"Ingredient_unit_measure object (23)\"}}, {\"added\": {\"name\": \"ingredient photo\", \"object\": \"Photo of Sugar : media/ingredients/sugar.jpg\"}}]"
+    }
+  }
+]
