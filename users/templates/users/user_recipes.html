@@ -1,0 +1,42 @@
+{% extends 'recipes/base.html' %}
+{% load i18n %}
+
+{% load staticfiles %}
+
+{% block stylesheets %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static "css/star-rating-svg.css" %}">
+{% endblock %}
+
+{% block content %}
+
+    <hr/>
+    <!-- Include of recipes list element -->
+    {% include 'recipes/partials/recipes/_recipes_list.html' with list_title="Your recipes" %}
+
+    {% include 'recipes/partials/recipes/_pagination_objects.html' with objects=recipes %}
+
+{% endblock %}
+
+{% block javascripts %}
+
+    {{ block.super }}
+
+    <!-- Rating module : https://github.com/nashio/star-rating-svg -->
+    <script type="text/javascript" src="{% static "js/star-rating-svg.min.js" %}"></script>
+
+    <!-- Manage ingredient JS script -->
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $(".show-mean-mark-recipe").starRating({
+                strokeColor: '#894A00',
+                strokeWidth: 5,
+                starSize: 20,
+                readOnly: true
+            });
+        });
+    </script>
+
+{% endblock %}

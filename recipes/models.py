@@ -1,15 +1,18 @@
-from django.db import models
+from datetime import date, datetime
 
 # import of User auth django model
 from django.contrib.auth.models import User
-from datetime import date, datetime
+from django.core.validators import MinValueValidator
+from django.db import models
+from django.db.models import Count, Avg
+from django.db.models.functions import Coalesce
 from django.utils.text import slugify
 
 
 # useful function to set dynamic directory path to save file
 def avatar_path(self, filename):
     # file will be uploaded to MEDIA_ROOT/avatars/user_<id>/<filename>
-    return 'static/media/avatars/{0}/{1}'.format(self.user.id, filename)
+    return 'media/avatars/{0}/{1}'.format(self.user.id, filename)
 
 
 class Profile(models.Model):
@@ -17,7 +20,7 @@ class Profile(models.Model):
         Custom attributes for user model
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    avatar = models.ImageField(upload_to=avatar_path)
+    avatar = models.ImageField(upload_to=avatar_path, default='media/avatars/default_avatar.png')
     date_of_birth = models.DateField()
     country = models.CharField(max_length=255)
     country_flag = models.TextField(default='')
@@ -68,7 +71,7 @@ class IngredientPhoto(models.Model):
     """
         Photo of an ingredient
     """
-    path = models.ImageField(upload_to='static/media/ingredients/')
+    path = models.ImageField(upload_to='media/ingredients/')
     created_at = models.DateTimeField(auto_now_add=True)
     ingredient = models.OneToOneField(Ingredient, on_delete=models.CASCADE, related_name='photo')
 
@@ -106,6 +109,17 @@ class RecipeType(models.Model):
         return self.label
 
 
+class RecipeManager(models.Manager):
+    """
+        Custom manager : query to get aggregate annotations fields
+    """
+
+    def with_annotates(self):
+        return super(RecipeManager, self).get_queryset() \
+            .annotate(number_of_marks=Coalesce(Count('marks'), 0)) \
+            .annotate(mean_of_marks=Coalesce(Avg('marks__mark_score'), 0))
+
+
 class Recipe(models.Model):
     """
          Representation of recipe
@@ -113,21 +127,21 @@ class Recipe(models.Model):
              - associated to a type of recipe
              - can be created, updated and deleted by an user
      """
+    objects = RecipeManager()
+
     # description fields
     title = models.CharField(max_length=255)
     slug = models.SlugField(unique=True, null=False)
     description = models.TextField()
-    realization_cost = models.FloatField()
+    realization_cost = models.FloatField(default=0, validators=[MinValueValidator(0)])
     published = models.BooleanField(default=False)
 
     # time fields (use of integer field by default : number of minutes)
-    preparation_time = models.IntegerField()
-    cooking_time = models.IntegerField()
-    relaxation_time = models.IntegerField(default=0)
+    preparation_time = models.IntegerField(default=0, validators=[MinValueValidator(0)])
+    cooking_time = models.IntegerField(default=0, validators=[MinValueValidator(0)])
+    relaxation_time = models.IntegerField(default=0, validators=[MinValueValidator(0)])
 
-    # mark fields
-    mean_of_marks = models.FloatField(default=0.)
-    number_of_marks = models.IntegerField(default=0)
+    recipe_number_person = models.IntegerField(default=1)
 
     # date information fields
     created_at = models.DateTimeField(auto_now_add=True)
@@ -136,26 +150,15 @@ class Recipe(models.Model):
 
     # foreign key fields
     recipe_difficulty = models.ForeignKey(RecipeDifficulty, on_delete=models.CASCADE)
-    recipe_type = models.ForeignKey(RecipeType, on_delete=models.CASCADE)
+    recipe_types = models.ManyToManyField(RecipeType, related_name='recipe')
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recipes')
 
     # many to many fields
     recipe_ingredients = models.ManyToManyField(Ingredient, through='RecipeIngredient', related_name='ingredients')
 
     def __str__(self):
         return self.title
-
-    def add_mark(self, mark):
-        # compute the value of mean
-        self.mean_of_marks = (self.mean_of_marks * self.number_of_marks + mark) / (self.number_of_marks + 1)
-        # increase number of mark
-        self.number_of_marks += 1
-
-    def update_mark(self, old_mark, new_mark):
-        # compute the value of mean
-        self.mean_of_marks = (self.mean_of_marks * self.number_of_marks - old_mark + new_mark) \
-                             / self.number_of_marks
 
     def save(self, *args, **kwargs):
         super(Recipe, self).save(*args, **kwargs)
@@ -169,11 +172,11 @@ class RecipeIngredient(models.Model):
         Link a recipe and an ingredient with specific quantity
     """
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='ingredients')
-    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.PROTECT)
     quantity = models.FloatField(default=0)
 
     # In form get specific unit from ingredient units
-    unit_measure = models.ForeignKey(IngredientUnitMeasure, on_delete=models.CASCADE)
+    unit_measure = models.ForeignKey(IngredientUnitMeasure, on_delete=models.PROTECT)
 
     def __str__(self):
         return "Recipe %s includes %s %s of %s " % (self.recipe, self.quantity,
@@ -184,31 +187,30 @@ class RecipeStep(models.Model):
     """
         Specify a step of how to do recipe
     """
-    level = models.IntegerField()
     description = models.TextField()
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(Recipe, on_delete=models.PROTECT, related_name='steps')
 
     def __str__(self):
-        return "Step %s  : %s" % (self.level, self.description)
+        return "Step : %s" % self.description
 
 
 class RecipeVideo(models.Model):
     path = models.URLField()
     created_at = models.DateTimeField(auto_now_add=True)
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='videos')
+    recipe = models.ForeignKey(Recipe, on_delete=models.PROTECT, related_name='videos')
 
 
 # useful function to set dynamic directory path to save file
 def user_directory_path(self, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/%Y/%m/%d/<filename>
     current_date = datetime.today().strftime('%Y/%m/%d')
-    return 'static/media/user_{0}/{1}/{2}'.format(self.recipe.user.id, current_date, filename)
+    return 'media/user_{0}/{1}/{2}'.format(self.recipe.user.id, current_date, filename)
 
 
 class RecipeImage(models.Model):
     image = models.ImageField(upload_to=user_directory_path)
     created_at = models.DateTimeField(auto_now_add=True)
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='images')
+    recipe = models.ForeignKey(Recipe, on_delete=models.PROTECT, related_name='images')
 
 
 class RecipeComment(models.Model):
@@ -217,18 +219,18 @@ class RecipeComment(models.Model):
     """
     content = models.TextField(default="")
     created_at = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.PROTECT)
+    recipe = models.ForeignKey(Recipe, on_delete=models.PROTECT)
 
 
 class RecipeMark(models.Model):
     """
         Mark given by a user for a recipe
     """
-    mark_score = models.FloatField(default=0.)
+    mark_score = models.FloatField(default=0., validators=[MinValueValidator(0)])
     created_at = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='marks')
+    user = models.ForeignKey(User, on_delete=models.PROTECT)
+    recipe = models.ForeignKey(Recipe, on_delete=models.PROTECT, related_name='marks')
 
     def __str__(self):
         return "%s, give a mark %s to %s at %s" % (self.user.username, self.mark_score,
@@ -244,8 +246,8 @@ class Notification(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     link = models.TextField(default="")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    comment = models.ForeignKey(RecipeComment, on_delete=models.CASCADE, default=None)
-    mark = models.ForeignKey(RecipeMark, on_delete=models.CASCADE, default=None)
+    comment = models.ForeignKey(RecipeComment, on_delete=models.PROTECT, default=None)
+    mark = models.ForeignKey(RecipeMark, on_delete=models.PROTECT, default=None)
 
     def __str__(self):
 

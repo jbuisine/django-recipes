@@ -1,0 +1,58 @@
+{% load i18n %}
+<div class="my-3 p-3 bg-white rounded box-shadow">
+    <h3 class="border-bottom border-gray pb-2 mb-0">{% blocktrans %}Ingredients list{% endblocktrans %}</h3>
+
+    {% for r_ingredient in recipe.ingredients.all %}
+
+        <div class="media text-muted pt-3">
+
+            <img class="mr-2 rounded" src="/{{ r_ingredient.ingredient.photo.path }}"
+                 style="width: 64px; height: 64px;">
+
+            <div class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                <div class="d-flex justify-content-between align-items-center w-100">
+                    <strong class="text-gray-dark">{{ r_ingredient.ingredient.name }}</strong>
+                </div>
+                <div class="d-flex justify-content-between align-items-center w-100">
+
+                    <div class="text-gray-dark"><i>{{ r_ingredient.ingredient.family }}</i></div>
+
+                    {% if user.is_authenticated and user == recipe.user %}
+                        <a href="{% url 'recipes:recipe-delete-ingredient' recipe_ingredient_id=r_ingredient.id %}">
+                            <button class="btn btn-outline-danger">
+                               {% blocktrans %} Delete{% endblocktrans %}
+                            </button>
+                        </a>
+                    {% endif %}
+                </div>
+
+                {% if user.is_authenticated and user == recipe.user %}
+                    <form method="post" action="{% url 'recipes:recipe-update-ingredient' %}">
+                        <div class="form-row">
+                            <div class="col-5">
+
+                                {% csrf_token %}
+                                <input type="number" min="0" name="quantity" class="form-control" value="{{ r_ingredient.quantity }}">
+                                <input type="hidden" name="recipe_ingredient_id" class="form-control" value="{{ r_ingredient.id }}">
+
+                                <label class="form-check-label" for="quantity">
+                                    In {{ r_ingredient.unit_measure.name }}
+                                    ({{ r_ingredient.unit_measure.label }})
+                                </label>
+                            </div>
+                            <div class="col-6">
+                                <button class="btn btn-outline-primary">Update</button>
+                            </div>
+                        </div>
+                    </form>
+                {% else %}
+                    <span class="d-block">{{ r_ingredient.quantity }} {{ r_ingredient.unit_measure.label }}</span>
+                {% endif %}
+            </div>
+
+        </div>
+
+    {% empty %}
+        {% blocktrans %}Recipe does not contain ingredients{% endblocktrans %}
+    {% endfor %}
+</div>

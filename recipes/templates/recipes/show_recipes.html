@@ -1,6 +1,7 @@
 {% extends 'recipes/base.html' %}
+{% load i18n %}
 {% block title %}
-    Recipes
+   {% blocktrans %} Recipes{% endblocktrans %}
 {% endblock %}
 
 {% block content %}
@@ -11,3 +12,4 @@
     {% include 'recipes/partials/recipes/_pagination_objects.html' with objects=recipes %}
 
 {% endblock %}
+

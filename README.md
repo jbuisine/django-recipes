@@ -6,6 +6,69 @@ Web site which contains recipes. Authenticated user can create, update, delete i
 
 Recipe objects structure is available [here](https://github.com/jbuisine/django-recipes/blob/master/recipes/models.py) and defined like that:
 
+## Installation
+
+## Requirements
+
+You need to have python, pip
+
+```
+pip install -r requirements.txt
+```
+
+## Configuration
+
+```
+python project/manage.py makemigrations
+```
+
+```
+python project/manage.py migrate
+```
+
+Load data fixture
+```
+python project/manage.py loaddata data_recipes.json
+```
+
+## Run server
+
+And then, run the server :
+
+```
+python project/manage.py runserver
+```
+
+or if you want to precise a specific port number :
+
+```
+python project/manage.py runserver 8080
+```
+
+## Utilisation
+
+The default server address is [http://localhost:8000](http://localhost:8000)
+
+Accounts for testing:
+
+* admin:azerty11 (Admin role which can manage ingredients of recipes...)
+* tcaron:azerty11
+* agambart:azerty11
+* jbuisine:azerty11
+
+## How to contribute ?
+
+This project uses [git-flow](https://danielkummer.github.io/git-flow-cheatsheet/) to improve cooperation during the development.
+
+For each feature, you have to create a new git flow feature branch.
+
+Features to develop are available [here](https://github.com/jbuisine/django-recipes/projects/1). You can choose one you want to do and specify the git branch name associated to it.
+
+Helpful django commands are also available [here](https://github.com/jbuisine/django-recipes/blob/master/COMMANDS.md)
+
+## Model description
+
+
 - User
     - username
     - mail
@@ -39,7 +102,6 @@ Recipe objects structure is available [here](https://github.com/jbuisine/django-
 
 - Recipe_step
     - description
-    - level (step 1, 2, 3...)
     - *recipe
 
 - Recipe_image
@@ -95,53 +157,6 @@ Recipe objects structure is available [here](https://github.com/jbuisine/django-
     - mark_score
     - *user
     - *recipe
-
-
-## Installation
-
-## Requirements
-
-You need to have python, pip
-
-```
-pip install django django-bootstrap4 django-jquery
-```
-
-## Configuration
-
-```
-python project/manage.py makemigrations
-```
-
-```
-python project/manage.py migrate
-```
-
-And then, run the server :
-
-```
-python project/manage.py runserver
-```
-
-or if you want to precise a specific port number :
-
-```
-python project/manage.py runserver 8080
-```
-
-## Utilisation
-
-The default server address is [http://localhost:8000](http://localhost:8000)
-
-## How to contribute ?
-
-This project uses [git-flow](https://danielkummer.github.io/git-flow-cheatsheet/) to improve cooperation during the development.
-
-For each feature, you have to create a new git flow feature branch.
-
-Features to develop are available [here](https://github.com/jbuisine/django-recipes/projects/1). You can choose one you want to do and specify the git branch name associated to it.
-
-Helpful django commands are also available [here](https://github.com/jbuisine/django-recipes/blob/master/COMMANDS.md)
 
 ## Contributors
 

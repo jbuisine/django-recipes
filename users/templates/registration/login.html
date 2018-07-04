@@ -1,0 +1,18 @@
+{% extends 'recipes/base.html' %}
+
+{% load bootstrap4 %}
+{% load i18n %}
+{% block title %}{% blocktrans %}Login{% endblocktrans %}{% endblock %}
+
+{% block content %}
+  <h2>{% blocktrans %}Login{% endblocktrans %}</h2>
+  <form method="post">
+    {% csrf_token %}
+
+    {% bootstrap_form form %}
+
+    {% buttons %}
+        <button type="submit" class="btn btn-primary">{% blocktrans %}Submit{% endblocktrans %}</button>
+    {% endbuttons %}
+  </form>
+{% endblock %}

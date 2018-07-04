@@ -1,6 +1,7 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+{% load i18n %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
 
-    <a class="navbar-brand" href="{% url 'recipes:home' %}">Home</a>
+    <a class="navbar-brand" href="{% url 'recipes:home' %}">CanICook</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -8,24 +9,78 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-
         <ul class="navbar-nav mr-auto">
+
+
+            <li class="nav-item"><a class="nav-link" href="{% url 'recipes:home' %}">
+                {% blocktrans %}All recipes{% endblocktrans %}</a>
+            </li>
+
             {% if user.is_authenticated %}
-                <li class="nav-item"><a class="nav-link" href="{% url 'recipes:add_recipe' %}">Add Recipe</a></li>
+
+                <li class="nav-item"><a class="nav-link" href="{% url 'recipes:recipe-add-or-update' %}">
+                    {% blocktrans %}Add Recipe{% endblocktrans %}</a>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'users:user-recipes' %}">
+                    {% blocktrans %}My recipes{% endblocktrans %}</a>
+                </li>
+            {% endif %}
+
+
+            {% if recipe_types %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        Family
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        {% for type in recipe_types %}
+                            <a class="dropdown-item"
+                               href="{% url 'recipes:home-type' type_id=type.id %}">{{ type.label }}</a>
+                        {% endfor %}
+                    </div>
+                </li>
+            {% endif %}
+
+            {% if recipe_difficulties %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        Difficulty
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        {% for difficulty in recipe_difficulties %}
+                            <a class="dropdown-item"
+                               href="{% url 'recipes:home-difficulty' difficulty_id=difficulty.id %}">
+                                {{ difficulty.label }}</a>
+                        {% endfor %}
+                    </div>
+                </li>
             {% endif %}
         </ul>
 
-        <form class="form-inline my-2 my-lg-0 px-5">
-          <input class="form-control mr-sm-2" type="search" placeholder="Search your recipes" aria-label="Search">
-          <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+
+        <form method="GET" action="{{ request.path }}" class="form-inline my-2 my-lg-0 px-5">
+            <input class="form-control mr-sm-2" name="search" value="{{ request.GET.search }}" type="search"
+                   placeholder="{% blocktrans %}Search your recipes{% endblocktrans %}" aria-label="Search">
+
+            <button class="btn btn-outline-info my-2 my-sm-0" type="submit">{% blocktrans %}
+                Search{% endblocktrans %}</button>
         </form>
+
         <ul class="navbar-nav mr-right">
             {% if user.is_authenticated %}
-                <li class="nav-item"><a class="nav-link" href="{% url 'recipes:account' %}">My account</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'recipes:logout' %}">Logout</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'users:account' %}">{% blocktrans %}My
+                    account{% endblocktrans %}</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'users:logout' %}">{% blocktrans %}
+                    Logout{% endblocktrans %}</a></li>
             {% else %}
-                <li class="nav-item"><a class="nav-link" href="{% url 'recipes:login' %}">Login</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'recipes:signup' %}">Sign up</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'users:login' %}">{% blocktrans %}
+                    Login{% endblocktrans %}</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'users:signup' %}">{% blocktrans %}Sign
+                    up{% endblocktrans %}</a></li>
             {% endif %}
         </ul>
     </div>

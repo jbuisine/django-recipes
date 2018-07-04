@@ -2,51 +2,34 @@
 {% load  staticfiles %}
 {% load bootstrap4 %}
 {% block stylesheets %}
-    {% bootstrap_css %}
+    {{ block.super }}
     <link rel="stylesheet" type="text/css" href="{% static "css/dropzone.min.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "css/basic.min.css" %}">
 {% endblock %}
-
+{% load i18n %}
 {% block title %}
-    Add a new recipe
+    {% if recipe  %}{{ recipe.title }} {% blocktrans %}Update{% endblocktrans %}{% else  %}{% blocktrans %}Add recipe{% endblocktrans %}{% endif %}
 {% endblock %}
 
 {% block content %}
 
-    <h2>Add new recipe</h2>
-    <form method="post">
+    <h2>{% if recipe %}{{ recipe.title }} {% blocktrans %}Update{% endblocktrans %}{% else  %}{% blocktrans %}Add Recipe{% endblocktrans %}{% endif %}</h2>
+    <form method="post" {% if recipe %}action="{% url "recipes:recipe-update" recipe.id %}"{% endif %}>
         {% csrf_token %}
 
         {% bootstrap_form recipe_form %}
+        {% if recipe %}
+            <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
+        {% endif  %}
         {% buttons %}
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">{% blocktrans %}Validate Recipe{% endblocktrans %}</button>
+            </div>
         {% endbuttons %}
     </form>
 
 {% endblock %}
 
 {% block javascripts %}
-
-    <script type="text/javascript" src="{% static "js/dropzone.js" %}"></script>
-    <script type="text/javascript" src="{% static "js/dropzone-amd-module.js" %}"></script>
-
-    <!-- TODO @tcaron : always necessary ? -->
-    <script>
-        $(document).ready(function () {
-            Dropzone.autoDiscover = false;
-            $("#dZUpload").dropzone({
-                url: "/ulpoad",
-                addRemoveLinks: true,
-                success: function (file, response) {
-                    var imgName = response;
-                    file.previewElement.classList.add("dz-success");
-                    console.log("Successfully uploaded :" + imgName);
-                },
-                error: function (file, response) {
-                    file.previewElement.classList.add("dz-error");
-                }
-            });
-        });
-    </script>
-
+    {{ block.super }}
 {% endblock %}
