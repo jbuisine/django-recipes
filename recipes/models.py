@@ -172,11 +172,11 @@ class RecipeIngredient(models.Model):
         Link a recipe and an ingredient with specific quantity
     """
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='ingredients')
-    ingredient = models.ForeignKey(Ingredient, on_delete=models.PROTECT)
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     quantity = models.FloatField(default=0)
 
     # In form get specific unit from ingredient units
-    unit_measure = models.ForeignKey(IngredientUnitMeasure, on_delete=models.PROTECT)
+    unit_measure = models.ForeignKey(IngredientUnitMeasure, on_delete=models.CASCADE)
 
     def __str__(self):
         return "Recipe %s includes %s %s of %s " % (self.recipe, self.quantity,
@@ -188,7 +188,7 @@ class RecipeStep(models.Model):
         Specify a step of how to do recipe
     """
     description = models.TextField()
-    recipe = models.ForeignKey(Recipe, on_delete=models.PROTECT, related_name='steps')
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='steps')
 
     def __str__(self):
         return "Step : %s" % self.description
@@ -219,8 +219,8 @@ class RecipeComment(models.Model):
     """
     content = models.TextField(default="")
     created_at = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(User, on_delete=models.PROTECT)
-    recipe = models.ForeignKey(Recipe, on_delete=models.PROTECT)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
 
 
 class RecipeMark(models.Model):
@@ -229,8 +229,8 @@ class RecipeMark(models.Model):
     """
     mark_score = models.FloatField(default=0., validators=[MinValueValidator(0)])
     created_at = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(User, on_delete=models.PROTECT)
-    recipe = models.ForeignKey(Recipe, on_delete=models.PROTECT, related_name='marks')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='marks')
 
     def __str__(self):
         return "%s, give a mark %s to %s at %s" % (self.user.username, self.mark_score,

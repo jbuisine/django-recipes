@@ -306,7 +306,7 @@ def recipe_delete(request, recipe_slug):
 
     imgs = RecipeImage.objects.all().filter(recipe=recipe)
     for img in imgs:
-        os.remove(img.path)
+        os.remove(img.image.path)
         img.delete()
 
     recipe.delete()
